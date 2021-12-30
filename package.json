@@ -1,0 +1,28 @@
+{
+  "name": "@olton/mina-archive",
+  "version": "0.1.0",
+  "description": "Special server-manager to provide various data from the Mina Archive.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olton/mina-archive-server.git"
+  },
+  "keywords": [
+    "mina",
+    "archive",
+    "api",
+    "manager"
+  ],
+  "author": "Serhii Pimenov <serhii@pimenov.com.ua>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olton/mina-archive-server/issues"
+  },
+  "homepage": "https://github.com/olton/mina-archive-server#readme",
+  "dependencies": {
+    "pg": "^8.7.1"
+  }
+}
