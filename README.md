@@ -1,5 +1,5 @@
-# Mina Node Monitor
-**Mina Archive** is a special server-manager to provide various data from the Mina Archive.
+# Mina Archive
+**Mina Archive** is a special server-manager to provide various data from the Mina Archive Node.
 
 ## Donate a project
 You can support project, donate Mina to address:
