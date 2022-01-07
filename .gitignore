@@ -18,3 +18,4 @@ package-lock.json
 *.key
 *.crt
 *.pem
+*config.json
