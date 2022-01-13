@@ -1,13 +1,15 @@
-const http = require('http')
-const https = require('https')
-const {createDBConnection, query} = require("./postgres");
-const {log} = require("./logging");
-const {createConfig, readConfig} = require("../helpers/arguments");
-const fs = require("fs");
-const {setValue} = require("../helpers/set-value");
-const {hostname} = require("os");
-const {version} = require("../../package.json");
+import {createDBConnection, query, listenNotifies} from "./postgres"
+import {log} from "../helpers/logging.js"
+import {createConfig, readConfig} from "../helpers/arguments"
+import fs from "fs"
+import {setValue} from "../helpers/set-value"
+import {hostname} from "os"
+import pkg from "../../package.json"
+import {processPriceInfo} from "./price"
+import {runWebServer} from "./webserver"
+import {sendBroadcast} from "./websocket.js";
 
+const {version} = pkg
 
 const init = configPath => {
     const args = process.argv.slice(2)
@@ -20,8 +22,10 @@ const init = configPath => {
     }
 
     globalThis.config = readConfig(configPath)
+    globalThis.ssl = config.server.ssl && (config.server.ssl.cert && config.server.ssl.key)
+    globalThis.version = version
 
-    const {archive, server} = config
+    const {archive, server, client} = config
 
     if (!archive) {
         log(`Archive connection parameters not defined in config`, 'error')
@@ -34,18 +38,40 @@ const init = configPath => {
     }
 
     globalThis.host = setValue(server.name, hostname().split(".")[0])
+
+    globalThis.broadcast = new Proxy({
+        price: null
+    }, {
+        set(target, p, value, receiver) {
+            const data = {
+                data: value,
+                channel: p
+            }
+
+            sendBroadcast(data)
+
+            target[p] = value
+            return true
+        }
+    })
+
+    globalThis.cache = new Proxy({
+        price: null
+    }, {
+        set(target, p, value, receiver) {
+            target[p] = value
+            return true
+        }
+    })
 }
 
-const run = (configPath) => {
-    log(`Mina Node Archivist v${version} is starting...`)
+
+export const run = (configPath) => {
+    log(`Welcome to Minataur v${version}!`)
 
     init(configPath)
     createDBConnection()
-
-    log(`Welcome to Mina Node Archivist v${version}!`)
-}
-
-module.exports = {
-    init,
-    run
+    listenNotifies()
+    runWebServer()
+    processPriceInfo()
 }

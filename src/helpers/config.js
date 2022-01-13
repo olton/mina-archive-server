@@ -1,4 +1,4 @@
-const defaultConfig = {
+export const defaultConfig = {
     "archive": {
         "user": "postgres",
         "host": "localhost",
@@ -17,6 +17,4 @@ const defaultConfig = {
     debug: false
 }
 
-module.exports = {
-    defaultConfig
-}
+export const getDefaultConfig = (extConfig) => Object.assign({}, defaultConfig, extConfig)

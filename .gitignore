@@ -18,4 +18,5 @@ package-lock.json
 *.key
 *.crt
 *.pem
+*.p12
 *config.json

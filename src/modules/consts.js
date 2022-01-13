@@ -1,0 +1,11 @@
+export const SYNC_STATE_BOOTSTRAP = 'BOOTSTRAP'
+export const SYNC_STATE_CATCHUP = 'CATCHUP'
+export const SYNC_STATE_OFFLINE = 'OFFLINE'
+export const SYNC_STATE_SYNCED = 'SYNCED'
+export const SYNC_STATE_CONNECTING = 'CONNECTING'
+export const SYNC_STATE_UNKNOWN = 'UNKNOWN'
+
+export const CHAIN_STATUS_CANONICAL = 'canonical'
+export const CHAIN_STATUS_ORPHANED = 'orphaned'
+export const CHAIN_STATUS_PENDING = 'pending'
+export const CHAIN_STATUS_ALL = 'all'

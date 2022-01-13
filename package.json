@@ -1,10 +1,12 @@
 {
-  "name": "@olton/mina-archive",
+  "name": "@olton/minataur",
   "version": "0.1.0",
-  "description": "Special server-manager to provide various data from the Mina Archive.",
+  "description": "The Fastest block explorer for Mina Blockchain",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node .",
+    "loader": "nodemon --experimental-modules --es-module-specifier-resolution=node src/ledger.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,13 @@
   },
   "homepage": "https://github.com/olton/mina-archive-server#readme",
   "dependencies": {
+    "@olton/datetime": "^2.0.8",
+    "esm": "^3.2.25",
+    "express": "^4.17.2",
+    "node-fetch": "^3.1.0",
     "pg": "^8.7.1",
-    "pg-cursor": "^2.7.1"
+    "pg-cursor": "^2.7.1",
+    "pug": "^3.0.2",
+    "ws": "^8.4.0"
   }
 }

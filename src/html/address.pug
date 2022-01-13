@@ -1,0 +1,22 @@
+include mixins/dispute-blocks
+include mixins/canonical-blocks
+
+doctype html
+html.light-theme
+    include components/head
+    body.m4-cloak
+        include components/appbar
+
+        section.container-fluid
+            div.container
+
+                +canonical-blocks(canonicalBlocks)
+
+        include components/footer
+        include components/foot
+
+        script
+            include js/console.js
+            include js/utils.js
+            include js/websocket.js
+            include js/index.js

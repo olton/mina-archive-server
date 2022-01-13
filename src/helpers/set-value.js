@@ -1,9 +1,5 @@
-const {isset} = require("./isset");
+import {isset} from "./isset"
 
-const setValue = (val, def) => {
+export const setValue = (val, def) => {
     return isset(val, false) ? val : def
-}
-
-module.exports = {
-    setValue
 }

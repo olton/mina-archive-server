@@ -1,9 +1,12 @@
-const { Pool, Client } = require('pg')
-const {log, debug} = require("./logging");
-const {timestamp} = require("../helpers/timestamp");
+import pg from 'pg'
+import {log, debug} from "../helpers/logging.js"
+import {timestamp} from "../helpers/timestamp"
+
+const { Pool } = pg
 
 const createPool = () => {
-    const {host, user, database, password, port} = config.archive
+    const {host: archiveHost = 'localhost:5432', user, database, password} = config.archive
+    const [host, port] = archiveHost.split(":")
 
     const pool = new Pool({
         user,
@@ -30,7 +33,17 @@ const createDBConnection = () => {
         if (err) {
             throw err
         }
-        log(`DB clients pool created at ${timestamp('-', res.rows[0].now)}`)
+        log(`DB clients pool created at ${timestamp(res.rows[0].now)}`)
+    })
+}
+
+const listenNotifies = async () => {
+    const client = await globalThis.postgres.connect()
+
+    client.query('LISTEN new_block')
+    client.on('notification', async (data) => {
+        log(`New block notification:`, 'info', data.payload)
+        globalThis.broadcast.new_block = JSON.parse(data.payload)
     })
 }
 
@@ -55,7 +68,8 @@ const query = async (q, p) => {
     return result
 }
 
-module.exports = {
+export {
     createDBConnection,
-    query
+    query,
+    listenNotifies
 }

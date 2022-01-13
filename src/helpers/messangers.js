@@ -1,6 +1,6 @@
-const fetch = require("node-fetch")
-const {parseTelegramChatIDs} = require("./parsers.js");
-const {logging} = require("./logs");
+import fetch from "node-fetch"
+import {parseTelegramChatIDs} from "./parsers.js"
+import {log} from "./logging.js";
 
 const sendToDiscord = (url, message, {username = "Mina Monitor", avatar_url = ""} = {}) => {
     const params = {
@@ -14,8 +14,8 @@ const sendToDiscord = (url, message, {username = "Mina Monitor", avatar_url = ""
         body: JSON.stringify(params),
         headers: { 'Content-Type': 'application/json' }
     }).catch((e) => {
-        logging("Error! Can't send message to discord")
-        logging(e.message)
+        log("Error! Can't send message to discord")
+        log(e.message)
     })
 }
 
@@ -29,8 +29,8 @@ const sendToTelegram = (message, {token, recipients}) => {
     for (const id of recipients) {
         const url = TELEGRAM_URL.replace("%CHAT_ID%", id).replace("%MESSAGE%", message)
         fetch(encodeURI(url)).catch((e)=>{
-            logging("Error! Can't send message to telegram")
-            logging(e.message)
+            log("Error! Can't send message to telegram")
+            log(e.message)
         })
     }
 }
@@ -40,7 +40,7 @@ const sendTo = (check, message, isAlert = false) => {
     const signedMessage = `${isAlert ? 'ALERT: ' : 'INFO: '} ${message} ${sign}`
     const {alertToTelegram, alertToDiscord, telegram: telegramConfig = null, discord: discordConfig = null} = config
 
-    logging(message)
+    log(message)
 
     if (telegramConfig && (check === 'OK' || alertToTelegram.includes(check))) {
         let {token = "", tokenInfo = "", tokenAlert = "", chatID = "", chatIDInfo = "", chatIDAlert = ""} = telegramConfig
@@ -87,6 +87,6 @@ const sendMessage = (check, message) => {
     sendTo(check, message, isAlert)
 }
 
-module.exports = {
+export {
     sendMessage
 }

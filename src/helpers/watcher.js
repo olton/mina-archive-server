@@ -1,12 +1,12 @@
-const {watch, existsSync, readFileSync} = require("fs")
-const crypto = require('crypto')
-const {logging} = require("./logs")
-const {hostname} = require("os");
+import {watch, existsSync, readFileSync} from "fs"
+import crypto from 'crypto'
+import {hostname} from "os"
+import {log} from "./logging.js";
 
-const processConfigWatcher = (configFile) => {
+export const configWatcher = (configFile) => {
     if (!configFile || !existsSync(configFile)) return
 
-    logging(`The observation for the config file enabled!`)
+    log(`The observation for the config file enabled!`)
     let fsWait = false, md5Prev = null
     watch(configFile, (event, file) => {
         if (file) {
@@ -21,14 +21,10 @@ const processConfigWatcher = (configFile) => {
             try {
                 globalThis.config = JSON.parse(newConfig)
                 globalThis.host = globalThis.config.name || hostname().split(".")[0]
-                logging(`The config file was changed. New values applied!`)
+                log(`The config file was changed. New values applied!`)
             } catch (e) {
-                logging(`New config is wrong! Please check it`, true)
+                log(`New config is wrong! Please check it`, true)
             }
         }
     })
-}
-
-module.exports = {
-    processConfigWatcher
 }

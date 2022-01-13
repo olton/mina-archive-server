@@ -1,4 +1,4 @@
-const {isNum} = require("./numbers")
+import {isNum} from "./numbers"
 
 const parseTime = (t) => {
     if (isNum(t)) return Math.abs(+t)
@@ -25,7 +25,7 @@ const parseTelegramChatIDs = (s = "") => {
     return [...new Set(Array.isArray(s) ? s : (""+s).split(",").map( v => v.trim() ) )]
 }
 
-module.exports = {
+export {
     parseTime,
     parseTelegramChatIDs
 }

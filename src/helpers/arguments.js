@@ -1,8 +1,8 @@
-const {isset} = require("./isset");
-const {isNum} = require("./numbers");
-const fs = require("fs")
-const {log} = require("../modules/logging");
-const {getDefaultConfig} = require("./config");
+import {isset} from "./isset"
+import {isNum} from "./numbers"
+import fs from "fs"
+import {log} from "./logging.js"
+import {getDefaultConfig} from "./config"
 
 const createConfig = (path) => {
     const args = process.argv.slice(2)
@@ -87,7 +87,7 @@ const updateConfigFromArguments = (c) => {
 
 const readConfig = (path) => updateConfigFromArguments(JSON.parse(fs.readFileSync(path, 'utf-8')))
 
-module.exports = {
+export {
     getArguments,
     updateConfigFromArguments,
     createConfig,

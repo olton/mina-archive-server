@@ -1,0 +1,24 @@
+include mixins/blocks-panel
+
+doctype html
+html.light-theme
+    include components/head
+    body.m4-cloak
+        include components/appbar
+        include components/hero
+
+        section.container-fluid
+            div.container
+
+
+                +blocks-panel("dispute-blocks-table", disputeBlocks, "Last block dispute <span id='dispute-block-length'>" + disputeBlocks.length + "</span> participant(s) <span class='place-right reduce-2'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>")
+                +blocks-panel("canonical-blocks-table", canonicalBlocks, "Canonical chain (last 50 blocks) <span class='place-right reduce-2'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>")
+
+        include components/footer
+        include components/foot
+
+        script
+            include js/console.js
+            include js/utils.js
+            include js/websocket.js
+            include js/index.js
