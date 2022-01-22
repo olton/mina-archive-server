@@ -56,31 +56,31 @@ const drawBlocksTable = (data) => {
             <td>
                 <div>
                     <a class="link" href="/address/${r.coinbase_receiver_key}">${shorten(r.coinbase_receiver_key, 8)}</a>         
-                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.coinbase_receiver}"></span>           
+                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.coinbase_receiver_key}"></span>           
                 </div>                
                 <div>
                     <a class="text-small text-muted no-decor" href="/address/${r.winner_key}">${shorten(r.winner_key, 10)}</a>                    
                 </div>
             </td>
             <td class="text-center">
-                <span class="enlarge-2">${normMina(r.coinbase)}</span>
+                <span>${normMina(r.coinbase)}</span>
                 <div class="text-small text-muted">${normMina(r.snark_fee)}</div>                                
             </td>
             <td class="text-center d-none-fs d-table-cell-lg" style="width: 80px">
-                <span class="enlarge-2">${r.slot}</span>
+                <span>${r.slot}</span>
                 <div class="text-small text-muted">${r.global_slot}</div>                                
             </td>
             <td class="text-center d-none-fs d-table-cell-lg" style="width: 80px">
-                <span class="enlarge-2">${r.epoch}</span>
+                <span>${r.epoch}</span>
                 <div class="text-small text-muted">epoch</div>                                
             </td>
             <td class="text-center">
-                <span class="enlarge-2">${r.tr_applied}</span>
+                <span>${r.tr_applied}</span>
                 <div class="text-small text-muted">${r.trans_fee / 10**9}</div>                                
             </td>
             <td class="d-none-fs d-table-cell-md" style="width: 200px">
                 <div class="reduce-1">
-                    <a class="link" href="/block-hash/${r.state_hash}">${shorten(r.state_hash, 7)}</a>
+                    <a class="link" href="/block/${r.state_hash}">${shorten(r.state_hash, 7)}</a>
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.state_hash}"></span>            
                 </div>        
                 <div class="text-small text-muted">${datetime(+r.timestamp).format("DD/MM/YYYY HH:mm")}</div>

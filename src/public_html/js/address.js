@@ -52,7 +52,7 @@ const updateAddressInfo = (data) => {
 
     $("#blocks_count").html(`
         <span class="">${data.blocks_total}</span>
-        <span class="reduce-3 text-bold ml-auto">
+        <span class="reduce-4 text-bold ml-auto">
             <span class="fg-green" title="Canonical blocks produced">
                 ${data.blocks_canonical}
             </span>
@@ -71,14 +71,19 @@ const updateAddressInfo = (data) => {
     $("#trans_count").html(`
         <span class="">
             ${data.trans_count}
-            <span class="reduce-2"> / <span class="fg-red">${data.trans_failed}</span></span>
         </span>
-        <span class="reduce-3 text-bold ml-auto">
+        <span class="reduce-4 text-bold ml-auto">
             <span class="fg-green" title="Outgoing transactions">${data.trans_out}</span>
             <span class="text-light">/</span>
             <span class="fg-cyan" title="Incoming transactions">${data.trans_count - data.trans_out}</span>
         </span>
     `)
+    $("#trans-fail").html(`
+        <span>
+            <span class="text-bold">${data.trans_failed}</span>
+        </span>
+    `)
+
 
     $("#snark_jobs").html(`${data.snarks_count}`)
     $("#validator-fee").html(`${data.fee ? data.fee : 0}%`)
