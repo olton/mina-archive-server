@@ -40,7 +40,6 @@ const init = configPath => {
     globalThis.host = setValue(server.name, hostname().split(".")[0])
 
     globalThis.broadcast = new Proxy({
-        price: null
     }, {
         set(target, p, value, receiver) {
             const data = {

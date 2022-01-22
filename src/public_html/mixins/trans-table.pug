@@ -1,0 +1,36 @@
+mixin trans-table(tableId)
+    table.table.data-table.row-border.striped.mt-2.mb-2.row-hover.monospace(id=tableId)
+        thead
+            tr
+                th.text-center(style="width: 30px;")
+                    span Type
+
+                th.text-center(style="width: 30px;")
+                    span Status
+
+                th.text-center(style="width: 130px")
+                    span Date
+
+                th.text-center
+                    span Block
+
+                th.text-center
+                    span Nonce
+
+                th.text-center
+                    span Hash
+                    div.text-small Memo/Type
+
+                th.text-center
+                    span Sent
+                    div.text-small from/to
+
+                th.text-center
+                    span Amount
+                    div.text-small Fee
+
+        tbody
+            tr
+                td(colspan="9")
+                    div.d-flex.flex-align-center.flex-justify-center
+                        div(data-role="activity" data-type="bars" data-style="color")

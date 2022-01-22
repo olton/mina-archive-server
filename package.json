@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --experimental-modules --es-module-specifier-resolution=node .",
-    "loader": "nodemon --experimental-modules --es-module-specifier-resolution=node src/ledger.js"
+    "loader": "nodemon --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
+    "memo": "nodemon --experimental-modules --es-module-specifier-resolution=node src/memo.js",
+    "chain": "nodemon --experimental-modules --es-module-specifier-resolution=node src/chain.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
   },
   "homepage": "https://github.com/olton/mina-archive-server#readme",
   "dependencies": {
+    "@faustbrian/node-base58": "^1.0.0",
     "@olton/datetime": "^2.0.8",
     "esm": "^3.2.25",
     "express": "^4.17.2",
@@ -32,6 +35,7 @@
     "pg": "^8.7.1",
     "pg-cursor": "^2.7.1",
     "pug": "^3.0.2",
+    "serve-favicon": "^2.5.0",
     "ws": "^8.4.0"
   }
 }

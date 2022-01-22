@@ -42,7 +42,9 @@ const listenNotifies = async () => {
 
     client.query('LISTEN new_block')
     client.on('notification', async (data) => {
-        log(`New block notification:`, 'info', data.payload)
+        if (config.debug.pg_notify) {
+            log(`New block notification:`, 'info', data.payload)
+        }
         globalThis.broadcast.new_block = JSON.parse(data.payload)
     })
 }
@@ -55,7 +57,7 @@ const query = async (q, p) => {
         const start = Date.now()
         const res = await client.query(q, p)
         const duration = Date.now() - start
-        if (config.debug) {
+        if (config.debug.pg_query) {
             debug('Executed query', { q, duration: duration + 'ms', rows: res.rowCount })
         }
         result = res

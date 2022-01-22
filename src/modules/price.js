@@ -1,6 +1,7 @@
 import fetch from "node-fetch"
 import {parseTime} from "../helpers/parsers"
 import {query} from "./postgres.js";
+import {log} from "../helpers/logging.js";
 
 const getPriceInfo = async (currency = 'usd') => {
     try {
@@ -18,20 +19,21 @@ const processPriceInfo = async () => {
     const {currency, updateInterval, saveToDB = true} = config.price
     const _updateInterval = parseTime(updateInterval)
 
-    let data = await getPriceInfo(currency)
+    try {
+        let data = await getPriceInfo(currency)
 
-    if (Array.isArray(data)) {
-        data[0].currency = currency
-        globalThis.broadcast.price = data[0]
-        globalThis.cache.price = data[0]
+        if (Array.isArray(data)) {
+            data[0].currency = currency
+            globalThis.cache.price = data[0]
 
-        if (saveToDB) query(`
-            insert into price (currency, value, timestamp, provider) 
-            values ($1, $2, $3, $4)
-        `, [currency, data[0].current_price, data[0].last_updated, 'coingecko.com'])
+            // if (saveToDB) query(`
+            //     insert into price (currency, value, timestamp, provider)
+            //     values ($1, $2, $3, $4)
+            // `, [currency, data[0].current_price, data[0].last_updated, 'coingecko.com'])
+        }
+    } finally {
+        setTimeout(processPriceInfo, _updateInterval)
     }
-
-    setTimeout(processPriceInfo, _updateInterval)
 }
 
 export {

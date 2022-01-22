@@ -8,10 +8,7 @@ SELECT gslot.slot_number                                                        
        gslot.slot_number::double precision -
        floor((gslot.slot_number / 7140)::double precision) * 7140::double precision AS slot,
        (SELECT max(blocks.height) AS max
-        FROM blocks)                                                                AS height,
-       (SELECT max(blocks.height) AS max
-        FROM blocks
-        WHERE blocks.chain_status = 'canonical'::chain_status_type)                 AS canonical
+        FROM blocks)                                                                AS height
 FROM gslot;
 
 alter table v_epoch

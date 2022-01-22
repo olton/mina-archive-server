@@ -1,4 +1,4 @@
-create view v_trans
+create view v_trans_all
             (id, type, nonce, amount, fee, memo, hash, sequence_no, status, failure_reason, block_id, block_parent_id,
              state_hash, height, global_slot, slot, epoch, timestamp, chain_status, block_creator_id, block_creator,
              block_winner_id, block_winner, trans_owner_id, trans_owner, trans_receiver_id, trans_receiver,
@@ -43,6 +43,6 @@ FROM user_commands uc
          LEFT JOIN public_keys pk4 ON uc.receiver_id = pk4.id
          LEFT JOIN public_keys pk5 ON uc.fee_payer_id = pk5.id;
 
-alter table v_trans
+alter table v_trans_all
     owner to mina;
 

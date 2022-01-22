@@ -1,0 +1,14 @@
+mixin section-header(sectionTitle, value, valueShort)
+    div.hero.hero-padding-secondary
+        div.row
+            div.cell-lg-6
+                div.mt-8
+                    div.h1 #{sectionTitle}
+
+                div.h3
+                    span #{valueShort}
+                    span.mif-copy.ml-4.c-pointer.text-muted(data-value=value)
+
+
+            div.cell-lg-6
+                include ../components/search

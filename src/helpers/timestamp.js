@@ -5,9 +5,10 @@ const timestamp = (date, divider = "-:") => {
     let y = today.getFullYear();
     let H = String(today.getHours()).padStart(2, '0');
     let M = String(today.getMinutes()).padStart(2, '0');
+    let S = String(today.getSeconds()).padStart(2, '0');
     let [sd = '-', st = ':'] = divider.split("")
 
-    return `${d}${sd}${m}${sd}${y} ${H}${st}${M}`;
+    return `${d}${sd}${m}${sd}${y} ${H}${st}${M}${st}${S}`;
 }
 
 const time = (date) => {

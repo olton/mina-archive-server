@@ -1,9 +1,8 @@
 create view v_blocks
-            (id, height, epoch, slot, global_slot, creator_key, creator_id, winner_key, winner_id, timestamp, coinbase,
-             transfer_fee, transfer_count, snark_fee, snark_count, tr_applied, tr_fee, tr_failed, state_hash,
-             chain_status)
+            (id, parent_id, height, epoch, slot, global_slot, creator_key, creator_id, winner_key, winner_id, timestamp, coinbase,
+             trans_fee, trans_count, snark_fee, snark_count, tr_applied, tr_failed, state_hash, chain_status)
 as
-SELECT bs.id,
+SELECT bs.id, bs.parent_id,
        bs.height,
        floor((bs.global_slot / 7140)::double precision)                                                             AS epoch,
        bs.global_slot::double precision - floor((bs.global_slot / 7140)::double precision) *
@@ -25,13 +24,13 @@ SELECT bs.id,
                           LEFT JOIN blocks_internal_commands bic3 ON bic3.internal_command_id = ic3.id
                  WHERE bic3.block_id = bs.id
                    AND ic3.type = 'fee_transfer'::internal_command_type),
-                0::numeric)                                                                                         AS transfer_fee,
+                0::numeric)                                                                                         AS trans_fee,
        COALESCE(((SELECT count(ic3.fee) AS sum
                   FROM internal_commands ic3
                            LEFT JOIN blocks_internal_commands bic3 ON bic3.internal_command_id = ic3.id
                   WHERE bic3.block_id = bs.id
                     AND ic3.type = 'fee_transfer'::internal_command_type))::numeric,
-                0::numeric)                                                                                         AS transfer_count,
+                0::numeric)                                                                                         AS trans_count,
        COALESCE((SELECT sum(ic3.fee) AS sum
                  FROM internal_commands ic3
                           LEFT JOIN blocks_internal_commands bic3 ON bic3.internal_command_id = ic3.id
@@ -47,12 +46,6 @@ SELECT bs.id,
         FROM blocks_user_commands buc
         WHERE buc.block_id = bs.id
           AND buc.status = 'applied'::user_command_status)                                                          AS tr_applied,
-       COALESCE((SELECT sum(user_commands.fee) AS sum
-                 FROM user_commands
-                 WHERE (user_commands.id IN (SELECT blocks_user_commands.user_command_id
-                                             FROM blocks_user_commands
-                                             WHERE blocks_user_commands.block_id = bs.id))),
-                0::numeric)                                                                                         AS tr_fee,
        (SELECT count(buc.block_id) AS count
         FROM blocks_user_commands buc
         WHERE buc.block_id = bs.id

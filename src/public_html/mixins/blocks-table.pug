@@ -1,0 +1,41 @@
+mixin blocks-table(tableId)
+    table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2(id=tableId)
+        thead
+            tr
+                th.text-center(style="width: 30px;")
+                    span.mif-link(style="display: block; top: 10px;")
+
+                th(style="width: 80px")
+                    span Height
+                    div.text-small Timelapse
+                th
+                    span Block Producer
+                    div.text-small Name
+
+                th
+                    span Coinbase Receiver
+                    div.text-small Block Winner
+
+                th.text-center(style="width: 80px")
+                    span Coinbase
+                    div.text-small Snark
+
+                th.d-none-fs.d-table-cell-lg.text-center(style="width: 80px") Slot
+
+                th.d-none-fs.d-table-cell-lg.text-center(style="width: 80px") Epoch
+
+                th.text-center(style="width: 80px")
+                    span Trans
+                    div.text-small Fee
+
+                th.d-none-fs.d-table-cell-md(style="width: 200px")
+                    soan Hash
+                    div.text-small Time
+
+
+
+        tbody
+            tr
+                td.text-center(colspan="8")
+                    div.d-flex.flex-align-center.flex-justify-center
+                        div(data-role="activity" data-type="bars" data-style="color")
