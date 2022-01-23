@@ -41,14 +41,25 @@ const runWebServer = () => {
         })
     })
 
-    app.get('/address/:hash', async (req, res) => {
-        const address = req.params.hash
+    app.get('/address/:address', async (req, res) => {
+        const address = req.params.address
         const addressShort = shorten(address, 10)
 
         res.render('address', {
             title: `Address Overview for ${address}`,
             address,
             addressShort
+        })
+    })
+
+    app.get('/block/:hash', async (req, res) => {
+        const hash = req.params.hash
+        const hashShort = shorten(hash, 10)
+
+        res.render('block', {
+            title: `Block Overview for ${hash}`,
+            hash,
+            hashShort
         })
     })
 

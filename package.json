@@ -8,7 +8,8 @@
     "start": "nodemon --experimental-modules --es-module-specifier-resolution=node .",
     "loader": "nodemon --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
     "memo": "nodemon --experimental-modules --es-module-specifier-resolution=node src/memo.js",
-    "chain": "nodemon --experimental-modules --es-module-specifier-resolution=node src/chain.js"
+    "chain": "nodemon --experimental-modules --es-module-specifier-resolution=node src/chain.js",
+    "scam": "nodemon --experimental-modules --es-module-specifier-resolution=node src/check-memo-for-scam.js"
   },
   "repository": {
     "type": "git",

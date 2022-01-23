@@ -3,7 +3,7 @@ import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHA
 import {TextDecoder} from 'util'
 import {decode} from "@faustbrian/node-base58"
 
-const qDisputeBlocks = async () => {
+export const qDisputeBlocks = async () => {
     const sql = `
         select distinct * 
         from v_blocks b 
@@ -17,7 +17,7 @@ const qDisputeBlocks = async () => {
     return (await query(sql)).rows
 }
 
-const qBlocks = async ({
+export const qBlocks = async ({
     type = CHAIN_STATUS_CANONICAL,
     limit = 50,
     offset = 0
@@ -32,7 +32,7 @@ const qBlocks = async ({
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 
-const qAddressBlocks = async (pk, {
+export const qAddressBlocks = async (pk, {
     type = CHAIN_STATUS_ALL,
     limit = 50,
     offset = 0,
@@ -52,7 +52,7 @@ const qAddressBlocks = async (pk, {
     return (await query(sql, [pk, Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 
-const qAddressTransactions = async (pk, {
+export const qAddressTransactions = async (pk, {
     limit = 50,
     offset = 0,
 } = {}) => {
@@ -77,56 +77,70 @@ const qAddressTransactions = async (pk, {
     return result
 }
 
-const qTotalBlocks = async () => {
+export const qTotalBlocks = async () => {
     const sql = `
         select max(height) as height
         from blocks
     `
-
     return (await query(sql)).rows[0].height
 }
 
-const qGetEpoch = async () => {
+export const qGetEpoch = async () => {
     const sql = `
         select * from v_epoch
     `
     return (await query(sql)).rows[0]
 }
 
-const qGetStat = async () => {
+export const qGetStat = async () => {
     const sql = `
         select * from v_stat
     `
     return (await query(sql)).rows[0]
 }
 
-const qAddressInfo = async (address) => {
+export const qAddressInfo = async (address) => {
     const sql = `
         select * 
         from v_address
         where public_key = $1
     `
-
     return (await query(sql, [address])).rows[0]
 }
 
-const qLastBlockTime = async () => {
+export const qLastBlockTime = async () => {
     const sql = `
         select * 
         from v_last_block_time
     `
-
     return (await query(sql)).rows[0].timestamp
 }
 
-export {
-    qDisputeBlocks,
-    qBlocks,
-    qAddressBlocks,
-    qTotalBlocks,
-    qGetEpoch,
-    qGetStat,
-    qAddressInfo,
-    qLastBlockTime,
-    qAddressTransactions
+export const qBlockInfo = async (hash) => {
+    const sql = `
+        select b.*
+        from v_blocks b 
+        where b.state_hash = $1
+    `
+    return (await query(sql, [hash])).rows[0]
+}
+
+export const qBlockTransactions = async (hash) => {
+    if (!hash) {
+        throw new Error('You must specified block state hash for this query [qBlockTransactions]')
+    }
+
+    const sql = `
+        select * from v_trans_all 
+        where state_hash = $1
+        order by timestamp desc, nonce desc
+    `
+
+    const result = (await query(sql, [hash])).rows
+
+    result.map((r) => {
+        r.memo = (new TextDecoder().decode(decode(r.memo).slice(3, -4)))
+    })
+
+    return result
 }

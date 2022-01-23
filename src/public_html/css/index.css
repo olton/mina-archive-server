@@ -263,13 +263,23 @@ footer a:hover {
   padding: 4px 8px;
   z-index: 1;
 }
-#trans-fail {
+#trans-fail,
+#block-time,
+#snarks-fee,
+#trans-fee {
   position: absolute;
-  top: 10px;
+  top: 5px;
   right: 10px;
   font-size: 14px;
   color: var(--color-alert);
   z-index: 1;
+}
+#block-time,
+#snarks-fee {
+  color: var(--color-text);
+}
+#trans-fee {
+  color: var(--color-info);
 }
 .table-time {
   line-height: 1;
@@ -295,6 +305,9 @@ footer a:hover {
   padding: 10px;
   font-size: 24px;
   display: none;
+}
+.page-title {
+  color: var(--color-inactive) !important;
 }
 :not(.light-theme):root {
   --body-background: #1e2228;

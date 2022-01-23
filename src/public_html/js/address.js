@@ -114,7 +114,7 @@ const updateAddressInfo = (data) => {
         } else if (['receipt_chain_hash', 'voting_for', 'delegate_key'].includes(o)) {
             tr.append($("<td>").html(`
                 <div class="d-flex flex-align-center">
-                    <span>${shorten(data[o], 10)}</span> 
+                    <span>${!data[o] ? 'NONE' : shorten(data[o], 10)}</span> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
                 </div>
             `))

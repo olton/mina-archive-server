@@ -1,5 +1,7 @@
 
-const shorten = (v, l = 5) => `${v.substring(0, l) + '...' + v.substring(v.length - l)}`
+const shorten = (v, l = 5) => !v ? v : `${v.substring(0, l) + '...' + v.substring(v.length - l)}`
+
+const link = (text, href, cls) => `<a class="${cls}" href="${href}">${text}</a>`
 
 const copy2clipboard = (text) => {
     navigator.clipboard.writeText(text)
@@ -93,7 +95,7 @@ const drawBlocksTable = (data) => {
     return rows
 }
 
-const drawTransTable = (data, address) => {
+const drawTransTable = (data, address, noDir = false) => {
     let rows = []
 
     for(let t of data) {
@@ -102,7 +104,7 @@ const drawTransTable = (data, address) => {
         let transStatus = t.status === 'applied' ? "mif-checkmark fg-green" : "mif-blocked fg-red"
         let tr = $("<tr>")
         tr.html(`
-            <td class="text-center"><span class="${transDir}"></span></td>
+            <td class="text-center"><span class="${noDir ? "" : transDir}"></span></td>
             <td class="text-center"><span class="${transStatus}"></span></td>
             <td class="text-center" style="width: 160px">
                 <div class="table-time">${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}</div>
@@ -126,6 +128,7 @@ const drawTransTable = (data, address) => {
                     </span>
                     <div class="text-muted text-small">
                         ${t.type === 'payment' ? t.memo : '<span class="bg-pink fg-white pl-1 pr-1 reduce-1">'+t.type+'</span>'}
+                        ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
                     </div>
                 </div>                
             </td>

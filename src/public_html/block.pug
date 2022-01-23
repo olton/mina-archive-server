@@ -1,0 +1,128 @@
+include mixins/trans-table
+
+doctype html
+html.light-theme
+    include components/head
+    body.m4-cloak
+        include components/appbar
+
+        div.container-fluid
+            div.container
+                div.hero.hero-padding-secondary
+                    div.row
+                        div.cell-lg-6
+                            div
+                                div.h1.mb-0.page-title Block Overview
+
+                            hr.thin
+
+                            div.h3.mt-2.mb-2
+                                div.text-small.text-bold.m-0.text-muted
+                                    span BLOCK HASH
+
+                                span#block-hash #{hashShort}
+                                span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=hash title="Click to copy hash to clipboard")
+
+                                div.mt-3.text-small.text-bold.text-muted
+                                    span ON HEIGHT
+
+                                div.h1.m-0
+                                    div#block-height.mt-2-minus 0
+
+
+                        div.cell-lg-6
+                            include components/search
+
+        section.container-fluid
+            div.container.pb-10
+
+                div.h1
+                    span.reduce-2.text-muted Chain Status:
+                    span#chain-status.ml-2 UNKNOWN
+
+                div.row
+                    div.cell-xl-6.order-2.order-xl-1
+                        div.pt-2
+                            div.radius(data-role="panel" data-title-caption="Block Producer Info" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-cog mif-3x'></span>")
+                                table#block-producing.table.row-border.mt-2.mb-2
+                                    tbody
+
+
+                    div.cell-xl-6.order-1.order-xl-2
+                        div.row
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-orange.fg-white
+                                        span.mif-alarm
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Blockchain
+                                            div.text-upper Epoch
+                                            div#epoch.h3.m-0.d-flex.flex-align-end 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-darkGray.fg-white
+                                        span.mif-versions
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Production
+                                            div.text-upper Slot
+                                            div#slot.h3.m-0.d-flex.flex-align-end 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-teal.fg-white
+                                        span.mif-versions
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Global
+                                            div.text-upper Slot
+                                            div#global-slot.h3.m-0.d-flex.flex-align-end 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-red.fg-white
+                                        span.mif-calendar
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Block
+                                            div.text-upper Time
+                                            div#block-time 0
+                                            div#block-date.h3.m-0.d-flex.flex-align-end 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-lightBrown.fg-white
+                                        span.mif-stack
+                                    div.content.pl-2
+                                        div.p-2
+                                            div#trans-fee(title="Transactions failed") 0
+                                            div.text-upper Total
+                                            div.text-upper Transactions
+                                            div#trans_count.h3.m-0.d-flex.flex-align-end 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-green.fg-white
+                                        span.mif-cog
+                                    div.content.pl-2
+                                        div.p-2
+                                            div#snarks-fee(title="Snarks Fee") 0
+                                            div.text-upper Snark
+                                            div.text-upper Jobs
+                                            div#snarks-count.h3.m-0.d-flex.flex-align-end 0
+
+                div
+                    div.radius.mt-4(data-role="panel" data-title-caption="Block Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                        +trans-table("block-trans")
+
+        include components/footer
+        include components/scripts
+
+        script.
+            globalThis.blockHash = `!{hash}`
+
+        script
+            include ./js/block.js
+

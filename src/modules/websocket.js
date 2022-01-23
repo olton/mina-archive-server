@@ -7,7 +7,7 @@ import {
     qLastBlockTime,
     qGetEpoch,
     qAddressBlocks,
-    qAddressTransactions
+    qAddressTransactions, qBlockInfo, qBlockTransactions
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -61,6 +61,14 @@ export const websocket = (server) => {
                 }
                 case 'blocks': {
                     response(ws, channel, await qBlocks({type: data.type, limit: data.count, offset: data.offset}));
+                    break;
+                }
+                case 'block': {
+                    response(ws, channel, await qBlockInfo(data));
+                    break;
+                }
+                case 'block_trans': {
+                    response(ws, channel, await qBlockTransactions(data));
                     break;
                 }
                 case 'address': {
