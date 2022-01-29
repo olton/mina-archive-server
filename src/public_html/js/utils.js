@@ -4,7 +4,13 @@ const shorten = (v, l = 5) => !v ? v : `${v.substring(0, l) + '...' + v.substrin
 const link = (text, href, cls) => `<a class="${cls}" href="${href}">${text}</a>`
 
 const copy2clipboard = (text) => {
-    navigator.clipboard.writeText(text)
+    // navigator.clipboard.writeText(text)
+    const el = document.createElement('textarea')
+    el.value = text
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
 }
 
 $("body").on("click", " .copy-data-to-clipboard", function() {
