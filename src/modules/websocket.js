@@ -7,7 +7,10 @@ import {
     qLastBlockTime,
     qGetEpoch,
     qAddressBlocks,
-    qAddressTransactions, qBlockInfo, qBlockTransactions
+    qAddressTransactions,
+    qBlockInfo,
+    qBlockTransactions,
+    getLeaderboard
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -44,7 +47,7 @@ export const websocket = (server) => {
                     break
                 }
                 case 'lastChain': {
-                    response(ws, channel, await qBlocks())
+                    response(ws, channel, await qBlocks({limit: 20}))
                     break
                 }
                 case 'price': {
@@ -88,11 +91,19 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'trans_pool_count': {
-                    response(ws, channel, (await getTransactionInPool()).length);
+                    response(ws, channel, cache.transactionPool ? cache.transactionPool.length : 0);
                     break;
                 }
                 case 'new_block': {
                     console.log("New block log ---------------------------------------")
+                    break;
+                }
+                case 'update_uptime': {
+                    console.log("Update uptime log ---------------------------------------")
+                    break;
+                }
+                case 'uptime': {
+                    response(ws, channel, await getLeaderboard(null));
                     break;
                 }
             }

@@ -25,6 +25,7 @@ const processPriceInfo = async () => {
         if (Array.isArray(data)) {
             data[0].currency = currency
             globalThis.cache.price = data[0]
+            globalThis.broadcast.price = data[0]
 
             // if (saveToDB) query(`
             //     insert into price (currency, value, timestamp, provider)

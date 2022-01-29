@@ -74,6 +74,8 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'dispute'}))
         ws.send(JSON.stringify({channel: 'lastChain'}))
         ws.send(JSON.stringify({channel: 'trans_pool_count'}))
+
+        setTimeout(requestBlockData, 60000)
     }
 
     const requestStat = () => {
@@ -86,22 +88,13 @@ const wsMessageController = (ws, response) => {
             log(data);
             requestStat()
             ws.send(JSON.stringify({channel: 'price'}))
-            setInterval( () => {
-                ws.send(JSON.stringify({channel: 'price'}))
-            }, 60000)
             requestBlockData()
-            intervalBlocksData = setInterval( () => {
-                requestBlockData()
-            }, 60000 )
             break;
         }
         case 'new_block': {
             clearInterval(intervalBlocksData)
             requestStat()
             requestBlockData()
-            intervalBlocksData = setInterval( () => {
-                requestBlockData()
-            }, 60000 )
             break;
         }
         case 'epoch': updateHeight(data); break;

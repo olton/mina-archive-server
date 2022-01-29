@@ -63,9 +63,7 @@ const updateAddressInfo = (data) => {
         </span>
     `)
     $("#blocks-cpy").html(`
-        <span>
-            COE: <span class="text-bold">${Math.round((data.blocks_canonical * 100) / data.blocks_total) || 0}%</span>
-        </span>
+        <span class="text-bold">${Math.round((data.blocks_canonical * 100) / data.blocks_total) || 0}%</span>
     `)
 
     $("#trans_count").html(`
@@ -191,6 +189,8 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
         ws.send(JSON.stringify({channel: 'address_balance', data: address}));
         ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
+
+        setTimeout(requestLastActivity, 60000)
     }
 
     switch(channel) {
@@ -198,9 +198,6 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'epoch'}));
             ws.send(JSON.stringify({channel: 'address', data: address}));
             requestLastActivity()
-            setInterval( () => {
-                requestLastActivity()
-            }, 60000)
             break;
         }
         case 'new_block': {

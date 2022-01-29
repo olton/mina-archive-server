@@ -1,6 +1,7 @@
 
 const connect = () => {
-    const ws = new WebSocket("ws://localhost:8001")
+    const {host, secure} = config.server
+    const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${host}`)
 
     ws.onmessage = event => {
         try {

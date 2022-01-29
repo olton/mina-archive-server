@@ -24,7 +24,7 @@ const createPool = () => {
     return pool
 }
 
-const createDBConnection = () => {
+export const createDBConnection = () => {
     globalThis.postgres = createPool()
 
     const pool = globalThis.postgres
@@ -37,7 +37,7 @@ const createDBConnection = () => {
     })
 }
 
-const listenNotifies = async () => {
+export const listenNotifies = async () => {
     const client = await globalThis.postgres.connect()
 
     client.query('LISTEN new_block')
@@ -49,7 +49,7 @@ const listenNotifies = async () => {
     })
 }
 
-const query = async (q, p) => {
+export const query = async (q, p) => {
     const client = await globalThis.postgres.connect()
     let result = null
 
@@ -70,8 +70,33 @@ const query = async (q, p) => {
     return result
 }
 
-export {
-    createDBConnection,
-    query,
-    listenNotifies
+export const batch = async (a = []) => {
+    if (!a.length) return
+    const client = await globalThis.postgres.connect()
+    let result
+    try {
+        const start = Date.now()
+        client.query("BEGIN")
+        for (let q of a) {
+            const [sql, par] = q
+            await client.query(sql, par)
+        }
+        client.query("COMMIT")
+        const duration = Date.now() - start
+        if (config.debug.pg_query) {
+            debug('Executed query', { q, duration: duration + 'ms', rows: res.rowCount })
+        }
+        result = true
+    } catch (e) {
+        result = false
+        client.query("ROLLBACK")
+        log(e.message, 'error', config.debug ? e : null)
+    } finally {
+        client.release()
+    }
+    return result
+}
+
+export const getClient = async () => {
+    return await globalThis.postgres.connect()
 }

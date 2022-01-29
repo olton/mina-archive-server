@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import express from "express";
-import {qBlocks, qGetEpoch, qGetStat, qDisputeBlocks, qAddressInfo} from "./queries";
+import {qBlocks, qGetEpoch, qGetStat, qDisputeBlocks, qAddressInfo, getUptimeNext} from "./queries";
 import {shorten} from "../helpers/short-address";
 import {timestamp} from "../helpers/timestamp";
 import {formatNumber} from "../helpers/numbers";
@@ -34,10 +34,24 @@ const runWebServer = () => {
     app.set('views', path.resolve(rootPath, 'public_html'))
     app.set('view engine', 'pug')
 
+    const clientConfig = JSON.stringify(config.client)
+
     app.get('/', async (req, res) => {
         res.render('index', {
             title: 'Minataur - The Fastest block explorer for Mina Blockchain',
-            version
+            version,
+            clientConfig
+        })
+    })
+
+    app.get('/uptime', async (req, res) => {
+        const nextRound = await getUptimeNext()
+        res.render('uptime', {
+            title: 'Minataur - Uptime Leaderboard',
+            version,
+            clientConfig,
+            nextRound: nextRound,
+            nextRoundAt: datetime(nextRound).format("DD/MM/YYYY HH:mm")
         })
     })
 
@@ -48,7 +62,8 @@ const runWebServer = () => {
         res.render('address', {
             title: `Address Overview for ${address}`,
             address,
-            addressShort
+            addressShort,
+            clientConfig
         })
     })
 
@@ -59,7 +74,8 @@ const runWebServer = () => {
         res.render('block', {
             title: `Block Overview for ${hash}`,
             hash,
-            hashShort
+            hashShort,
+            clientConfig
         })
     })
 

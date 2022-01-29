@@ -8,6 +8,7 @@ import pkg from "../../package.json"
 import {processPriceInfo} from "./price"
 import {runWebServer} from "./webserver"
 import {sendBroadcast} from "./websocket.js";
+import {processTransactionPool} from "./graphql.js";
 
 const {version} = pkg
 
@@ -73,4 +74,5 @@ export const run = (configPath) => {
     listenNotifies()
     runWebServer()
     processPriceInfo()
+    processTransactionPool()
 }

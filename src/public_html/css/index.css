@@ -253,16 +253,7 @@ footer a:hover {
 .monospace {
   font-family: monospace;
 }
-#blocks-cpy {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 14px;
-  background: var(--color-info);
-  color: var(--color-white);
-  padding: 4px 8px;
-  z-index: 1;
-}
+#blocks-cpy,
 #trans-fail,
 #block-time,
 #snarks-fee,
@@ -273,6 +264,9 @@ footer a:hover {
   font-size: 14px;
   color: var(--color-alert);
   z-index: 1;
+}
+#blocks-cpy {
+  color: var(--color-info);
 }
 #block-time,
 #snarks-fee {
@@ -308,6 +302,29 @@ footer a:hover {
 }
 .page-title {
   color: var(--color-inactive) !important;
+}
+.box-value {
+  font-weight: 600;
+  font-size: 22px;
+  white-space: nowrap;
+  margin-top: 10px;
+  display: flex;
+  align-items: end;
+  flex-flow: row nowrap;
+  line-height: 1;
+}
+.icon-box .content {
+  overflow: hidden!important;
+}
+.table.row-hover .tbody .tr:hover,
+.table.row-hover .tbody tr:hover,
+.table.row-hover tbody .tr:hover,
+.table.row-hover tbody tr:hover {
+  background-color: rgba(163, 104, 255, 0.2);
+}
+.hint {
+  background: var(--color-info3);
+  color: var(--color-white);
 }
 :not(.light-theme):root {
   --body-background: #1e2228;

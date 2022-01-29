@@ -1,37 +1,34 @@
 include mixins/blocks-table
 
-doctype html
-html.light-theme
-    include components/head
-    body.m4-cloak
-        include components/appbar
+include components/head
+include components/appbar
 
-        div.container-fluid
-            div.container
-                include components/live
-                include components/hero
+div.container-fluid
+    div.container
+        include components/live
+        include components/hero
 
-        section.container-fluid
-            div.container
-                div.row
-                    div.h1
-                        span.reduce-2.text-muted Last Block Timelapse:
-                        span#last-block-time.ml-2 --:--
+section.container-fluid
+    div.container
+        div.row
+            div.h1
+                span.reduce-2.text-muted Last Block Timelapse:
+                span#last-block-time.ml-2 --:--
 
-        section.container-fluid
-            div.container
-                div.radius.mt-4(data-role="panel" data-title-caption="Last block dispute <span id='dispute-block-length'>0</span> participant(s) <span class='place-right reduce-3'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
-                    +blocks-table("dispute-blocks-table")
+section.container-fluid
+    div.container
+        div.radius.mt-4(data-role="panel" data-title-caption="Last block dispute <span id='dispute-block-length'>0</span> participant(s) <span class='place-right reduce-3'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+            +blocks-table("dispute-blocks-table")
 
-                div.radius.mt-4(data-role="panel" data-title-caption="Canonical chain (last <span id='canonical-block-length'>0</span> blocks) <span class='place-right reduce-3'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
-                    +blocks-table("canonical-blocks-table")
+        div.radius.mt-4(data-role="panel" data-title-caption="Canonical chain (last <span id='canonical-block-length'>0</span> blocks) <span class='place-right reduce-3'><a href='/blocks'>All Blocks <span class='mif-chevron-right'></span></a></span>" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+            +blocks-table("canonical-blocks-table")
 
-            div.mb-10 &nbsp;
+    div.mb-10 &nbsp;
 
-        include components/footer
+include components/footer
 
-        include components/scripts
+include components/scripts
 
-        script
-            include ./js/index.js
+script
+    include ./js/index.js
 

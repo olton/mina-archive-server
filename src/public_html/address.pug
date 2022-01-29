@@ -2,174 +2,174 @@ include mixins/blocks-table
 include mixins/trans-table
 include mixins/pool-trans-table
 
-doctype html
-html.light-theme
-    include components/head
-    body.m4-cloak
-        include components/appbar
+include components/head
+include components/appbar
 
-        div.container-fluid
-            div.container
-                include components/live
+div.container-fluid
+    div.container
+        include components/live
 
-                div#scammer-marker.ani-flash
-                    span SCAMMER!
+        div#scammer-marker.ani-flash
+            span SCAMMER!
 
-                div.hero.hero-padding-secondary
-                    div.row
-                        div.cell-lg-6
-                            div
-                                div.h1.mb-0.page-title Address Overview
-
-                            hr.thin
-
-                            div.h3.mt-2.mb-2
-                                span #{addressShort}
-                                span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
-
-                            div.row.mt-6
-                                div.cell-6
-                                    div.text-small.text-bold.m-0.text-muted
-                                        span ACCOUNT BALANCE
-
-                                    div.h2.text-normal.mt-0.mb-1
-                                        span#balance 0
-
-                                div.cell-6
-                                    div.text-small.text-bold.m-0.text-muted
-                                        span MOVABLE BALANCE
-
-                                    div.h2.text-normal.mt-0.mb-1.fg-success
-                                        span#movable-balance 0
-
-
-                        div.cell-lg-6
-                            include components/search
-
-        section.container-fluid
-            div.container.pb-10
-                ul(data-role="tabs" data-expand-point="md" style="top: 1px")
-                    li.ml-2
-                        a(href="#general") General
-                    li
-                        a(href="#trans") Transactions
-                    li
-                        a(href="#blocks") Blocks
-                    li
-                        a(href="#snarks") Snarks
-                    li
-                        a(href="#delegations") Delegations
-
-                div#general.pt-5
-
-                    div.row
-                        div.cell-xl-3.cell-lg-4.cell-ld-6
-                            div.icon-box.border.bd-system.radius
-                                div.icon.bg-red.fg-white
-                                    span.mif-medal
-                                div.content.pl-2
-                                    div.p-2
-                                        div.text-upper Validator's
-                                        div.text-upper Pool Fee
-                                        div#validator-fee.h3.m-0.d-flex.flex-align-end 0
-
-                        div.cell-xl-3.cell-lg-4.cell-ld-6
-                            div.icon-box.border.bd-system.radius
-                                div.icon.bg-grayMouse.fg-white
-                                    span.mif-apps
-                                div.content.pl-2
-                                    div.p-2
-                                        div#blocks-cpy 0%
-                                        div.text-upper Blocks
-                                        div.text-upper Producing
-                                        div#blocks_count.h3.m-0.d-flex.flex-align-end 0
-
-                        div.cell-xl-3.cell-lg-4.cell-ld-6
-                            div.icon-box.border.bd-system.radius
-                                div.icon.bg-lightBrown.fg-white
-                                    span.mif-stack
-                                div.content.pl-2
-                                    div.p-2
-                                        div#trans-fail(title="Transactions failed") 0
-                                        div.text-upper Total
-                                        div.text-upper Transactions
-                                        div#trans_count.h3.m-0.d-flex.flex-align-end 0
-
-                        div.cell-xl-3.cell-lg-4.cell-ld-6
-                            div.icon-box.border.bd-system.radius
-                                div.icon.bg-green.fg-white
-                                    span.mif-cog
-                                div.content.pl-2
-                                    div.p-2
-                                        div.text-upper Snark
-                                        div.text-upper Jobs
-                                        div#snark_jobs.h3.m-0.d-flex.flex-align-end 0
-
-
-                    div.row.mt-4
-                        div.cell-lg-6
-                            div
-                                div.radius(data-role="panel" data-title-caption="General info" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-location-city mif-3x'></span>")
-                                    table#address-info.table.row-border.mt-2.mb-2
-                                        tbody
-                                            tr
-                                                td
-                                                    div.d-flex.flex-align-center.flex-justify-center
-                                                        div(data-role="activity" data-type="bars" data-style="color")
-
-                            div.mt-4
-                                h4.enlarge-8.text-light Validator Rules
-                                div.remark.info
-                                    div#validator-rules.text-leader2(style="overflow: auto; height: 174px;")
-
-
-                        div.cell-lg-6
-                            div
-                                div.radius(data-role="panel" data-title-caption="Ledger data" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-book-reference mif-3x'></span>")
-                                    table#ledger-info.table.row-border.mt-2.mb-2
-                                        tbody
-                                            tr
-                                                td
-                                                    div.d-flex.flex-align-center.flex-justify-center
-                                                        div(data-role="activity" data-type="bars" data-style="color")
-
+        div.hero.hero-padding-secondary
+            div.row
+                div.cell-lg-6
                     div
-                        div.radius(data-role="panel" data-title-caption="Transaction Pool" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-broadcast mif-3x'></span>")
-                            +pool-trans-table("address-pool-trans")
+                        div.h1.mb-0.page-title Address Overview
 
-                    div.mt-10
-                        ul(data-role="tabs" data-expand="true")
-                            li.ml-2
-                                a(href="#last-trans") Last Transactions
+                    hr.thin
 
-                            li
-                                a(href="#last-blocks") Last Blocks
+                    div.h3.mt-2.mb-2
+                        span #{addressShort}
+                        span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
 
-                        div#last-trans
-                            div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
-                                +trans-table("address-last-trans")
+                    div.row.mt-6
+                        div.cell-6
+                            div.text-small.text-bold.m-0.text-muted
+                                span ACCOUNT BALANCE
 
-                        div#last-blocks
-                            div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Blocks" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-apps mif-3x'></span>")
-                                +blocks-table("address-last-blocks")
+                            div.h2.text-normal.mt-0.mb-1
+                                div#balance
+                                    div(data-role="activity" data-type="metro" data-style="color")
 
 
+                        div.cell-6
+                            div.text-small.text-bold.m-0.text-muted
+                                span MOVABLE BALANCE
 
-                div#blocks
+                            div.h2.text-normal.mt-0.mb-1.fg-success
+                                div#movable-balance
+                                    div(data-role="activity" data-type="metro" data-style="color")
 
-                div#trans
 
-                div#snarks
+                div.cell-lg-6
+                    include components/search
 
-                div#delegations
+section.container-fluid
+    div.container.pb-10
+        ul(data-role="tabs" data-expand-point="md" style="top: 1px")
+            li.ml-2
+                a(href="#general") General
+            li
+                a(href="#trans") Transactions
+            li
+                a(href="#blocks") Blocks
+            li
+                a(href="#snarks") Snarks
+            li
+                a(href="#delegations") Delegations
 
-        include components/footer
+        div#general.pt-5
 
-        include components/scripts
+            div.row
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-red.fg-white
+                            span.mif-medal
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Validator's
+                                div.text-upper Pool Fee
+                                div#validator-fee.box-value 0
 
-        script.
-            globalThis.address = `!{address}`
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-grayMouse.fg-white
+                            span.mif-apps
+                        div.content.pl-2
+                            div.p-2
+                                div#blocks-cpy(title="Efficiency") 0%
+                                div.text-upper Blocks
+                                div.text-upper Producing
+                                div#blocks_count.box-value 0
 
-        script
-            include ./js/address.js
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-lightBrown.fg-white
+                            span.mif-stack
+                        div.content.pl-2
+                            div.p-2
+                                div#trans-fail(title="Transactions failed") 0
+                                div.text-upper Total
+                                div.text-upper Transactions
+                                div#trans_count.box-value 0
+
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-green.fg-white
+                            span.mif-cog
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Snark
+                                div.text-upper Jobs
+                                div#snark_jobs.box-value 0
+
+
+            div.row.mt-4
+                div.cell-lg-6
+                    div
+                        div.radius(data-role="panel" data-title-caption="General info" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-location-city mif-3x'></span>")
+                            table#address-info.table.row-border.mt-2.mb-2
+                                tbody
+                                    tr
+                                        td
+                                            div.d-flex.flex-align-center.flex-justify-center
+                                                div(data-role="activity" data-type="bars" data-style="color")
+
+                    div.mt-4
+                        h4.enlarge-8.text-light Validator Rules
+                        div.remark.info
+                            div#validator-rules.text-leader2(style="overflow: auto; height: 174px;")
+
+
+                div.cell-lg-6
+                    div
+                        div.radius(data-role="panel" data-title-caption="Ledger data" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-book-reference mif-3x'></span>")
+                            table#ledger-info.table.row-border.mt-2.mb-2
+                                tbody
+                                    tr
+                                        td
+                                            div.d-flex.flex-align-center.flex-justify-center
+                                                div(data-role="activity" data-type="bars" data-style="color")
+
+            div
+                div.radius(data-role="panel" data-title-caption="Transaction Pool" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-broadcast mif-3x'></span>")
+                    +pool-trans-table("address-pool-trans")
+
+            div.mt-10
+                ul(data-role="tabs" data-expand="true")
+                    li.ml-2
+                        a(href="#last-trans") Last Transactions
+
+                    li
+                        a(href="#last-blocks") Last Blocks
+
+                div#last-trans
+                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                        +trans-table("address-last-trans")
+
+                div#last-blocks
+                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Blocks" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-apps mif-3x'></span>")
+                        +blocks-table("address-last-blocks")
+
+
+
+        div#blocks
+
+        div#trans
+
+        div#snarks
+
+        div#delegations
+
+include components/footer
+
+include components/scripts
+
+script.
+    globalThis.address = `!{address}`
+
+script
+    include ./js/address.js
 

@@ -4,6 +4,7 @@ import {query} from "./postgres.js";
 import {TextDecoder} from "util";
 import {decode} from "@faustbrian/node-base58";
 import {isset} from "../helpers/isset.js";
+import {parseTime} from "../helpers/parsers.js";
 
 const fetchGraphQL = async (query, variables = {}) => {
     try {
@@ -129,4 +130,10 @@ export const getTransactionInPool = async (address) => {
     })
 
     return result
+}
+
+export const processTransactionPool = async () => {
+    globalThis.cache.transactionPool = await getTransactionInPool()
+
+    setTimeout(processTransactionPool, parseTime("30s"))
 }

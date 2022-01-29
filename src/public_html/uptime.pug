@@ -1,0 +1,65 @@
+include components/head
+include components/appbar
+
+div.container-fluid
+    div.container
+        include components/live
+
+        div.hero.hero-padding-secondary
+            div.row
+                div.cell-lg-6
+                    div
+                        div.h1.mb-0.page-title Uptime  Leaderboard
+
+                    hr.thin
+
+                    div.text-small.text-bold.mt-10.text-muted
+                        span TOP
+                            span 120
+                            span.ml-1 LEADERS AT
+
+                    div.h1.mt-0#segment
+                        div(data-role="activity" data-type="metro" data-style="color")
+
+                    div.text-leader2
+                        Block Producers Uptime Tracker
+
+                div.cell-lg-6
+                    div.next-round-container.p-3-fs.p-8-md.radius.bd-system.border
+                        - var stopdate = nextRound
+                        div.text-leader.text-center
+                            span.text-muted NEXT ROUND:
+                            span.ml-2#next-round #{nextRoundAt}
+                        div#next-round-timer(data-role="countdown" data-start="true" data-date=stopdate data-cls-part="text-light" style="font-size: 72px")
+                        div.reduce-4.text-bold.text-center.text-muted TIME LEFT TO SNAPSHOT
+
+
+section.container-fluid
+    div.container
+        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2#leaderboard
+            thead
+                tr
+                    th(style="width: 30px;")
+                        span Position
+                    th
+                        span Address
+                    th
+                        span Score
+                    th
+                        span Rate
+                    th(style="width: 30px;" title="Block Producer")
+                        span BP
+            tbody
+                tr
+                    td.text-center(colspan="5")
+                        div.d-flex.flex-align-center.flex-justify-center
+                            div(data-role="activity" data-type="bars" data-style="color")
+
+
+include components/footer
+
+include components/scripts
+
+script
+    include ./js/uptime.js
+

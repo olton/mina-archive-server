@@ -104,7 +104,7 @@ const drawTransTable = (data, address, noDir = false) => {
         let transStatus = t.status === 'applied' ? "mif-checkmark fg-green" : "mif-blocked fg-red"
         let tr = $("<tr>")
         tr.html(`
-            <td class="text-center"><span class="${noDir ? "" : transDir}"></span></td>
+            <td class="text-center"><span class="${noDir ? "mif-import-export" : transDir}"></span></td>
             <td class="text-center"><span class="${transStatus}"></span></td>
             <td class="text-center" style="width: 160px">
                 <div class="table-time">${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}</div>

@@ -1,9 +1,15 @@
-head
-    meta(charset="utf-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
-    link(rel='stylesheet', href='/vendor/metro4/css/metro-all.min.css')
-    link(rel='stylesheet', href='/css/index.css')
+doctype html
+html.light-theme
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        link(rel='stylesheet', href='/vendor/metro4/css/metro-all.min.css')
+        link(rel='stylesheet', href='/css/index.css')
 
-    //include favicon
+        //include favicon
 
-    title= title
+        title= title
+
+        script.
+            globalThis.config = !{clientConfig}
+    body.m4-cloak

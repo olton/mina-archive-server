@@ -3,7 +3,6 @@ const updateEpoch = data => {
 }
 
 const updateBlockInfo = data => {
-    console.log(data)
     $("#block-height").html(Number(data.height).format(0, null, " ", "."))
     $("#epoch").html(Number(data.epoch).format(0, null, " ", "."))
     $("#slot").html(Number(data.slot).format(0, null, " ", "."))
@@ -20,7 +19,7 @@ const updateBlockInfo = data => {
         default: blockColor = 'fg-cyan'
     }
     // $("#block-hash").addClass(blockColor)
-    $("#chain-status").html(Cake.capitalize(data.chain_status)).addClass(blockColor)
+    $("#chain-status").html(Cake.capitalize(data.chain_status)).removeClassBy("fg-").addClass(blockColor)
 
     $("#trans_count").html(`
         <span class="">
@@ -33,16 +32,12 @@ const updateBlockInfo = data => {
         </span>
     `)
     $("#trans-fee").html(`
-        <span>
-            FEE: <span class="text-bold">${normMina(data.trans_fee)}</span>
-        </span>
+        <span class="text-bold">${normMina(data.trans_fee)}</span>
     `)
 
     $("#snarks_count").html(`${data.snarks_count}`)
     $("#snarks-fee").html(`
-        <span>
-            FEE: <span class="text-bold">${normMina(data.snarks_fee)}</span>
-        </span>
+        <span class="text-bold">${normMina(data.snarks_fee)}</span>
     `)
 
     let producing = {
@@ -93,14 +88,19 @@ const wsMessageController = (ws, response) => {
         return
     }
 
+    const requestData = () => {
+        ws.send(JSON.stringify({channel: 'epoch'}));
+        ws.send(JSON.stringify({channel: 'block', data: blockHash}));
+        ws.send(JSON.stringify({channel: 'block_trans', data: blockHash}));
+    }
+
     switch(channel) {
         case 'welcome': {
-            ws.send(JSON.stringify({channel: 'epoch'}));
-            ws.send(JSON.stringify({channel: 'block', data: blockHash}));
-            ws.send(JSON.stringify({channel: 'block_trans', data: blockHash}));
+            requestData()
             break;
         }
         case 'new_block': {
+            requestData()
             break;
         }
         case 'epoch': {

@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --experimental-modules --es-module-specifier-resolution=node .",
-    "loader": "nodemon --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
-    "memo": "nodemon --experimental-modules --es-module-specifier-resolution=node src/memo.js",
-    "chain": "nodemon --experimental-modules --es-module-specifier-resolution=node src/chain.js",
-    "scam": "nodemon --experimental-modules --es-module-specifier-resolution=node src/check-memo-for-scam.js"
+    "loader": "node --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
+    "memo": "node --experimental-modules --es-module-specifier-resolution=node src/memo.js",
+    "chain": "node --experimental-modules --es-module-specifier-resolution=node src/chain.js",
+    "scam": "node --experimental-modules --es-module-specifier-resolution=node src/check-memo-for-scam.js",
+    "uptime": "node --experimental-modules --es-module-specifier-resolution=node src/uptime.js"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.2",
     "node-fetch": "^3.1.0",
+    "node-html-parser": "^5.2.0",
     "pg": "^8.7.1",
     "pg-cursor": "^2.7.1",
     "pug": "^3.0.2",
