@@ -20,8 +20,6 @@ const updateAddressBalance = (data) => {
 }
 
 const updateAddressInfo = (data) => {
-    console.log(data)
-
     const genStart = datetime("2021-03-17 02:00:00.000000+02:00")
     const fields = {
         name: "Name",
@@ -122,28 +120,29 @@ const updateAddressInfo = (data) => {
 
             tr.append($("<td>").html(`
                 <div class="d-flex flex-align-center">
-                    <small class="mr-1 text-bold text-muted" style="width: 70px;">CURRENT:</small>
+                    <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">CURRENT:</span>
                     <a class="link" href="/address/${data[o]}">${shorten(data[o], 10)}</a> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
                 </div>
                 <div class="d-flex flex-align-center">
-                    <small class="mr-1 text-bold text-muted" style="width: 70px;">NEXT:</small>
+                    <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">NEXT:</span>
                     <a class="link" href="/address/${data['delegate_key_next']}">${shorten(data['delegate_key_next'], 10)}</a> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data['delegate_key_next']}"></span>
                 </div>
             `))
 
         } else if (['ledger_balance'].includes(o)) {
-
+            let lb = normMina(data['ledger_balance'], 'array')
+            let lbn = normMina(data['ledger_balance_next'], 'array')
             tr.append($("<td>").html(`
-                <div class="d-flex flex-align-center">
-                    <small class="mr-1 text-bold text-muted" style="width: 70px;">CURRENT:</small>
-                    <span>${normMina(data[o])}</a> 
+                <div class="">
+                    <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">CURRENT:</span>
+                    <span>${(+(lb[0])).format(0, null, " ", ".")}</span>.<span class="reduce-3">${lb[1]}</span> 
                     <span class="reduce-4 mr-1 text-bold text-muted" style="width: 70px;">MINA</span>
                 </div>
-                <div class="d-flex flex-align-center">
-                    <small class="mr-1 text-bold text-muted" style="width: 70px;">NEXT:</small>
-                    <span>${normMina(data['ledger_balance_next'])}</a> 
+                <div class="">
+                    <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">NEXT:</span>
+                    <span>${(+(lbn[0])).format(0, null, " ", ".")}</span>.<span class="reduce-3">${lbn[1]}</span> 
                     <span class="reduce-4 mr-1 text-bold text-muted" style="width: 70px;">MINA</span>
                 </div>
             `))
@@ -238,7 +237,6 @@ const wsMessageController = (ws, response) => {
             break;
         }
         case 'address': {
-            console.log("Address")
             updateAddressInfo(data)
             break;
         }
