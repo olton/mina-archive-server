@@ -50,6 +50,18 @@ const updateAddressInfo = (data) => {
         $("#scammer-marker").hide()
     }
 
+    let stack = normMina(data.stack, 'array')
+    $("#stack-current").html(`
+        <span>${(+stack[0]).format(0, null, " ", ".")}</span>
+        <span class="reduce-5 ml-2-minus">.${stack[1]}</span>    
+    `)
+
+    let stack_next = normMina(data.stack_next, 'array')
+    $("#stack-next").html(`
+        <span>${(+stack_next[0]).format(0, null, " ", ".")}</span>
+        <span class="reduce-5 ml-2-minus">.${stack_next[1]}</span>    
+    `)
+
     $("#blocks_count").html(`
         <span class="">${data.blocks_total}</span>
         <span class="reduce-4 text-bold ml-auto">

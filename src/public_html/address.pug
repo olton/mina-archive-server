@@ -24,29 +24,46 @@ div.container-fluid
                         span #{addressShort}
                         span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
 
-                    div.row.mt-6
-                        div.cell-6
-                            div.text-small.text-bold.m-0.text-muted
-                                span ACCOUNT BALANCE
+                //div.cell-lg-6
+                //    include components/search
 
-                            div.h2.text-normal.mt-0.mb-1
-                                div#balance
-                                    div(data-role="activity" data-type="metro" data-style="color")
+div.container-fluid.border-top.border-bottom.bd-system(style="min-height: 70px")
+    div.container.pt-4.pb-4
+        div.row
+            div.cell-xl-3.cell-md-6
+                div.text-small.text-bold.m-0.text-muted
+                    span ACCOUNT BALANCE
+
+                div.h2.text-normal.mt-0.mb-1
+                    div#balance
+                        div(data-role="activity" data-type="metro" data-style="color")
+
+            div.cell-xl-3.cell-md-6
+                div.text-small.text-bold.m-0.text-muted
+                    span MOVABLE BALANCE
+
+                div.h2.text-normal.mt-0.mb-1
+                    div#movable-balance
+                        div(data-role="activity" data-type="metro" data-style="color")
+
+            div.cell-xl-3.cell-md-6
+                div.text-small.text-bold.m-0.text-muted
+                    span CURRENT STACK
+
+                div.h2.text-normal.mt-0.mb-1
+                    div#stack-current
+                        div(data-role="activity" data-type="metro" data-style="color")
+
+            div.cell-xl-3.cell-md-6
+                div.text-small.text-bold.m-0.text-muted
+                    span STACK FOR NEXT EPOCH
+
+                div.h2.text-normal.mt-0.mb-1
+                    div#stack-next
+                        div(data-role="activity" data-type="metro" data-style="color")
 
 
-                        div.cell-6
-                            div.text-small.text-bold.m-0.text-muted
-                                span MOVABLE BALANCE
-
-                            div.h2.text-normal.mt-0.mb-1.fg-success
-                                div#movable-balance
-                                    div(data-role="activity" data-type="metro" data-style="color")
-
-
-                div.cell-lg-6
-                    include components/search
-
-section.container-fluid
+section.container-fluid.mt-8
     div.container.pb-10
         ul(data-role="tabs" data-expand-point="md" style="top: 1px")
             li.ml-2
@@ -120,7 +137,7 @@ section.container-fluid
                     div.mt-4
                         h4.enlarge-8.text-light Validator Rules
                         div.remark
-                            div#validator-rules.text-leader2(style="overflow: auto; height: 220px;")
+                            div#validator-rules.text-normal(style="overflow: auto; height: 220px;")
 
 
                 div.cell-lg-6
