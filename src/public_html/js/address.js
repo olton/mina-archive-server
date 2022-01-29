@@ -121,12 +121,12 @@ const updateAddressInfo = (data) => {
             tr.append($("<td>").html(`
                 <div class="d-flex flex-align-center">
                     <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">CURRENT:</span>
-                    <a class="link" href="/address/${data[o]}">${shorten(data[o], 10)}</a> 
+                    <a class="link" href="/address/${data[o]}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${data['delegate_name'] || 'Unknown'}" data-hint-position="left">${shorten(data[o], 10)}</a> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
                 </div>
                 <div class="d-flex flex-align-center">
                     <span class="reduce-3 mr-1 text-bold text-muted d-inline-block" style="width: 60px;">NEXT:</span>
-                    <a class="link" href="/address/${data['delegate_key_next']}">${shorten(data['delegate_key_next'], 10)}</a> 
+                    <a class="link" href="/address/${data['delegate_key_next']}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${data['delegate_name_next'] || 'Unknown'}" data-hint-position="left">${shorten(data['delegate_key_next'], 10)}</a> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data['delegate_key_next']}"></span>
                 </div>
             `))

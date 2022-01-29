@@ -141,11 +141,11 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="text-center">
                 <div>
                     <div>
-                        FROM: <a class="link" href="/address/${t.trans_owner}">${shorten(t.trans_owner, 7)}</a>
+                        FROM: <a class="link" href="/address/${t.trans_owner}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_owner_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_owner, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_owner}"></span>
                     </div>
                     <div>
-                        &nbsp;&nbsp;TO: <a class="link" href="/address/${t.trans_receiver}">${shorten(t.trans_receiver, 7)}</a>
+                        &nbsp;&nbsp;TO: <a class="link" href="/address/${t.trans_receiver}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_receiver_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_receiver, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_receiver}"></span>
                     </div>                                            
                 </div>                
