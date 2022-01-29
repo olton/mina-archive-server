@@ -36,8 +36,12 @@ const updateUptimeTable = data => {
         tr.append( $("<td>").html(`
             <a class="link" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${r.name || 'Unknown'}" data-hint-position="right" href="/address/${r.public_key}">${r.public_key}</a>
         `) )
-        tr.append( $("<td>").html(`${r.score}`) )
-        tr.append( $("<td>").html(`${r.rate}%`) )
+        tr.append( $("<td>").addClass("text-right").html(`
+            <div>${normMina(r.stack, 'number').format(0, null, " ", ".")}</div>
+            <div class="text-muted text-small">${normMina(r.stack_next, 'number').format(0, null, " ", ".")}</div>
+        `) )
+        tr.append( $("<td>").addClass("text-center").html(`${r.score}`) )
+        tr.append( $("<td>").addClass("text-center").html(`${r.rate}%`) )
         tr.append( $("<td>").addClass("text-center").html(`${prodLabel}`) )
 
         counter++

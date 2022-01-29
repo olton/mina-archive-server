@@ -169,6 +169,8 @@ export const getLeaderboard = async (segment, {
         select u.public_key_id,
                p.value as public_key,
                a.name,
+               s.stack,
+               s.stack_next,
                u.position,
                u.score,
                u.rate,
@@ -176,6 +178,7 @@ export const getLeaderboard = async (segment, {
         from uptime u
         left join public_keys p on u.public_key_id = p.id
         left join addresses a on a.public_key_id = u.public_key_id
+        left join v_stack s on s.id = u.public_key_id
         where u.segment_id = $1  
         order by u.position
         limit $2 offset $3
