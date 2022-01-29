@@ -109,7 +109,7 @@ const processCollectUptime = async () => {
         log(`Can't load uptime data!`, `error`, e.stack)
     } finally {
         client.release()
-        setTimeout(processCollectUptime, parseTime("5m"))
+        setTimeout(processCollectUptime, parseTime("10m"))
     }
 }
 
