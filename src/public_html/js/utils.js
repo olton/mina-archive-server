@@ -211,3 +211,22 @@ const drawTransPoolTable = (data) => {
 
     return rows
 }
+
+function searchInBlockchain(val) {
+    if (!val) {
+        Metro.toast.create("Please define a search request!")
+        return
+    }
+
+    let target = `/search/${val}`
+
+    if (val.substr(0, 4) === 'B62q') {
+        target = `/address/${val}`
+    } else if (val.substr(0, 3) === 'Ckp') {
+        target = `/trans/${val}`
+    } else if (val.substr(0, 2) === '3N') {
+        target = `/block/${val}`
+    }
+
+    window.location.href = target
+}
