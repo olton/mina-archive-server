@@ -100,6 +100,7 @@ export const qGetStat = async () => {
 }
 
 export const qAddressInfo = async (address) => {
+    // console.log("Address request: ", address)
     const sql = `
         select * 
         from v_address

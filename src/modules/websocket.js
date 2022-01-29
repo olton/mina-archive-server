@@ -75,7 +75,10 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address': {
-                    response(ws, channel, await qAddressInfo(data));
+                    console.log("Address data requested for ", data)
+                    const addrData = await qAddressInfo(data)
+                    console.log(addrData)
+                    response(ws, channel, addrData);
                     break;
                 }
                 case 'address_balance': {

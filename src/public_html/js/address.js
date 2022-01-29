@@ -20,6 +20,8 @@ const updateAddressBalance = (data) => {
 }
 
 const updateAddressInfo = (data) => {
+    console.log(data)
+
     const genStart = datetime("2021-03-17 02:00:00.000000+02:00")
     const fields = {
         name: "Name",
@@ -36,8 +38,8 @@ const updateAddressInfo = (data) => {
         cliff_amount: "Cliff Amount",
         vesting_period: "Vesting Period",
         vesting_increment: "Vesting Increment",
-        delegate_key: "Stack delegated to",
-        delegate_name: "Validator name",
+        delegate_key: "Stack Delegated in Epoch To",
+        ledger_balance: "Stack Size in Epoch"
     }
     const target = $("#address-info tbody").clear()
     const targetLedger = $("#ledger-info tbody").clear()
@@ -94,7 +96,7 @@ const updateAddressInfo = (data) => {
             val = $("<a>").attr("href", data[o]).attr("target", "_blank").html(data[o])
             tr.append($("<td>").append(val))
         } else {
-            tr.append($("<td>").html(data[o]))
+            tr.append($("<td>").html(data[o] || 'Not available'))
         }
     }
 
@@ -109,13 +111,43 @@ const updateAddressInfo = (data) => {
             tr.append($("<td>").html( normMina(data[o]) + ' <span class="text-small">MINA</span>' ))
         } else if (o === 'vesting_period') {
             tr.append($("<td>").html( !data[o] ? "NONE" : data[o] + ' <span class="text-small">BLOCK(s)</span>' ))
-        } else if (['receipt_chain_hash', 'voting_for', 'delegate_key'].includes(o)) {
+        } else if (['receipt_chain_hash', 'voting_for'].includes(o)) {
             tr.append($("<td>").html(`
                 <div class="d-flex flex-align-center">
                     <span>${!data[o] ? 'NONE' : shorten(data[o], 10)}</span> 
                     <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
                 </div>
             `))
+        } else if (['delegate_key'].includes(o)) {
+
+            tr.append($("<td>").html(`
+                <div class="d-flex flex-align-center">
+                    <small class="mr-1 text-bold text-muted" style="width: 70px;">CURRENT:</small>
+                    <a class="link" href="/address/${data[o]}">${shorten(data[o], 10)}</a> 
+                    <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
+                </div>
+                <div class="d-flex flex-align-center">
+                    <small class="mr-1 text-bold text-muted" style="width: 70px;">NEXT:</small>
+                    <a class="link" href="/address/${data['delegate_key_next']}">${shorten(data['delegate_key_next'], 10)}</a> 
+                    <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data['delegate_key_next']}"></span>
+                </div>
+            `))
+
+        } else if (['ledger_balance'].includes(o)) {
+
+            tr.append($("<td>").html(`
+                <div class="d-flex flex-align-center">
+                    <small class="mr-1 text-bold text-muted" style="width: 70px;">CURRENT:</small>
+                    <span>${normMina(data[o])}</a> 
+                    <span class="reduce-4 mr-1 text-bold text-muted" style="width: 70px;">MINA</span>
+                </div>
+                <div class="d-flex flex-align-center">
+                    <small class="mr-1 text-bold text-muted" style="width: 70px;">NEXT:</small>
+                    <span>${normMina(data['ledger_balance_next'])}</a> 
+                    <span class="reduce-4 mr-1 text-bold text-muted" style="width: 70px;">MINA</span>
+                </div>
+            `))
+
         } else {
             tr.append($("<td>").html(data[o]))
         }
@@ -206,6 +238,7 @@ const wsMessageController = (ws, response) => {
             break;
         }
         case 'address': {
+            console.log("Address")
             updateAddressInfo(data)
             break;
         }
