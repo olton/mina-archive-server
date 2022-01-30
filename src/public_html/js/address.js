@@ -236,10 +236,11 @@ const updateAddressTransPool = data => {
 
 const updateAddressUptime = data => {
     $("#address-uptime").html(`
-        <div class="h2 row text-light border bd-system">
-            <div class="cell-md-4 text-center">Uptime Position: <span class="text-normal">${data.position}</span></div> 
-            <div class="cell-md-4 text-center">Rate: <span class="text-normal">${data.rate}%</span></div> 
-            <div class="cell-md-4 text-center">Score: <span class="text-normal">${data.score}</span></div>
+        <div class="text-small text-bold m-0 text-muted text-upper">Uptime Tracking</div>
+        <div class="h4 row text-light mt-0">
+            <div class="cell-4">Position: <span class="text-normal">${data.position}</span></div> 
+            <div class="cell-4">Rate: <span class="text-normal">${data.rate}%</span></div> 
+            <div class="cell-4">Score: <span class="text-normal">${data.score}</span></div>
         </div>
     `)
 }

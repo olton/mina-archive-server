@@ -28,7 +28,19 @@ div.container-fluid
                         div#address-tags
 
                 div.cell-lg-6
-                    include components/search-compact
+                    div.mb-4
+                        form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
+                            input.input-large(
+                                data-role="input"
+                                placeholder="Search for block, address, transaction, ..."
+                                data-search-button="true"
+                                name="search_value"
+                            )
+
+                    div
+                        div#address-uptime
+
+
 
 div.container-fluid.border-top.border-bottom.bd-system(style="min-height: 70px")
     div.container.pt-4.pb-4
@@ -83,9 +95,6 @@ section.container-fluid.mt-8
                 a(href="#delegations") Delegations
 
         div#overview.pt-5
-            div
-                div#address-uptime
-
 
             div.row
                 div.cell-xl-3.cell-lg-4.cell-ld-6
