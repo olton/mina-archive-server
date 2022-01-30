@@ -58,9 +58,9 @@ div.container-fluid
                                 div.text-leader.text-normal
                                     span#global-slot 0
 
-div.container-fluid.mb-10.pt-5
+div.container-fluid.mb-4.pt-2
     div.container
-        div.row
+        div.row.mb-10
             div.cell-xl-6
                 div.radius(data-role="panel" data-title-caption="Transaction Detail" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
                     table.table.row-border.mt-2.mb-2
@@ -103,11 +103,13 @@ div.container-fluid.mb-10.pt-5
                                     span#transaction-fee-payer
                                     span.text-small.text-muted
 
-        div.mt-4.radius(data-role="panel" data-title-caption="Transaction Memo" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medium mif-3x'></span>")
-            div.p-2#transaction-memo
+            div.cell-xl-6
+                div.mt-4.radius(data-role="panel" data-title-caption="Transaction Memo" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medium mif-3x'></span>")
+                    div.p-2#transaction-memo
 
-        div.mt-4.radius(data-role="panel" data-title-caption="Transaction Description" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-news mif-3x'></span>")
-            div.p-2#transaction-desc
+            div.cell-xl-6
+                div.mt-4.radius(data-role="panel" data-title-caption="Transaction Description" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-news mif-3x'></span>")
+                    div.p-2#transaction-desc
 
 
 include components/footer
