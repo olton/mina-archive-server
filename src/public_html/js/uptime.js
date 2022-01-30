@@ -27,7 +27,16 @@ const updateUptimeTable = data => {
     let tr
 
     let counter = 1
+    let prevScore = 0
+
     for(let r of rows) {
+        if (r.score !== prevScore) {
+            prevScore = r.score
+            tr = $("<tr>").addClass("no-hover bg-white").append(
+                $("<td>").attr("colspan", 6).html(`<span class="pl-6 pt-2 pb-2 d-inline-block enlarge-4 text-muted">Rate Group ${r.rate}%</span>`)
+            ).appendTo(target)
+        }
+
         tr = $("<tr>").appendTo(target)
 
         let prodLabel = !r.is_producer ? "" : "<span class='text-small radius success p-1'>BP</span>"
