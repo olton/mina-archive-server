@@ -326,6 +326,11 @@ footer a:hover {
   background: var(--color-info3);
   color: var(--color-white);
 }
+@media (min-width: 992px) and (max-width: 1451px) {
+  .container {
+    max-width: 95%;
+  }
+}
 :not(.light-theme):root {
   --body-background: #1e2228;
   --color-text: #adbaa9;
