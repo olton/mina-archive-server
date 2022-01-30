@@ -63,8 +63,8 @@ const drawBlocksTable = (data) => {
             </td>
             <td>
                 <div>
-                    <a class="link" href="/address/${r.coinbase_receiver_key}">${shorten(r.coinbase_receiver_key, 8)}</a>         
-                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.coinbase_receiver_key}"></span>           
+                    <a class="link" href="/address/${r.coinbase_receiver_key || r.creator_key}">${shorten(r.coinbase_receiver_key || r.creator_key, 8)}</a>         
+                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.coinbase_receiver_key || r.creator_key}"></span>           
                 </div>                
                 <div>
                     <a class="text-small text-muted no-decor" href="/address/${r.winner_key}">${shorten(r.winner_key, 10)}</a>                    
