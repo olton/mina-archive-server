@@ -10,7 +10,7 @@ import {
     qAddressTransactions,
     qBlockInfo,
     qBlockTransactions,
-    getLeaderboard
+    getLeaderboard, getAddressUptime
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -107,6 +107,10 @@ export const websocket = (server) => {
                 }
                 case 'uptime': {
                     response(ws, channel, await getLeaderboard());
+                    break;
+                }
+                case 'address_uptime': {
+                    response(ws, channel, await getAddressUptime(data));
                     break;
                 }
             }

@@ -234,6 +234,16 @@ const updateAddressTransPool = data => {
     }
 }
 
+const updateAddressUptime = data => {
+    $("#address-uptime").html(`
+        <div class="h2 row text-light border bd-system">
+            <div class="cell-md-4 text-center">Uptime Position: <span class="text-normal">${data.position}</span></div> 
+            <div class="cell-md-4 text-center">Rate: <span class="text-normal">${data.rate}%</span></div> 
+            <div class="cell-md-4 text-center">Score: <span class="text-normal">${data.score}</span></div>
+        </div>
+    `)
+}
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -264,6 +274,9 @@ const wsMessageController = (ws, response) => {
         }
         case 'address': {
             updateAddressInfo(data)
+            if (data && data.is_producer) {
+                ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
+            }
             break;
         }
         case 'epoch': {
@@ -284,6 +297,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'address_trans_pool': {
             updateAddressTransPool(data)
+            break;
+        }
+        case 'address_uptime': {
+            updateAddressUptime(data)
             break;
         }
     }

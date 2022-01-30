@@ -172,3 +172,13 @@ export const getUptimeNext = async () => {
     const sql = `select timestamp from uptime_snapshot order by timestamp desc limit 1`
     return (await query(sql)).rows[0].timestamp
 }
+
+export const getAddressUptime = async (address) => {
+    const sql = `
+        select * 
+        from v_uptime
+        where public_key = $1
+        limit 1
+    `
+    return (await query(sql, [address])).rows[0]
+}
