@@ -1,0 +1,120 @@
+include mixins/trans-table
+
+include components/head
+include components/appbar
+
+div.container-fluid
+    div.container
+        div.hero.hero-padding-secondary
+            div.row
+                div.cell-lg-6
+                    div
+                        div.h1.mb-0.page-title Transaction Overview
+
+                    hr.thin
+
+                    div.h3.mt-2.mb-2
+                        span#trans-hash #{hashShort}
+                        span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=hash title="Click to copy hash to clipboard")
+
+                    div
+                        div#trans-tags
+
+                    div.text-small.text-bold.mt-1.text-muted
+                        span TRANSACTION DATE
+
+                    div.h2.text-normal.mt-0.mb-1
+                        div#trans-date DD/MM/YYYY HH:MM
+
+                div.cell-lg-6
+                    div.mb-4
+                        form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
+                            input.input-large(
+                                data-role="input"
+                                placeholder="Search for block, address, transaction, ..."
+                                data-search-button="true"
+                                name="search_value"
+                            )
+
+                    div
+                        div.text-small.text-bold.mt-8.text-muted.text-upper BLOCK HASH
+                        div.text-leader.row.mt-1.mb-1.pl-1
+                            a#block-hash.link
+                            span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(title="Click to copy hash to clipboard")
+
+                        div.row.mt-2
+                            div.cell-4
+                                div.text-small.text-bold.m-0.text-muted.text-upper BLOCK HEIGHT
+                                div.text-leader.text-normal
+                                    span#block-height 0
+
+                            div.cell-4
+                                div.text-small.text-bold.m-0.text-muted.text-upper CONFIRMATION
+                                div.text-leader.text-normal
+                                    span#confirmation 0
+
+                            div.cell-4
+                                div.text-small.text-bold.m-0.text-muted.text-upper GLOBAL SLOT
+                                div.text-leader.text-normal
+                                    span#global-slot 0
+
+div.container-fluid.mb-10.pt-5
+    div.container
+        div.row
+            div.cell-xl-6
+                div.radius(data-role="panel" data-title-caption="Transaction Detail" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                    table.table.row-border.mt-2.mb-2
+                        tbody
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold TRANSACTION AMOUNT
+                                    span.enlarge-3#transaction-amount
+                                    span.text-small.text-muted MINA
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold TRANSACTION FEE
+                                    span.enlarge-3#transaction-fee
+                                    span.text-small.text-muted MINA
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold NONCE
+                                    span#transaction-nonce
+                                    span.text-small.text-muted
+
+            div.cell-xl-6
+                div.radius(data-role="panel" data-title-caption="Transaction Participants" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-users mif-3x'></span>")
+                    table#address-info.table.row-border.mt-2.mb-2
+                        tbody
+
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold SENDER
+                                    span#transaction-sender
+                                    span.text-small.text-muted
+
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold RECEIVER
+                                    span#transaction-receiver
+                                    span.text-small.text-muted
+                            tr
+                                td
+                                    div.text-small.text-muted.text-bold FEE PAYER
+                                    span#transaction-fee-payer
+                                    span.text-small.text-muted
+
+        div.mt-4.radius(data-role="panel" data-title-caption="Transaction Memo" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medium mif-3x'></span>")
+            div.p-2#transaction-memo
+
+        div.mt-4.radius(data-role="panel" data-title-caption="Transaction Description" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-news mif-3x'></span>")
+            div.p-2#transaction-desc
+
+
+include components/footer
+include components/scripts
+
+script.
+    globalThis.transactionHash = `!{hash}`
+
+script
+    include ./js/transaction.js

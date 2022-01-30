@@ -79,6 +79,18 @@ const runWebServer = () => {
         })
     })
 
+    app.get('/transaction/:hash', async (req, res) => {
+        const hash = req.params.hash
+        const hashShort = shorten(hash, 10)
+
+        res.render('transaction', {
+            title: `Transaction Overview for ${hash}`,
+            hash,
+            hashShort,
+            clientConfig
+        })
+    })
+
     webserver.listen(+server_port, server_host, () => {
         log(`Minataur running on port ${server_port} in ${ssl ? 'secure' : 'non-secure'} mode`)
     })

@@ -182,3 +182,17 @@ export const getAddressUptime = async (address) => {
     `
     return (await query(sql, [address])).rows[0]
 }
+
+export const getTransaction = async (hash) => {
+    const sql = `
+        select *
+        from v_trans t
+        where t.hash = $1
+        limit 1
+    `
+    let result = (await query(sql, [hash])).rows[0]
+
+    result.memo = (new TextDecoder().decode(decode(result.memo).slice(3, -4))).replace(/\0/g, "")
+
+    return result
+}

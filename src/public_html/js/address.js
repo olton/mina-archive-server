@@ -41,6 +41,7 @@ const updateAddressInfo = (data) => {
     }
     const target = $("#address-info tbody").clear()
     const targetLedger = $("#ledger-info tbody").clear()
+    const cliffTime = genStart.addSecond(data["cliff_time"] * (180000/1000))
 
     let tr, val
 
@@ -60,7 +61,13 @@ const updateAddressInfo = (data) => {
 
     if (data.delegate_key !== address) {
         addressTags.append(
-            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`Delegator`)
+            $("<span>").addClass("radius reduce-4 badge inline bg-orange fg-white text-upper").html(`Delegator`)
+        )
+    }
+
+    if (data.cliff_time && cliffTime > datetime()) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`LOCKED`)
         )
     }
 
@@ -123,8 +130,6 @@ const updateAddressInfo = (data) => {
             tr.append($("<td>").html(data[o] || 'Not available'))
         }
     }
-
-    const cliffTime = genStart.addSecond(data["cliff_time"] * (180000/1000))
 
     for(let o in fieldsLedger) {
         tr = $("<tr>").appendTo(targetLedger)

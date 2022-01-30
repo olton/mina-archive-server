@@ -10,7 +10,7 @@ import {
     qAddressTransactions,
     qBlockInfo,
     qBlockTransactions,
-    getLeaderboard, getAddressUptime
+    getLeaderboard, getAddressUptime, getTransaction
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -75,10 +75,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address': {
-                    console.log("Address data requested for ", data)
-                    const addrData = await qAddressInfo(data)
-                    console.log(addrData)
-                    response(ws, channel, addrData);
+                    response(ws, channel, await qAddressInfo(data));
                     break;
                 }
                 case 'address_balance': {
@@ -111,6 +108,10 @@ export const websocket = (server) => {
                 }
                 case 'address_uptime': {
                     response(ws, channel, await getAddressUptime(data));
+                    break;
+                }
+                case 'transaction': {
+                    response(ws, channel, await getTransaction(data));
                     break;
                 }
             }

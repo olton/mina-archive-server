@@ -112,6 +112,18 @@ const drawTransTable = (data, address, noDir = false) => {
         tr.html(`
             <td class="text-center"><span class="${noDir ? "mif-import-export" : transDir}"></span></td>
             <td class="text-center"><span class="${transStatus}"></span></td>
+            <td class="text-center">
+                <div>
+                    <span>
+                        <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
+                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
+                    </span>
+                    <div class="text-muted text-small">
+                        <span class="${t.type === 'payment' ? transIncoming ? 'fg-green' : 'fg-orange' : 'fg-pink'} pl-1 pr-1 reduce-1">${t.type}</span>
+                        ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
+                    </div>
+                </div>                
+            </td>
             <td class="text-center" style="width: 160px">
                 <div class="table-time">${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}</div>
             </td>
@@ -128,18 +140,6 @@ const drawTransTable = (data, address, noDir = false) => {
             </td>
             <td class="text-center">
                 <div>
-                    <span>
-                        <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
-                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
-                    </span>
-                    <div class="text-muted text-small">
-                        ${t.type === 'payment' ? t.memo : '<span class="bg-pink fg-white pl-1 pr-1 reduce-1">'+t.type+'</span>'}
-                        ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
-                    </div>
-                </div>                
-            </td>
-            <td class="text-center">
-                <div>
                     <div class="${address && transIncoming ? '' : 'd-none'}">
                         <a class="link" href="/address/${t.trans_owner}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_owner_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_owner, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_owner}"></span>
@@ -147,7 +147,10 @@ const drawTransTable = (data, address, noDir = false) => {
                     <div class="${address && transIncoming ? 'd-none' : ''}">
                         <a class="link" href="/address/${t.trans_receiver}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_receiver_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_receiver, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_receiver}"></span>
-                    </div>                                            
+                    </div>                             
+                    <div class="text-muted text-small">
+                        ${t.memo}                                            
+                    </div>               
                 </div>                
             </td>
             <td class="text-center">
