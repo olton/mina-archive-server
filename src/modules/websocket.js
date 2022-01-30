@@ -106,7 +106,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'uptime': {
-                    response(ws, channel, await getLeaderboard(null));
+                    response(ws, channel, await getLeaderboard());
                     break;
                 }
             }

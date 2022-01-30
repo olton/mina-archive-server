@@ -147,43 +147,23 @@ export const qBlockTransactions = async (hash) => {
     return result
 }
 
-export const getLeaderboard = async (segment, {
+export const getLeaderboard = async ({
     limit = 120,
     offset = 0,
 } = {}) => {
     let res, segmentId, segmentTimestamp
 
-    if (!segment) {
-        res = await query(`select id, timestamp
+    res = await query(`select timestamp
                            from uptime_segments
                            where timestamp = (select max(timestamp) from uptime_segments)`)
-    } else {
-        res = await query(`select id, timestamp
-                           from uptime_segments
-                           where id = $1`, [segment])
-    }
 
-    segmentId = res.rows[0].id
     segmentTimestamp = res.rows[0].timestamp
 
     res = await query(`
-        select u.public_key_id,
-               p.value as public_key,
-               a.name,
-               s.stack,
-               s.stack_next,
-               u.position,
-               u.score,
-               u.rate,
-               (select 1 from blocks b where b.creator_id = u.public_key_id limit 1) as is_producer 
-        from uptime u
-        left join public_keys p on u.public_key_id = p.id
-        left join addresses a on a.public_key_id = u.public_key_id
-        left join v_stack s on s.id = u.public_key_id
-        where u.segment_id = $1  
-        order by u.position
-        limit $2 offset $3
-    `, [segmentId, limit, offset])
+        select * 
+        from v_uptime
+        limit $1 offset $2
+    `, [limit, offset])
 
     return {segment: segmentTimestamp, rows: res.rows, next: await getUptimeNext()}
 }

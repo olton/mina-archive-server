@@ -24,6 +24,9 @@ div.container-fluid
                         span #{addressShort}
                         span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
 
+                    div
+                        div#address-tags
+
                 div.cell-lg-6
                     include components/search-compact
 
@@ -67,6 +70,8 @@ section.container-fluid.mt-8
     div.container.pb-10
         ul(data-role="tabs" data-expand-point="md" style="top: 1px")
             li.ml-2
+                a(href="#overview") Overview
+            li.ml-2
                 a(href="#general") General
             li
                 a(href="#trans") Transactions
@@ -77,8 +82,7 @@ section.container-fluid.mt-8
             li
                 a(href="#delegations") Delegations
 
-        div#general.pt-5
-
+        div#overview.pt-5
             div.row
                 div.cell-xl-3.cell-lg-4.cell-ld-6
                     div.icon-box.border.bd-system.radius
@@ -123,7 +127,30 @@ section.container-fluid.mt-8
                                 div#snark_jobs.box-value 0
 
 
-            div.row.mt-4
+            div.mt-10
+                div.radius(data-role="panel" data-title-caption="Transaction Pool" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-broadcast mif-3x'></span>")
+                    +pool-trans-table("address-pool-trans")
+
+            div.mt-10
+                ul(data-role="tabs" data-expand="true")
+                    li.ml-2
+                        a(href="#last-trans") Last Transactions
+
+                    li
+                        a(href="#last-blocks") Last Blocks
+
+                div#last-trans
+                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                        +trans-table("address-last-trans")
+
+                div#last-blocks
+                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Blocks" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-apps mif-3x'></span>")
+                        +blocks-table("address-last-blocks")
+
+
+        div#general.pt-5
+
+            div.row
                 div.cell-lg-6
                     div
                         div.radius(data-role="panel" data-title-caption="General info" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-location-city mif-3x'></span>")
@@ -149,27 +176,6 @@ section.container-fluid.mt-8
                                         td
                                             div.d-flex.flex-align-center.flex-justify-center
                                                 div(data-role="activity" data-type="bars" data-style="color")
-
-            div
-                div.radius(data-role="panel" data-title-caption="Transaction Pool" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-broadcast mif-3x'></span>")
-                    +pool-trans-table("address-pool-trans")
-
-            div.mt-10
-                ul(data-role="tabs" data-expand="true")
-                    li.ml-2
-                        a(href="#last-trans") Last Transactions
-
-                    li
-                        a(href="#last-blocks") Last Blocks
-
-                div#last-trans
-                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
-                        +trans-table("address-last-trans")
-
-                div#last-blocks
-                    div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Blocks" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-apps mif-3x'></span>")
-                        +blocks-table("address-last-blocks")
-
 
 
         div#blocks

@@ -50,6 +50,20 @@ const updateAddressInfo = (data) => {
         $("#scammer-marker").hide()
     }
 
+    const addressTags = $("#address-tags").clear()
+
+    if (data.is_producer) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-green fg-white text-upper").html(`Block Producer`)
+        )
+    }
+
+    if (data.delegate_key !== address) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`Delegator`)
+        )
+    }
+
     let stack = normMina(data.stack, 'array')
     $("#stack-current").html(`
         <span>${(+stack[0]).format(0, null, " ", ".")}</span>

@@ -106,7 +106,7 @@ const drawTransTable = (data, address, noDir = false) => {
 
     for(let t of data) {
         let transIncoming = t.trans_owner !== address
-        let transDir = transIncoming ? "mif-arrow-down fg-green" : "mif-arrow-up fg-cyan"
+        let transDir = transIncoming ? "mif-arrow-down fg-green" : "mif-arrow-up fg-orange"
         let transStatus = t.status === 'applied' ? "mif-checkmark fg-green" : "mif-blocked fg-red"
         let tr = $("<tr>")
         tr.html(`
@@ -141,11 +141,11 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="text-center">
                 <div>
                     <div class="${address && transIncoming ? '' : 'd-none'}">
-                        FROM: <a class="link" href="/address/${t.trans_owner}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_owner_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_owner, 7)}</a>
+                        <a class="link" href="/address/${t.trans_owner}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_owner_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_owner, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_owner}"></span>
                     </div>
                     <div class="${address && transIncoming ? 'd-none' : ''}">
-                        &nbsp;&nbsp;TO: <a class="link" href="/address/${t.trans_receiver}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_receiver_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_receiver, 7)}</a>
+                        <a class="link" href="/address/${t.trans_receiver}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_receiver_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_receiver, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_receiver}"></span>
                     </div>                                            
                 </div>                
