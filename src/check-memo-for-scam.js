@@ -33,7 +33,7 @@ pool.on('error', (err, client) => {
     log(`Process started...`)
 
     try {
-        await client.query("BEGIN")
+        await client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
         const res = await client.query(`
             select 
                    uc.id, 
@@ -54,6 +54,7 @@ pool.on('error', (err, client) => {
                 decoded.includes('airdrop')
                 || decoded.includes('announcing')
                 || decoded.includes('clorio-mina')
+                || decoded.includes('mina-foundation.org')
             )) {
                 await client.query(`
                     insert into addresses (public_key_id, scammer) 

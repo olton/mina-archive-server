@@ -124,7 +124,7 @@ pool.on('error', (err, client) => {
         }
 
         if (args["clear-epoch"]) {
-            await client.query('BEGIN')
+            await client.query('BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED')
             await client.query(`delete from ledger where epoch = $1`, [args.epoch])
             await client.query('COMMIT')
             await client.release()

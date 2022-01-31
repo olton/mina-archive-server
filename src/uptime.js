@@ -78,7 +78,7 @@ const processCollectUptime = async () => {
     const client = await pool.connect()
 
     try {
-        client.query("BEGIN")
+        client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
         res = await client.query(`insert into uptime_segments ("timestamp") values (to_timestamp($1, 'MM/DD/YYYY HH24:MI')) returning id`, [timestamp])
         segment = res.rows[0].id
 
