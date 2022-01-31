@@ -106,7 +106,7 @@ const drawTransTable = (data, address, noDir = false) => {
 
     for(let t of data) {
         let transIncoming = t.trans_owner !== address
-        let transDir = transIncoming ? "mif-arrow-down fg-green" : "mif-arrow-up fg-orange"
+        let transDir = transIncoming ? "mif-arrow-down fg-green" : "mif-arrow-up fg-blue"
         let transStatus = t.status === 'applied' ? "mif-checkmark fg-green" : "mif-blocked fg-red"
         let tr = $("<tr>")
         tr.html(`
@@ -119,7 +119,7 @@ const drawTransTable = (data, address, noDir = false) => {
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
                     </span>
                     <div class="text-muted text-small">
-                        <span class="${t.type === 'payment' ? transIncoming ? 'fg-green' : 'fg-orange' : 'fg-pink'} pl-1 pr-1 reduce-1">${t.type}</span>
+                        <span class="${t.type === 'payment' ? transIncoming ? 'fg-green' : 'fg-blue' : 'fg-pink'} pl-1 pr-1 reduce-1">${t.type}</span>
                         ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
                     </div>
                 </div>                
