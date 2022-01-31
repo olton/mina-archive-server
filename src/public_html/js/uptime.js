@@ -28,13 +28,15 @@ const updateUptimeTable = data => {
 
     let counter = 1
     let prevScore = 0
+    let group = 1
 
     for(let r of rows) {
         if (r.score !== prevScore) {
             prevScore = r.score
             tr = $("<tr>").addClass("no-hover bg-white").append(
-                $("<td>").attr("colspan", 6).html(`<span class="pl-6 pt-2 pb-2 d-inline-block enlarge-4 text-muted">Rate ${r.rate}%, Score ${r.score}</span>`)
+                $("<td>").attr("colspan", 6).html(`<div class="pl-6 pt-1 pb-1 enlarge-2 text-muted text-left">Group ${group}</div>`)
             ).appendTo(target)
+            group++
         }
 
         tr = $("<tr>").appendTo(target)
