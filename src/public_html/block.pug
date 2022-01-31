@@ -48,8 +48,25 @@ section.container-fluid
             div.cell-xl-6.order-2.order-xl-1
                 div.pt-2
                     div.radius(data-role="panel" data-title-caption="Block Producer Info" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-cog mif-3x'></span>")
-                        table#block-producing.table.row-border.mt-2.mb-2
+                        table#producer-info.table.row-border.mt-2.mb-2
                             tbody
+
+                                tr
+                                    td
+                                        div.text-small.text-muted.text-bold BLOCK PRODUCER
+                                        span#block-producer
+                                        span.text-small.text-muted
+
+                                tr
+                                    td
+                                        div.text-small.text-muted.text-bold COINBASE RECEIVER
+                                        span#coinbase-receiver
+                                        span.text-small.text-muted
+                                tr
+                                    td
+                                        div.text-small.text-muted.text-bold BLOCK WINNER
+                                        span#block-winner
+                                        span.text-small.text-muted
 
 
             div.cell-xl-6.order-1.order-xl-2

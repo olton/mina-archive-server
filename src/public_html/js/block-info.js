@@ -49,27 +49,19 @@ const updateBlockInfo = data => {
         <span class="text-bold">${normMina(data.snarks_fee)}</span>
     `)
 
-    let producing = {
-        creator_key: "Block Producer",
-        creator_name: "Block Producer Name",
-        winner_key: "Block Producer",
-        coinbase_receiver_key: "Coinbase Receiver",
-        coinbase_receiver_name: "Coinbase Receiver Name",
-    }
-    let tr, targetProducing = $("#block-producing tbody").clear()
-    for(let o in producing) {
-        tr = $("<tr>").appendTo(targetProducing)
-        tr.append($("<td>").css({width: 260}).addClass("light").html(producing[o]))
+    $("#block-producer").html(`
+        <a class="link" href="/address/${data.creator_key}">${shorten(data.creator_key, 10)}</a>
+        <div class="text-small text-muted">${data.creator_name || ''}</div>
+    `)
+    $("#coinbase-receiver").html(`
+        <a class="link" href="/address/${data.coinbase_receiver_key}">${shorten(data.coinbase_receiver_key, 10)}</a>
+        <div class="text-small text-muted">${data.coinbase_receiver_name || ''}</div>
+    `)
+    $("#block-winner").html(`
+        <a class="link" href="/address/${data.winner_key}">${shorten(data.winner_key, 10)}</a>
+        <div class="text-small text-muted">${data.winner_name || ''}</div>
+    `)
 
-        if (["creator_key", "winner_key", "coinbase_receiver_key"].includes(o)) {
-            tr.append($("<td>").html(`
-                <div class="d-flex flex-align-center">
-                    <span>${!data[o] ? 'NONE' : link(shorten(data[o], 10), "/address/"+data[o], "link")}</span> 
-                    <span class="ml-auto mif-copy c-pointer copy-data-to-clipboard" title="Click to copy hash to clipboard" data-value="${data[o]}"></span>
-                </div>
-            `))
-        }
-    }
 }
 
 const updateBlockTransactions = data => {
