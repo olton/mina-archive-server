@@ -25,13 +25,89 @@ div.container-fluid
 
 section.container-fluid
     div.container
-        div.radius(data-role="panel" data-title-caption="Scammers List" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-bug mif-3x'></span>")
-
         div.row.mt-5
             div.cell-xl-6
-                div.radius(data-role="panel" data-title-caption="Top Stacks Owners" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-coins mif-3x'></span>")
+                div.radius(data-role="panel" data-title-caption="Stack Leaders" data-cls-content="p-0 flex-justify-start" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-coins mif-3x'></span>")
+                    div
+                        table.table.striped.monospace.data-table.row-hover#top-stacks-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rownum="true"
+                            data-show-rows-steps="false"
+                            data-show-search="false"
+                            data-on-draw-cell="topStackHoldersTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-show-table-info="false"
+                            data-show-pagination="false"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                        )
+                            thead
+                                tr
+                                    th(data-name="address") Address
+                                    th.text-right(data-name="stack")
+                                        span Current
+                                        div.text-small Stack
+                                    th.text-right(data-name="stack_next")
+                                        span Next
+                                        div.text-small Stack
+
             div.cell-xl-6
-                div.radius(data-role="panel" data-title-caption="Last Blocks Winners" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medal mif-3x'></span>")
+                div.radius(data-role="panel" data-title-caption="Last Blocks Winners" data-cls-content="p-0 flex-justify-start" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medal mif-3x'></span>")
+                    div
+                        table.table.striped.monospace.data-table.row-hover#last-winners-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rownum="true"
+                            data-show-rows-steps="false"
+                            data-show-search="false"
+                            data-on-draw-cell="lastBlockWinnersTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-show-table-info="false"
+                            data-show-pagination="false"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                        )
+                            thead
+                                tr
+                                    th(data-name="address") Address
+                                    th(data-name="block_height")
+                                        span Block
+                                        div.text-small Height
+                                    th(data-name="coinbase")
+                                        span Coinbase
+                                        div.text-small Reward
+
+
+
+        div.mt-4.radius(data-role="panel" data-title-caption="Scammers List" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-bug mif-3x'></span>")
+            div.pt-2
+                table.table.striped.monospace.data-table.row-hover#scammer-list-table(
+                    data-role="table"
+                    data-rows=20
+                    data-rownum="true"
+                    data-show-rows-steps="false"
+                    data-show-search="false"
+                    data-on-draw-cell="addressTableDrawCell"
+                    data-horizontal-scroll="true"
+                    data-horizontal-scroll-stop="xl"
+                    data-cls-table-container="no-border"
+                    data-activity-type="bars"
+                )
+                    thead
+                        tr
+                            th(data-name="address") Address
+                            th(data-name="ledger_balance")
+                                span Ledger
+                                div.text-small Balance
+                            th(data-name="ledger_balance_next")
+                                span Ledger
+                                div.text-small Balance Next
+                            th(data-name="trans_count")
+                                span Trans
+                                div.text-small Count
 
     div.mb-10 &nbsp;
 

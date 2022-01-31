@@ -196,3 +196,55 @@ export const getTransaction = async (hash) => {
 
     return result
 }
+
+export const getScammerList = async () => {
+    const sql = `
+        select * from v_address a 
+        where a.scammer = 1
+    `
+    const rows = (await query(sql)).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([r.public_key, r.ledger_balance, r.ledger_balance_next, r.trans_count])
+    }
+
+    return result
+}
+
+export const getTopStackHolders = async (limit = 20) => {
+    const sql = `
+        select *
+        from v_stack
+        order by stack desc
+        limit $1
+    `
+    const rows = (await query(sql, [limit])).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([r.value, r.stack, r.stack_next])
+    }
+
+    return result
+}
+
+export const getLastBlockWinners = async (limit = 20) => {
+    const sql = `
+        select b.creator_key, b.height, b.coinbase
+        from v_blocks b
+        where b.chain_status = 'canonical'
+        order by b.height desc
+        limit $1
+    `
+    const rows = (await query(sql, [limit])).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([r.creator_key, r.height, r.coinbase])
+    }
+
+    return result
+}
+
+

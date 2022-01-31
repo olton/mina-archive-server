@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 15/01/2022 11:40:48
+ * Built at 31/01/2022 22:51:30
  * Licensed under MIT
  */
 /*!
@@ -5225,7 +5225,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                // 
+                // console.log(name, val);
             }
         });
     },
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "15/01/2022 11:40:48",
+        compileTime: "31/01/2022 22:51:30",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -7508,7 +7508,7 @@ $.noConflict = function() {
                         }
 
                     } else  {
-                        //
+                        //console.log(mutation);
                     }
                 });
             };
@@ -33480,6 +33480,8 @@ $.noConflict = function() {
                 var item = $(this);
                 var dir, head_item, item_class;
 
+                if (item.hasClass('rownum-cell') || item.hasClass('check-cell')) return
+
                 if (Utils.isValue(item.data('sort-dir'))) {
                     dir = item.data('sort-dir');
                 } else {
@@ -33610,14 +33612,16 @@ $.noConflict = function() {
 
             tr = $("<tr>").addClass(o.clsHeadRow).appendTo(head);
 
+
             $.each(this.service, function(){
                 var item = this, classes = [];
-                th = $("<th>").appendTo(tr);
+                var th = $("<th>");
                 if (Utils.isValue(item.title)) {th.html(item.title);}
                 if (Utils.isValue(item.size)) {th.css({width: item.size});}
                 if (Utils.isValue(item.cls)) {classes.push(item.cls);}
                 classes.push(o.clsHeadCell);
                 th.addClass(classes.join(" "));
+                tr.append(th)
             });
 
             cells = this.heads;
@@ -33630,7 +33634,7 @@ $.noConflict = function() {
                 var item = this;
                 var classes = [];
 
-                th = $("<th>");
+                var th = $("<th>");
                 th.data("index", cell_index);
 
                 if (Utils.isValue(item.title)) {th.html(item.title);}

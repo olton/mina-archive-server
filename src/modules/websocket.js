@@ -10,7 +10,12 @@ import {
     qAddressTransactions,
     qBlockInfo,
     qBlockTransactions,
-    getLeaderboard, getAddressUptime, getTransaction
+    getLeaderboard,
+    getAddressUptime,
+    getTransaction,
+    getScammerList,
+    getTopStackHolders,
+    getLastBlockWinners
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -112,6 +117,18 @@ export const websocket = (server) => {
                 }
                 case 'transaction': {
                     response(ws, channel, await getTransaction(data));
+                    break;
+                }
+                case 'scammer_list': {
+                    response(ws, channel, await getScammerList(data));
+                    break;
+                }
+                case 'top_stack_holders': {
+                    response(ws, channel, await getTopStackHolders(data));
+                    break;
+                }
+                case 'last_block_winners': {
+                    response(ws, channel, await getLastBlockWinners(data));
                     break;
                 }
             }
