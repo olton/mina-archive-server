@@ -9,7 +9,7 @@ div.container-fluid
     div.container
         include components/live
 
-        div#scammer-marker.bg-red.fg-white.ani-flash
+        div.scam.bg-red.fg-white.ani-flash
             span SCAMMER!
 
         div.hero.hero-padding-secondary
@@ -207,5 +207,5 @@ script.
     globalThis.address = `!{address}`
 
 script
-    include ./js/address.js
+    include ./js/address-info.js
 

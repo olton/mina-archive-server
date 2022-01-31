@@ -5,6 +5,8 @@ const updateEpoch = (data) => {
 const updateTransactionInfo = (data) => {
     console.log(data)
 
+    $(".scam")[data.scam ? 'show' : 'hide']()
+
     const tags = $("#trans-tags").clear()
     tags.append(
         $("<span>").addClass(data.type === 'payment' ? 'bg-cyan' : 'bg-pink').addClass("radius reduce-4 badge inline fg-white text-upper").html(`${data.type}`)

@@ -45,11 +45,7 @@ const updateAddressInfo = (data) => {
 
     let tr, val
 
-    if (+data.scammer) {
-        $("#scammer-marker").show()
-    } else {
-        $("#scammer-marker").hide()
-    }
+    $(".scam")[data.scammer ? 'show' : 'hide']()
 
     const addressTags = $("#address-tags").clear()
 

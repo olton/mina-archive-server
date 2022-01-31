@@ -223,13 +223,13 @@ footer a:hover {
     margin: 0 20px;
 }
 
-.live {
+.live, .scam {
     position: absolute;
     right: 14px;
     top: 4px;
     background: red;
     color: white;
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
     text-transform: uppercase;
     padding: 4px 8px;
@@ -238,6 +238,11 @@ footer a:hover {
     display: flex;
     align-items: center;
     z-index: 2;
+}
+
+.scam {
+    left: 14px;
+    right: auto;
 }
 
 .minataur-toast {
@@ -271,7 +276,6 @@ footer a:hover {
     color: var(--color-info)
 }
 
-
 .table-time {
     line-height: 1;
 }
@@ -288,17 +292,6 @@ footer a:hover {
     &:hover {
         color: var(--color-accent);
     }
-}
-
-#scammer-marker {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    margin-left: -70px;
-    color: var(--color-alert);
-    padding: 5px 10px;
-    font-size: 24px;
-    display: none;
 }
 
 .page-title {

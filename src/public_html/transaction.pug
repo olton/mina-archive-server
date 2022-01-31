@@ -5,6 +5,9 @@ include components/appbar
 
 div.container-fluid
     div.container
+        div.scam.bg-red.fg-white.ani-flash
+            span SCAM!
+
         include components/live
 
         div.hero.hero-padding-secondary
@@ -121,4 +124,4 @@ script.
     globalThis.transactionHash = `!{hash}`
 
 script
-    include ./js/transaction.js
+    include ./js/transaction-info.js

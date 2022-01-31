@@ -135,7 +135,7 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="text-center">
                 <span>${t.nonce}</span>
                 <div class="text-muted text-small">
-                        ${+t.scam ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">SCAM!</span>' : ''}                
+                        ${+t.scam ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1 ani-flash">SCAM!</span>' : ''}                
                 </div>
             </td>
             <td class="text-center">
