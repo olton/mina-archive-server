@@ -9,7 +9,8 @@
     "loader": "node --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
     "memo": "node --experimental-modules --es-module-specifier-resolution=node src/memo.js",
     "chain": "node --experimental-modules --es-module-specifier-resolution=node src/chain.js",
-    "scam": "node --experimental-modules --es-module-specifier-resolution=node src/check-memo-for-scam.js",
+    "scam": "node --experimental-modules --es-module-specifier-resolution=node src/scam.js",
+    "blacklist": "node --experimental-modules --es-module-specifier-resolution=node src/blacklist.js",
     "uptime": "node --experimental-modules --es-module-specifier-resolution=node src/uptime.js"
   },
   "repository": {

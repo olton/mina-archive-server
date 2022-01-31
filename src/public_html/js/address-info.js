@@ -47,8 +47,9 @@ const updateAddressInfo = (data) => {
 
     $(".scam")[data.scammer ? 'show' : 'hide']()
 
-    const addressTags = $("#address-tags").clear()
+    $("#address-name").html(`${data.name}`)
 
+    const addressTags = $("#address-tags").clear()
     if (data.is_producer) {
         addressTags.append(
             $("<span>").addClass("radius reduce-4 badge inline bg-green fg-white text-upper").html(`Block Producer`)
@@ -236,14 +237,9 @@ const updateAddressTransPool = data => {
 }
 
 const updateAddressUptime = data => {
-    $("#address-uptime").html(`
-        <div class="text-small text-bold m-0 text-muted text-upper">Uptime Tracking</div>
-        <div class="h4 row text-light mt-1-minus">
-            <div class="cell-4">Position: <span class="text-normal">${data.position}</span></div> 
-            <div class="cell-4">Rate: <span class="text-normal">${data.rate}%</span></div> 
-            <div class="cell-4">Score: <span class="text-normal">${data.score}</span></div>
-        </div>
-    `)
+    $("#uptime-position").html(data.position)
+    $("#uptime-rate").html(`${data.rate}%`)
+    $("#uptime-score").html(data.score)
 }
 
 const wsMessageController = (ws, response) => {

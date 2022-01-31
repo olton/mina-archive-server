@@ -23,6 +23,7 @@ div.container-fluid
                     div.h3.mt-2.mb-2
                         span #{addressShort}
                         span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
+                        div#address-name.reduce-6.text-normal
 
                     div
                         div#address-tags
@@ -32,9 +33,17 @@ div.container-fluid
                         include components/search-form
 
                     div
-                        div#address-uptime
-
-
+                        div.text-small.text-bold.mb-0.mt-10.text-muted.text-upper Uptime Tracking
+                        div.h4.row.text-light.mt-1-minus
+                            div.cell-4
+                                span Position:
+                                span.ml-1.text-normal#uptime-position
+                            div.cell-4
+                                span Rate:
+                                span.ml-1.text-normal#uptime-rate
+                            div.cell-4
+                                span Score:
+                                span.ml-1.text-normal#uptime-score
 
 div.container-fluid.border-top.border-bottom.bd-system(style="min-height: 70px")
     div.container.pt-4.pb-4

@@ -108,7 +108,7 @@ const processCollectUptime = async () => {
         client.query("ROLLBACK")
         log(`Can't load uptime data!`, `error`, e.stack)
     } finally {
-        client.release()
+        await client.release()
         setTimeout(processCollectUptime, parseTime("10m"))
     }
 }

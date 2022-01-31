@@ -55,6 +55,7 @@ pool.on('error', (err, client) => {
                 || decoded.includes('announcing')
                 || decoded.includes('clorio-mina')
                 || decoded.includes('mina-foundation.org')
+                || decoded.includes('warning')
             )) {
                 await client.query(`
                     insert into addresses (public_key_id, scammer) 
@@ -72,5 +73,7 @@ pool.on('error', (err, client) => {
         log("Error, transaction was rolled back!")
         log(e.message)
         log(e.stack)
+    } finally {
+        client.release()
     }
 })().catch( e => log(e.message, 'error', e.stack) )
