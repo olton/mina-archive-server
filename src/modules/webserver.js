@@ -91,6 +91,13 @@ const runWebServer = () => {
         })
     })
 
+    app.get('/addresses', async (req, res) => {
+        res.render('addresses', {
+            title: `Addresses in Mina Blockchain`,
+            clientConfig
+        })
+    })
+
     webserver.listen(+server_port, server_host, () => {
         log(`Minataur running on port ${server_port} in ${ssl ? 'secure' : 'non-secure'} mode`)
     })

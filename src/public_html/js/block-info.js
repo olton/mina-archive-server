@@ -3,14 +3,23 @@ const updateEpoch = data => {
 }
 
 const updateBlockInfo = data => {
+    const tags = $("#block-tags").clear()
+    tags.append(
+        $("<span>").addClass(data.chain_status === 'pending' ? 'bg-cyan' : data.chain_status === 'canonical' ? 'bg-green' : 'bg-red').addClass("radius reduce-4 badge inline fg-white text-upper").html(`${data.chain_status}`)
+    )
+
+
     $("#block-height").html(Number(data.height).format(0, null, " ", "."))
     $("#epoch").html(Number(data.epoch).format(0, null, " ", "."))
     $("#slot").html(Number(data.slot).format(0, null, " ", "."))
     $("#global-slot").html(Number(data.global_slot).format(0, null, " ", "."))
 
     const [blockDate, blockTime] = datetime(+data.timestamp).format("DD/MM/YYYY HH:mm").split(" ")
-    $("#block-date").html(blockDate)
-    $("#block-time").html(blockTime)
+    $("#block-date").html(`
+        <span>${blockDate}</span>
+        <span class="reduce-4">${blockTime}</span>
+`   )
+
 
     let blockColor
     switch (data.chain_status.toLowerCase()) {

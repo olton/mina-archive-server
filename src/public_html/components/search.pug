@@ -1,10 +1,4 @@
 div.bg-white.p-5-fs.p-10-md.radius.bd-system.border
     div
         h3.text-muted Search in Blockchain
-        form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
-            input.input-large(
-                data-role="input"
-                placeholder="Enter block number, address, hash, ..."
-                data-search-button="true"
-                name="search_value"
-            )
+        include search-form

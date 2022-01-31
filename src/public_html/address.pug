@@ -29,13 +29,7 @@ div.container-fluid
 
                 div.cell-lg-6
                     div.mb-4
-                        form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
-                            input.input-large(
-                                data-role="input"
-                                placeholder="Search for block, address, transaction, ..."
-                                data-search-button="true"
-                                name="search_value"
-                            )
+                        include components/search-form
 
                     div
                         div#address-uptime

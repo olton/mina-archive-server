@@ -3,8 +3,6 @@ const updateEpoch = (data) => {
 }
 
 const updateTransactionInfo = (data) => {
-    console.log(data)
-
     $(".scam")[data.scam ? 'show' : 'hide']()
 
     const tags = $("#trans-tags").clear()
