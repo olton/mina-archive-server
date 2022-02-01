@@ -45,12 +45,14 @@ const parseSearchResult = (data) => {
             tr.append( $("<td>").css("width", "30px").html(`${index}.`) )
             tr.append( $("<td>").html(`
                 <a class="link" href="/block/${a.state_hash}">${shorten(a.state_hash, 12)}</a> 
-                <span class="${a.chain_status === 'pending' ? 'gf-cyan' : a.chain_status === 'canonical' ? 'fg-green' : 'fg-red'}">(${a.chain_status})</span>
+                <span class="reduce-4 pt-1 pb-1 pl-2 pr-2 fg-white bg-steel">${normMina(a.coinbase)}</span>
+                <span class="ml-2-minus reduce-4 pt-1 pb-1 pl-2 pr-2 fg-white ${a.chain_status === 'pending' ? 'bg-cyan' : a.chain_status === 'canonical' ? 'bg-green' : 'bg-red'}">${a.chain_status}</span>
                 <div class="text-small">
                     <span>Creator: </span><a class="link text-bold" href="/address/${a.creator_key}">${shorten(a.creator_key, 12)} ${a.creator_name ? "("+a.creator_name+")" : ""}</a>
                 </div>
                 <div class="text-small">
-                    <span>Block date: </span><span class="text-bold">${datetime(+a.timestamp).format("DD/MM/YYYY HH:mm")}</span>
+                    <span>Block Height: </span><span class="text-bold">${a.height}</span>
+                    <span>Block Date: </span><span class="text-bold">${datetime(+a.timestamp).format("DD/MM/YYYY HH:mm")}</span>
                     <span>Epoch: </span><span class="text-bold">${a.epoch}</span>
                     <span>Slot: </span><span class="text-bold">${a.slot}</span>
                     <span>Global Slot: </span><span class="text-bold">${a.global_slot}</span>
