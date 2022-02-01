@@ -260,7 +260,9 @@ export const getBlocksByHeight = async height => {
 
 export const getAddressByName = async name => {
     const sql = `
-        select * from v_address
+        select a.*, s.stack, s.stack_next
+        from v_address a
+        left join v_stack s on s.id = a.public_key_id
         where lower(name) like $1
     `
 

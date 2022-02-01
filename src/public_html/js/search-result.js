@@ -26,8 +26,9 @@ const parseSearchResult = (data) => {
                     <span>Name: </span><span class="text-bold">${a.name}</span>
                 </div>
                 <div class="text-small">
-                    <span>Current Stack: </span><span class="text-bold">${a.stack}</span>
-                    <span>Next Stack: </span><span class="text-bold">${a.stack_next}</span>
+                    <span>Ledger Balance: </span><span class="text-bold">${normMina(a.ledger_balance)}</span>
+                    <span>Current Stack: </span><span class="text-bold">${normMina(a.stack)}</span>
+                    <span>Next Stack: </span><span class="text-bold">${normMina(a.stack_next)}</span>
                 </div>
             `) )
 
