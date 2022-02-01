@@ -197,12 +197,14 @@ export const getTransaction = async (hash) => {
     return result
 }
 
-export const getScammerList = async () => {
+export const getScammerList = async (limit = 20) => {
     const sql = `
         select * from v_address a 
         where a.scammer = 1
+        order by trans_count desc
+        limit $1
     `
-    const rows = (await query(sql)).rows
+    const rows = (await query(sql, [limit])).rows
     const result = []
 
     for(let r of rows) {

@@ -33,15 +33,12 @@ section.container-fluid
                             data-role="table"
                             data-rows=20
                             data-rownum="true"
-                            data-show-rows-steps="false"
-                            data-show-search="false"
                             data-on-draw-cell="topStackHoldersTableDrawCell"
                             data-horizontal-scroll="true"
                             data-horizontal-scroll-stop="xl"
-                            data-show-table-info="false"
-                            data-show-pagination="false"
                             data-cls-table-container="no-border"
                             data-activity-type="bars"
+                            data-static="true"
                         )
                             thead
                                 tr
@@ -60,15 +57,12 @@ section.container-fluid
                             data-role="table"
                             data-rows=20
                             data-rownum="true"
-                            data-show-rows-steps="false"
-                            data-show-search="false"
                             data-on-draw-cell="lastBlockWinnersTableDrawCell"
                             data-horizontal-scroll="true"
                             data-horizontal-scroll-stop="xl"
-                            data-show-table-info="false"
-                            data-show-pagination="false"
                             data-cls-table-container="no-border"
                             data-activity-type="bars"
+                            data-static="true"
                         )
                             thead
                                 tr
@@ -76,7 +70,7 @@ section.container-fluid
                                     th(data-name="block_height")
                                         span Block
                                         div.text-small Height
-                                    th(data-name="coinbase")
+                                    th.text-right(data-name="coinbase")
                                         span Coinbase
                                         div.text-small Reward
 
@@ -88,13 +82,12 @@ section.container-fluid
                     data-role="table"
                     data-rows=20
                     data-rownum="true"
-                    data-show-rows-steps="false"
-                    data-show-search="false"
                     data-on-draw-cell="addressTableDrawCell"
                     data-horizontal-scroll="true"
                     data-horizontal-scroll-stop="xl"
                     data-cls-table-container="no-border"
                     data-activity-type="bars"
+                    data-static="true"
                 )
                     thead
                         tr

@@ -47,7 +47,7 @@ const updateAddressInfo = (data) => {
 
     $(".scam")[data.scammer ? 'show' : 'hide']()
 
-    $("#address-name").html(`${data.name}`)
+    $("#address-name").html(`${data.name || 'No data'}`)
 
     const addressTags = $("#address-tags").clear()
     if (data.is_producer) {

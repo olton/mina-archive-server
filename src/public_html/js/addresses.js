@@ -33,8 +33,6 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'scammer_list'}));
         ws.send(JSON.stringify({channel: 'top_stack_holders', data: 20}));
         ws.send(JSON.stringify({channel: 'last_block_winners', data: 20}));
-
-        setTimeout(requestLastActivity, 60000)
     }
 
     switch(channel) {
