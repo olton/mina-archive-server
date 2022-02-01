@@ -249,4 +249,20 @@ export const getLastBlockWinners = async (limit = 20) => {
     return result
 }
 
+export const getBlocksByHeight = async height => {
+    const sql = `
+        select * from v_blocks
+        where height = $1
+    `
 
+    return (await query(sql, [height])).rows
+}
+
+export const getAddressByName = async name => {
+    const sql = `
+        select * from v_address
+        where lower(name) like $1
+    `
+
+    return (await query(sql, ["%"+name.toLowerCase()+"%"])).rows
+}

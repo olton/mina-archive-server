@@ -1,0 +1,26 @@
+include mixins/blocks-table
+
+include components/head
+include components/appbar
+
+section.container-fluid.h-100
+    div.container.pt-10
+
+        div.d-flex.flex-align-center.flex-justify-center.flex-column
+            div.display4.mt-10 404
+            div.h1.mb-0.page-title.text-center Information Not Found
+            div.text-leader.text-center
+                div Information not found in Mina Blockchain by your request!
+                div Please, enter other request for search.
+
+        div.row.mt-10.mb-10
+            div.cell-md-3
+            div.cell-md-6
+                include components/search-form
+            div.cell-md-3
+
+include components/footer
+
+include components/scripts
+
+

@@ -3,7 +3,16 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import express from "express";
-import {qBlocks, qGetEpoch, qGetStat, qDisputeBlocks, qAddressInfo, getUptimeNext} from "./queries";
+import {
+    qBlocks,
+    qGetEpoch,
+    qGetStat,
+    qDisputeBlocks,
+    qAddressInfo,
+    getUptimeNext,
+    qBlockInfo,
+    getBlocksByHeight, getTransaction, getAddressByName
+} from "./queries";
 import {shorten} from "../helpers/short-address";
 import {timestamp} from "../helpers/timestamp";
 import {formatNumber} from "../helpers/numbers";
@@ -11,6 +20,7 @@ import {log} from "../helpers/logging.js";
 import {websocket} from "./websocket.js"
 import {datetime, Datetime} from "@olton/datetime"
 import favicon from "serve-favicon"
+import {checkPaymentStatus} from "./graphql.js";
 
 const app = express()
 
@@ -95,6 +105,52 @@ const runWebServer = () => {
         res.render('addresses', {
             title: `Addresses in Mina Blockchain`,
             clientConfig
+        })
+    })
+
+    app.get('/not-found', async (req, res) => {
+        res.render('404', {
+            title: `Information not found in Mina Blockchain by your request`,
+            clientConfig
+        })
+    })
+
+    app.get('/search', async (req, res) => {
+        const query = req.query
+        const result = {
+            addresses: [],
+            blocks: [],
+            transactions: [],
+            payments: []
+        }
+
+        for(let key in query) {
+            const val = query[key].trim()
+            if (val.substring(0, 4) === 'B62q') {
+                result.addresses.push(await qAddressInfo(val))
+            } else if (val.substring(0, 3) === '3NK' || val.substring(0, 3) === '3NL') {
+                result.blocks.push(await qBlockInfo(val))
+            } else if (val.substring(0, 3) === 'Ckp') {
+                result.transactions.push(await getTransaction(val))
+            } else if (!isNaN(+val)) {
+                (await getBlocksByHeight(+val)).map( b => {
+                    result.blocks.push(b)
+                })
+            } else {
+                (await getAddressByName(val)).map( b => {
+                    result.addresses.push(b)
+                })
+                const checkPayment = await checkPaymentStatus(val)
+                if (checkPayment) {
+                    result.payments.push([val, checkPayment])
+                }
+            }
+        }
+
+        res.render('search-result', {
+            title: `Search Result in Mina Blockchain by your request`,
+            clientConfig,
+            result
         })
     })
 

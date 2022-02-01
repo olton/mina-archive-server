@@ -255,20 +255,12 @@ function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
 }
 
 function searchInBlockchain(val) {
-    if (!val) {
+    const _val = val.trim()
+
+    if (!_val) {
         Metro.toast.create("Please define a search request!")
         return
     }
 
-    let target = `/search/${val}`
-
-    if (val.substr(0, 4) === 'B62q') {
-        target = `/address/${val}`
-    } else if (val.substr(0, 3) === 'Ckp') {
-        target = `/trans/${val}`
-    } else if (val.substr(0, 2) === '3N') {
-        target = `/block/${val}`
-    }
-
-    window.location.href = target
+    window.location.href = `/search?q=${_val}`
 }

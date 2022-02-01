@@ -43,7 +43,7 @@ query ($publicKey: String!) {
   }
 }
 `;
-
+// PSJ6tbskxprEcucuCKvoyV3ujHYFFvF3crYB37cjvPWsFzwkTTem7pXZRuwMJWSgr6JRDZhj2Gt1K8H9zDeG2gFhmLGAjG1auDKCXTBH3J19Z1iNTt5qvrCqDjmEvmzEgEyTXHuWkGiL35jM555X3qXLGZaPvnhrNW7T5T3mqMHfQvNLbT6UckD26nSiE4Vko2Q1kDTU7JRauWz6McAvDbjiNt86pxpYj9ETQAkvcA4BLB6RUzf4zUxXnTE8zDHhRtsVwGV4rHBA6ANBeU2BqhN28VuynW4WbRGCEVpbmjvxifwkU2v7EA5kL3JtDwMKxpcsB36hTknQEsDxwE9EKjv6MGJpGr6hgnW1r3MrCsTRCDUkewwCbd99vR83AKAgJQSV1e8g3hSCq
 // rKAkRnV1yvr54MuYW8xFd7sTWPiYQkTHycMZD2g8xz83kQ4xKjRjVfD2aLTX1taPTM4hF8mB8fUC98DwrsgS3yTwzk2XhmNNXrQjmDSJV5EWF9Kk432fhGcBsdf5rLSzjJAUiViN4t4WaFtpBDcerVj66Bm6RFQC1ahzawR35mUte27L3E2qWGvvxaRNqF7tKQCWmndQ5padhiaLRz88CwKxMmXxU3T75mSbN4fkdwzGXiB5ps4BWYR6pN8o97jSqYeYBiXxAmeJ5B91WQQm7XGSHSH4PgMmaZ9MDeDM4quuorKagFdMgRoWkQq166HVDeSZnVkjgqpZVfAdqAUm6mnVeEDAQrKobnWK4JSpaTpPNx82By89q4EqimxEWGB1P4SDfBeC4WmLJL8S2CVxa
 const qTransactionStatus = `
 query ($payment: String!) {
@@ -106,12 +106,13 @@ export const getAddressBalance = async (address) => {
     }
 }
 
-export const checkTransactionStatus = async (id) => {
+export const checkPaymentStatus = async (id) => {
     let result = await fetchGraphQL(qTransactionStatus, {payment: id})
+    console.log(result)
     try {
-        return result.data.transaction
+        return result.data ? result.data.transactionStatus : false
     } catch (e) {
-        return 'Unknown'
+        return false
     }
 }
 

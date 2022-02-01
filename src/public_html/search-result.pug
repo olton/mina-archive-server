@@ -1,0 +1,34 @@
+include mixins/blocks-table
+
+include components/head
+include components/appbar
+
+section.container-fluid.h-100
+    div.container.pt-10
+
+        div.d-flex.flex-align-center.flex-justify-center.flex-column
+            div.h1.mb-0.page-title.text-center We found next data by your request:
+
+        div.row.mt-10.mb-10
+            div.cell-md-3
+            div.cell-md-6
+                include components/search-form
+            div.cell-md-3
+
+        div
+            table.table.row-border.monospace#search-result
+                tbody
+
+
+include components/footer
+
+include components/scripts
+
+
+script
+    include ./js/search-result.js
+script.
+    parseSearchResult( !{JSON.stringify(result)} )
+
+
+
