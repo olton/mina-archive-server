@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 31/01/2022 22:51:30
+ * Built at 02/02/2022 14:36:25
  * Licensed under MIT
  */
 /*!
@@ -5225,7 +5225,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                // console.log(name, val);
+                // 
             }
         });
     },
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "31/01/2022 22:51:30",
+        compileTime: "02/02/2022 14:36:25",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -7508,7 +7508,7 @@ $.noConflict = function() {
                         }
 
                     } else  {
-                        //console.log(mutation);
+                        //
                     }
                 });
             };
@@ -33004,6 +33004,7 @@ $.noConflict = function() {
 
         tableRowsCountTitle: null,
         tableSearchTitle: null,
+        tableSearchPlaceholder: "",
         tableInfoTitle: null,
         paginationPrevTitle: null,
         paginationNextTitle: null,
@@ -33740,7 +33741,7 @@ $.noConflict = function() {
             search_block = Utils.isValue(this.wrapperSearch) ? this.wrapperSearch : $("<div>").addClass("table-search-block").addClass(o.clsSearch).appendTo(top_block);
             search_block.addClass(o.clsSearch);
 
-            search_input = $("<input>").attr("type", "text").appendTo(search_block);
+            search_input = $("<input>").attr("type", "text").attr("placeholder", o.tableSearchPlaceholder).appendTo(search_block);
             Metro.makePlugin(search_input, "input", {
                 prepend: o.tableSearchTitle || that.locale.table["search"]
             });

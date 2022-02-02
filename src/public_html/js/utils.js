@@ -112,14 +112,15 @@ const drawTransTable = (data, address, noDir = false) => {
         tr.html(`
             <td class="text-center"><span class="${noDir ? "mif-import-export" : transDir}"></span></td>
             <td class="text-center"><span class="${transStatus}"></span></td>
-            <td class="text-center">
-                <div>
-                    <span>
-                        <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
-                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
-                    </span>
-                    <div class="text-muted text-small">
-                        <span class="${t.type === 'payment' ? transIncoming ? 'fg-green' : 'fg-blue' : 'fg-pink'} pl-1 pr-1 reduce-1">${t.type}</span>
+            <td class="">
+                <div style="line-height: 1">
+                    <span class="${t.type === 'payment' ? transIncoming ? 'bg-green' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4">${t.type}</span>
+                    ${+t.scam ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+                </div>
+                <div style="line-height: 1">
+                    <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
+                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
+                    <div class="text-muted text-small">                        
                         ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
                     </div>
                 </div>                
@@ -134,9 +135,6 @@ const drawTransTable = (data, address, noDir = false) => {
             </td>
             <td class="text-center">
                 <span>${t.nonce}</span>
-                <div class="text-muted text-small">
-                        ${+t.scam ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1 ani-flash">SCAM!</span>' : ''}                
-                </div>
             </td>
             <td class="text-center">
                 <div>
@@ -215,6 +213,42 @@ const drawTransPoolTable = (data) => {
     return rows
 }
 
+function addressBlocksTableDrawCell(td, val, idx, head, row, table){
+    if (head.name === 'chain_status') {
+        td.clear().addClass("text-center").append(
+            $("<span>").attr("title", val).addClass("mif-stop").addClass(val === 'pending' ? 'fg-cyan' : val === 'canonical' ? 'fg-green' : 'fg-red')
+        )
+    }
+    if (head.name === 'timestamp') {
+        td.clear().html(`${datetime(+val).format("DD/MM/YYYY HH:mm")}`)
+    }
+    if (head.name === 'height') {
+        td.clear().addClass("text-center").append(
+            $("<a>").addClass("link").attr("href", `/block/${row[3]}`).html(val)
+        )
+    }
+    if (head.name === 'state_hash') {
+        td.clear().append(
+            $("<a>").addClass("link").attr("href", `/block/${val}`).html(shorten(val, 12))
+        )
+    }
+    if (head.name === 'coinbase') {
+        td.addClass("text-center").html(`${normMina(val)}`)
+    }
+    if (head.name === 'epoch' || head.name === 'trans_count') {
+        td.addClass("text-center").html(`${val}`)
+    }
+    if (head.name === 'slot') {
+        let [global, slot] = val.split(":")
+        td.addClass("text-center").html(`
+            <span>${global}</span>
+            <div class="text-small text-muted">
+                <span>${slot}</span>
+            </div>
+        `)
+    }
+}
+
 function addressTableDrawCell(td, val, idx, head, row, table){
     if (idx === 0) {
         td.html(`
@@ -264,3 +298,4 @@ function searchInBlockchain(val) {
 
     window.location.href = `/search?q=${_val}`
 }
+

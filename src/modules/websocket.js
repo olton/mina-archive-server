@@ -15,7 +15,7 @@ import {
     getTransaction,
     getScammerList,
     getTopStackHolders,
-    getLastBlockWinners
+    getLastBlockWinners, getAddressBlocks
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -129,6 +129,10 @@ export const websocket = (server) => {
                 }
                 case 'last_block_winners': {
                     response(ws, channel, await getLastBlockWinners(data));
+                    break;
+                }
+                case 'address_blocks': {
+                    response(ws, channel, await getAddressBlocks(data));
                     break;
                 }
             }

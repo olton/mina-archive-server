@@ -249,6 +249,42 @@ export const getLastBlockWinners = async (limit = 20) => {
     return result
 }
 
+export const getAddressBlocks = async (address) => {
+    const sql = `
+        select 
+               b.chain_status, 
+               b.height, 
+               b.timestamp, 
+               b.state_hash, 
+               b.coinbase, 
+               b.slot, 
+               b.global_slot, 
+               b.epoch, 
+               b.trans_count 
+        from v_blocks b
+        where b.creator_key = $1
+        order by height desc
+    `
+
+    const rows = (await query(sql, [address])).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([
+            r.chain_status,
+            r.height,
+            r.timestamp,
+            r.state_hash,
+            r.coinbase,
+            r.global_slot+":"+r.slot,
+            r.epoch,
+            r.trans_count
+        ])
+    }
+
+    return result
+}
+
 export const getBlocksByHeight = async height => {
     const sql = `
         select * from v_blocks

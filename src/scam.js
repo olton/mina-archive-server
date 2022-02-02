@@ -56,6 +56,7 @@ pool.on('error', (err, client) => {
                 || decoded.includes('clorio-mina')
                 || decoded.includes('mina-foundation.org')
                 || decoded.includes('warning')
+                || decoded.includes('delegate-mina-protocol.com')
             )) {
                 await client.query(`
                     insert into addresses (public_key_id, scammer) 

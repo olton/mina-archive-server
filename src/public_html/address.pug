@@ -90,10 +90,8 @@ section.container-fluid.mt-8
                 a(href="#general") General
             li
                 a(href="#trans") Transactions
-            li
+            li.active
                 a(href="#blocks") Blocks
-            li
-                a(href="#snarks") Snarks
             li
                 a(href="#delegations") Delegations
 
@@ -195,6 +193,54 @@ section.container-fluid.mt-8
 
 
         div#blocks
+            div.mt-4
+                div.filters.mb-4.d-flex.flex-align-center
+                    span.mr-1.text-muted SHOW BLOCKS:
+
+                    input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="addressBlocksApplyFilter(this, 'pending')")
+                    input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="addressBlocksApplyFilter(this, 'canonical')")
+                    input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="addressBlocksApplyFilter(this, 'orphaned')")
+
+                table.table.striped.monospace.data-table.row-hover#address-blocks-table(
+                    data-role="table"
+                    data-rows=50
+                    data-rownum="true"
+                    data-on-draw-cell="addressBlocksTableDrawCell"
+                    data-horizontal-scroll="true"
+                    data-horizontal-scroll-stop="xl"
+                    data-cls-table-container="no-border"
+                    data-activity-type="bars"
+                    data-filters-operator="or"
+                    data-search-fields="height, state_hash, coinbase, slot"
+                    data-table-search-placeholder="Enter height, hash, slot or coinbase"
+                )
+                    thead
+                        tr
+                            th.text-center(style="width: 30px;" data-name="chain_status")
+                                span.mif-link
+
+                            th.text-center(data-size="30" data-name="height")
+                                span Height
+
+                            th(data-size="170" data-name="timestamp")
+                                soan Time
+
+                            th(data-name="state_hash")
+                                soan Hash
+
+                            th.text-center(style="width: 80px" data-name="coinbase")
+                                span Coinbase
+
+                            th.text-center(style="width: 80px" data-name="slot")
+                                span Slot
+
+                            th.text-center(style="width: 80px" data-name="epoch")
+                                span Epoch
+
+                            th.text-center(style="width: 80px" data-name="trans_count")
+                                span Trans
+
+
 
         div#trans
 

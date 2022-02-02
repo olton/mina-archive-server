@@ -64,7 +64,7 @@ const updateAddressInfo = (data) => {
 
     if (data.cliff_time && cliffTime > datetime()) {
         addressTags.append(
-            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`LOCKED`)
+            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`BALANCE LOCKED`)
         )
     }
 
@@ -236,10 +236,18 @@ const updateAddressTransPool = data => {
     }
 }
 
-const updateAddressUptime = data => {
-    $("#uptime-position").html(data.position)
-    $("#uptime-rate").html(`${data.rate}%`)
-    $("#uptime-score").html(data.score)
+const updateAddressUptime = (data = {}) => {
+    const {position = "---", rate = "---", score = "---"} = data
+    $("#uptime-position").html(position)
+    $("#uptime-rate").html(`${rate}%`)
+    $("#uptime-score").html(score)
+}
+
+const updateAddressBlocksTable = data => {
+    if (!data || !Array.isArray(data)) return
+
+    const table = Metro.getPlugin('#address-blocks-table', 'table')
+    table.setData({data})
 }
 
 const wsMessageController = (ws, response) => {
@@ -249,32 +257,34 @@ const wsMessageController = (ws, response) => {
         return
     }
 
-    const requestLastActivity = () => {
+    const requestLastActivity = (ws) => {
         ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
         ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
         ws.send(JSON.stringify({channel: 'address_balance', data: address}));
         ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
 
-        setTimeout(requestLastActivity, 60000)
+        setTimeout(requestLastActivity, 60000, ws)
     }
 
     switch(channel) {
         case 'welcome': {
             ws.send(JSON.stringify({channel: 'epoch'}));
             ws.send(JSON.stringify({channel: 'address', data: address}));
-            requestLastActivity()
+            ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+            requestLastActivity(ws)
             break;
         }
         case 'new_block': {
             ws.send(JSON.stringify({channel: 'epoch'}));
             ws.send(JSON.stringify({channel: 'address', data: address}));
+            if (data.creator_key === address) {
+                ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+            }
             break;
         }
         case 'address': {
             updateAddressInfo(data)
-            if (data && data.is_producer) {
-                ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
-            }
+            ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
             break;
         }
         case 'epoch': {
@@ -301,5 +311,68 @@ const wsMessageController = (ws, response) => {
             updateAddressUptime(data)
             break;
         }
+        case 'address_blocks': {
+            updateAddressBlocksTable(data)
+            break;
+        }
     }
+}
+
+let fltBlockPending, fltBlockCanonical, fltBlockOrphaned
+
+function blockFilter(flt) {
+    return function(row, heads){
+        let is_active_index = 0;
+        heads.forEach(function(el, i){
+            if (el.name === "chain_status") {
+                is_active_index = i;
+            }
+        });
+        return row[is_active_index] === flt
+    }
+}
+
+function initBlocksFilters(){
+    const table = Metro.getPlugin("#address-blocks-table", "table")
+
+    fltBlockPending = table.addFilter(blockFilter('pending'), false);
+    fltBlockCanonical = table.addFilter(blockFilter('canonical'), false);
+    fltBlockOrphaned = table.addFilter(blockFilter('orphaned'), false);
+
+    table.draw()
+}
+
+$(()=>{
+    initBlocksFilters()
+})
+
+
+function addressBlocksApplyFilter(el, filter) {
+    const table = Metro.getPlugin("#address-blocks-table", "table")
+
+    if (filter === 'pending') {
+        if (el.checked) {
+            fltBlockPending = table.addFilter(blockFilter('pending'), false);
+        } else {
+            table.removeFilter(fltBlockPending, false);
+        }
+    }
+
+    if (filter === 'canonical') {
+        if (el.checked) {
+            fltBlockCanonical = table.addFilter(blockFilter('canonical'), false);
+        } else {
+            table.removeFilter(fltBlockCanonical, false);
+        }
+    }
+
+    if (filter === 'orphaned') {
+        if (el.checked) {
+            fltBlockOrphaned = table.addFilter(blockFilter('orphaned'), false);
+        } else {
+            table.removeFilter(fltBlockOrphaned, false);
+        }
+    }
+
+    table.draw()
 }
