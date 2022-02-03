@@ -264,11 +264,14 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
                 ${+row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
             </div>
             <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
-            <div class="text-small text-muted">${row[12]}</div>
+            <div class="text-small text-muted">${datetime(+row[3]).format("DD/MM/YYYY HH:mm")}</div>
         `)
     }
     if (head.name === 'agent') {
-        td.html(`<a class="link" href="/address/${val}">${shorten(val, 7)}</a>`)
+        td.html(`
+            <a class="link" href="/address/${val}">${shorten(val, 7)}</a>
+            <div class="text-small text-muted">${row[12]}</div>
+        `)
     }
     if (head.name === 'height') {
         td.addClass('text-center').html(`
