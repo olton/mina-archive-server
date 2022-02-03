@@ -3,10 +3,12 @@ mixin trans-table(tableId)
         thead
             tr
                 th.text-center(style="width: 30px;")
-                    span Dir
+                    span #D
+                    div.text-small Dir
 
                 th.text-center(style="width: 30px;")
-                    span Status
+                    span #S
+                    div.text-small State
 
                 th
                     span Hash
@@ -25,6 +27,10 @@ mixin trans-table(tableId)
                 th.text-center
                     span Amount
                     div.text-small Fee
+
+                th.text-center
+                    span Confirm
+                    div.text-small Blocks
 
         tbody
             tr

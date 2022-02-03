@@ -62,8 +62,7 @@ export const qAddressTransactions = async (pk, {
 
     const sql = `
         select * from v_trans 
-        where chain_status = 'canonical'
-        and (trans_owner = $1 or trans_receiver = $1)
+        where (trans_owner = $1 or trans_receiver = $1)
         order by timestamp desc, nonce desc
         limit $2 offset $3
     `
@@ -279,6 +278,59 @@ export const getAddressBlocks = async (address) => {
             r.global_slot+":"+r.slot,
             r.epoch,
             r.trans_count
+        ])
+    }
+
+    return result
+}
+
+export const getAddressTrans = async (address) => {
+    const sql = `
+        select 
+            t.type,
+            (case when t.trans_owner = $1 then 'out' else 'in' end) as dir,
+            t.status,
+            t.timestamp,
+            t.hash,
+            t.height,
+            t.nonce,
+            (case when t.trans_owner = $1 then t.trans_receiver else t.trans_owner end) as agent,
+            t.amount,
+            t.fee,
+            t.confirmation,
+            t.state_hash,
+            t.memo,
+            t.epoch,
+            t.global_slot,
+            t.slot,
+            t.scam
+        from v_trans t
+        where (t.trans_owner = $1 or t.trans_receiver = $1)
+        order by timestamp desc, nonce desc
+
+    `
+    const rows = (await query(sql, [address])).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([
+            r.type,
+            r.dir,
+            r.status,
+            r.timestamp,
+            r.hash,
+            r.agent,
+            r.height,
+            r.nonce,
+            r.amount,
+            r.fee,
+            r.confirmation,
+            r.state_hash,
+            (new TextDecoder().decode(decode(r.memo).slice(3, -4))).replace(/\0/g, ""),
+            r.epoch,
+            r.global_slot,
+            r.slot,
+            r.scam
         ])
     }
 

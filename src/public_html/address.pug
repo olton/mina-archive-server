@@ -88,7 +88,7 @@ section.container-fluid.mt-8
                 a(href="#overview") Overview
             li
                 a(href="#general") General
-            li
+            li.active
                 a(href="#trans") Transactions
             li
                 a(href="#blocks") Blocks
@@ -196,12 +196,14 @@ section.container-fluid.mt-8
 
         div#blocks
             div.mt-4
-                div.filters.mb-4.d-flex.flex-align-center
-                    span.mr-1.text-muted SHOW BLOCKS:
-
-                    input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="addressBlocksApplyFilter(this, 'pending')")
-                    input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="addressBlocksApplyFilter(this, 'canonical')")
-                    input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="addressBlocksApplyFilter(this, 'orphaned')")
+                div.filters.mb-4
+                    div.row
+                        div
+                            span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE
+                            div.mt-2-minus
+                                input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="addressBlocksApplyFilter(this, 'pending')")
+                                input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="addressBlocksApplyFilter(this, 'canonical')")
+                                input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="addressBlocksApplyFilter(this, 'orphaned')")
 
                 table.table.striped.monospace.data-table.row-hover#address-blocks-table(
                     data-role="table"
@@ -245,6 +247,100 @@ section.container-fluid.mt-8
 
 
         div#trans
+            div.mt-4
+                div.filters.mb-4
+                    div.row.flex-align-end
+                        div
+                            span.ml-1.text-muted.reduce-4.text-bold TRANSACTION TYPE
+                            div.mt-2-minus
+                                input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="Payment" onchange="addressTransApplyFilter(this, 'type:payment')")
+                                input(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="Delegation" onchange="addressTransApplyFilter(this, 'type:delegation')")
+                        div.ml-3-sm.mr-3-sm.pl-3-sm.pr-3-sm
+                            span.ml-1.text-muted.reduce-4.text-bold DIRECTION
+                            div.mt-2-minus
+                                input(type="checkbox" checked data-cls-check="bg-lightViolet no-border" data-role="checkbox" data-caption="Incoming" onchange="addressTransApplyFilter(this, 'dir:in')")
+                                input(type="checkbox" checked data-cls-check="bg-lightBlue no-border" data-role="checkbox" data-caption="Outgoing" onchange="addressTransApplyFilter(this, 'dir:out')")
+                        div
+                            span.ml-1.text-muted.reduce-4.text-bold TRANSACTION STATUS
+                            div.mt-2-minus
+                                input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="Applied" onchange="addressTransApplyFilter(this, 'state:applied')")
+                                input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="Failed" onchange="addressTransApplyFilter(this, 'state:failed')")
+                        div.ml-auto
+                            button.button(onclick="refreshAddressTransactionsTable()")
+                                span Refresh table
+                                span.mif-refresh
+
+                table.table.striped.monospace.data-table.row-hover#address-trans-table(
+                    data-role="table"
+                    data-rows=50
+                    data-rownum="true"
+                    data-on-draw-cell="addressTransTableDrawCell"
+                    data-horizontal-scroll="true"
+                    data-horizontal-scroll-stop="xl"
+                    data-cls-table-container="no-border"
+                    data-activity-type="bars"
+                    data-filters-operator="or"
+                    data-search-fields="type, hash, height, status, trans_agent, trans_agent_name"
+                    data-table-search-placeholder="Enter height, hash, slot or coinbase"
+                )
+                    thead
+                        tr
+                            th.d-none(data-name="type")
+                                span #T
+
+                            th(data-name="dir")
+                                span #D
+
+                            th(data-name="status")
+                                span #S
+
+                            th.d-none(data-name="timestamp")
+                                span Date
+
+                            th(data-name="hash")
+                                span Hash
+                                div.text-small Memo
+
+                            th(data-name="agent")
+                                span Agent
+
+                            th.text-center(data-name="height")
+                                span Block
+
+                            th.text-center(data-name="nonce")
+                                span Nonce
+
+                            th.text-right(data-name="amount")
+                                span Amount
+                                div.text-small Fee
+
+                            th.d-none.text-right(data-name="fee")
+                                span Fee
+
+                            th.text-center(data-name="confirmation")
+                                span Confirm
+
+                            th.d-none(data-name="state_hash")
+                                span Block
+                                div.text-small Hash
+
+                            th.d-none(data-name="memo")
+                                span Memo
+
+                            th.d-none(data-name="epoch")
+                                span Epoch
+
+                            th.d-none(data-name="global_slot")
+                                span Global
+                                div.text-small Slot
+
+                            th.d-none(data-name="slot")
+                                span Slot
+
+                            th.d-none(data-name="scam")
+                                span Scam
+
+
 
         div#snarks
 

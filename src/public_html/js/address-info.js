@@ -250,6 +250,13 @@ const updateAddressBlocksTable = data => {
     table.setData({data})
 }
 
+const updateAddressTransTable = data => {
+    if (!data || !Array.isArray(data)) return
+
+    const table = Metro.getPlugin('#address-trans-table', 'table')
+    table.setData({data})
+}
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -271,6 +278,7 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'epoch'}));
             ws.send(JSON.stringify({channel: 'address', data: address}));
             ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+            ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             requestLastActivity(ws)
             break;
         }
@@ -280,6 +288,7 @@ const wsMessageController = (ws, response) => {
             if (data.creator_key === address) {
                 ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
             }
+            // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             break;
         }
         case 'address': {
@@ -315,7 +324,16 @@ const wsMessageController = (ws, response) => {
             updateAddressBlocksTable(data)
             break;
         }
+        case 'address_trans': {
+            updateAddressTransTable(data)
+            break;
+        }
     }
+}
+
+function refreshAddressTransactionsTable(){
+    if (globalThis.webSocket)
+        globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
 }
 
 let fltBlockPending, fltBlockCanonical, fltBlockOrphaned

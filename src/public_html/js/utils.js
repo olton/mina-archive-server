@@ -97,7 +97,7 @@ const drawTransTable = (data, address, noDir = false) => {
 
     for(let t of data) {
         let transIncoming = t.trans_owner !== address
-        let transDir = transIncoming ? "mif-arrow-down fg-green" : "mif-arrow-up fg-blue"
+        let transDir = transIncoming ? "mif-arrow-down fg-lightViolet" : "mif-arrow-up fg-blue"
         let transStatus = t.status === 'applied' ? "mif-checkmark fg-green" : "mif-blocked fg-red"
         let tr = $("<tr>")
         tr.html(`
@@ -148,6 +148,11 @@ const drawTransTable = (data, address, noDir = false) => {
                 <div>
                     <span class="">${normMina(+t.amount)}</span>
                     <div class="text-muted text-small">${normMina(+t.fee)}</div>                        
+                </div>                
+            </td>
+            <td class="text-center">
+                <div>
+                    <span class="">${t.confirmation}</span>
                 </div>                
             </td>
         `)
@@ -239,6 +244,48 @@ function addressBlocksTableDrawCell(td, val, idx, head, row, table){
                 <span>${slot}</span>
             </div>
         `)
+    }
+}
+
+function addressTransTableDrawCell(td, val, idx, head, row, table){
+    if (['type', 'agent_name', 'timestamp', 'state_hash', 'memo', 'fee', 'epoch', 'global_slot', 'slot', 'scam'].includes(head.name)) {
+        td.addClass("d-none")
+    }
+    if (head.name === 'dir') {
+        td.html(`<span class="${val === 'in' ? 'mif-arrow-down fg-lightViolet' : 'mif-arrow-up fg-blue'}"></span>`)
+    }
+    if (head.name === 'status') {
+        td.html(`<span class="${val === 'applied' ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'}"></span>`)
+    }
+    if (head.name === 'hash') {
+        td.html(`
+            <div class="text-small">
+                <span class="${row[0] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[0]}</span>
+                ${+row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+            </div>
+            <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
+            <div class="text-small text-muted">${row[12]}</div>
+        `)
+    }
+    if (head.name === 'agent') {
+        td.html(`<a class="link" href="/address/${val}">${shorten(val, 7)}</a>`)
+    }
+    if (head.name === 'height') {
+        td.addClass('text-center').html(`
+            <a class="link" href="/block/${row[10]}">${val}</a>
+            <div class="text-small text-muted" title="Epoch/Slot in">
+                <span class="text-bold">${row[13]}/${row[15]}</span>            
+            </div>
+        `)
+    }
+    if (head.name === 'amount') {
+        td.addClass("text-right").html(`
+            ${normMina(val)}
+            <div class="text-muted text-small">${normMina(row[9])}</div>
+        `)
+    }
+    if (head.name === 'nonce' || head.name === 'confirmation') {
+        td.addClass("text-center").html(`${val}`)
     }
 }
 

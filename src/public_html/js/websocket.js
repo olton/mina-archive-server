@@ -1,7 +1,11 @@
 
+globalThis.webSocket = null
+
 const connect = () => {
     const {host, secure} = config.server
     const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${host}`)
+
+    globalThis.webSocket = ws
 
     ws.onmessage = event => {
         try {
