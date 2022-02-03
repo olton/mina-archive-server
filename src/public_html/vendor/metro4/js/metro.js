@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 02/02/2022 14:36:25
+ * Built at 03/02/2022 20:50:08
  * Licensed under MIT
  */
 /*!
@@ -5225,7 +5225,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                // 
+                // console.log(name, val);
             }
         });
     },
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "02/02/2022 14:36:25",
+        compileTime: "03/02/2022 20:50:08",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -7508,7 +7508,7 @@ $.noConflict = function() {
                         }
 
                     } else  {
-                        //
+                        //console.log(mutation);
                     }
                 });
             };
@@ -33477,52 +33477,55 @@ $.noConflict = function() {
             var that = this, element = this.element;
             var head = element.find("thead");
 
-            if (head.length > 0) $.each(head.find("tr > *"), function(){
-                var item = $(this);
-                var dir, head_item, item_class;
+            if (head.length > 0) {
+                $.each(head.find("tr > *"), function () {
+                    var item = $(this);
+                    var dir, head_item, item_class;
 
-                if (item.hasClass('rownum-cell') || item.hasClass('check-cell')) return
+                    if (item.hasClass('rownum-cell') || item.hasClass('check-cell')) return
 
-                if (Utils.isValue(item.data('sort-dir'))) {
-                    dir = item.data('sort-dir');
-                } else {
-                    if (item.hasClass("sort-asc")) {
-                        dir = "asc";
-                    } else if (item.hasClass("sort-desc")) {
-                        dir = "desc"
+                    if (Utils.isValue(item.data('sort-dir'))) {
+                        dir = item.data('sort-dir');
                     } else {
-                        dir = undefined;
+                        if (item.hasClass("sort-asc")) {
+                            dir = "asc";
+                        } else if (item.hasClass("sort-desc")) {
+                            dir = "desc"
+                        } else {
+                            dir = undefined;
+                        }
                     }
-                }
 
-                item_class = item[0].className.replace("sortable-column", "");
-                item_class = item_class.replace("sort-asc", "");
-                item_class = item_class.replace("sort-desc", "");
-                item_class = item_class.replace("hidden", "");
+                    item_class = item[0].className.replace("sortable-column", "");
+                    item_class = item_class.replace("sort-asc", "");
+                    item_class = item_class.replace("sort-desc", "");
+                    item_class = item_class.replace("hidden", "");
 
-                head_item = {
-                    type: "data",
-                    title: item.html(),
-                    name: Utils.isValue(item.data("name")) ? item.data("name") : item.text().replace(" ", "_"),
-                    sortable: item.hasClass("sortable-column") || (Utils.isValue(item.data('sortable')) && JSON.parse(item.data('sortable')) === true),
-                    sortDir: dir,
-                    format: Utils.isValue(item.data("format")) ? item.data("format") : "string",
-                    formatMask: Utils.isValue(item.data("format-mask")) ? item.data("format-mask") : null,
-                    clsColumn: Utils.isValue(item.data("cls-column")) ? item.data("cls-column") : "",
-                    cls: item_class,
-                    colspan: item.attr("colspan"),
-                    size: Utils.isValue(item.data("size")) ? item.data("size") : "",
-                    show: !(item.hasClass("hidden") || (Utils.isValue(item.data('show')) && JSON.parse(item.data('show')) === false)),
+                    head_item = {
+                        type: "data",
+                        title: item.html(),
+                        name: Utils.isValue(item.data("name")) ? item.data("name") : item.text().replace(" ", "_"),
+                        sortable: item.hasClass("sortable-column") || (Utils.isValue(item.data('sortable')) && JSON.parse(item.data('sortable')) === true),
+                        sortDir: dir,
+                        format: Utils.isValue(item.data("format")) ? item.data("format") : "string",
+                        formatMask: Utils.isValue(item.data("format-mask")) ? item.data("format-mask") : null,
+                        clsColumn: Utils.isValue(item.data("cls-column")) ? item.data("cls-column") : "",
+                        cls: item_class,
+                        colspan: item.attr("colspan"),
+                        size: Utils.isValue(item.data("size")) ? item.data("size") : "",
+                        show: !(item.hasClass("hidden") || (Utils.isValue(item.data('show')) && JSON.parse(item.data('show')) === false)),
 
-                    required: Utils.isValue(item.data("required")) ? JSON.parse(item.data("required")) === true  : false,
-                    field: Utils.isValue(item.data("field")) ? item.data("field") : "input",
-                    fieldType: Utils.isValue(item.data("field-type")) ? item.data("field-type") : "text",
-                    validator: Utils.isValue(item.data("validator")) ? item.data("validator") : null,
+                        required: Utils.isValue(item.data("required")) ? JSON.parse(item.data("required")) === true : false,
+                        field: Utils.isValue(item.data("field")) ? item.data("field") : "input",
+                        fieldType: Utils.isValue(item.data("field-type")) ? item.data("field-type") : "text",
+                        validator: Utils.isValue(item.data("validator")) ? item.data("validator") : null,
 
-                    template: Utils.isValue(item.data("template")) ? item.data("template") : null
-                };
-                that.heads.push(head_item);
-            });
+                        template: Utils.isValue(item.data("template")) ? item.data("template") : null
+                    };
+                    that.heads.push(head_item);
+                });
+                // head.clear();
+            }
         },
 
         _createFootsFromHTML: function(){
@@ -33642,6 +33645,7 @@ $.noConflict = function() {
                 if (Utils.isValue(item.format)) {th.attr("data-format", item.format);}
                 if (Utils.isValue(item.name)) {th.attr("data-name", item.name);}
                 if (Utils.isValue(item.colspan)) {th.attr("colspan", item.colspan);}
+                if (Utils.isValue(item.size)) {th.attr("data-size", item.size);}
                 if (Utils.isValue(view[cell_index]['size'])) {th.css({width: view[cell_index]['size']});}
                 if (item.sortable === true) {
                     classes.push("sortable-column");

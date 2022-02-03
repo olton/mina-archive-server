@@ -303,7 +303,7 @@ export const getAddressTrans = async (address) => {
             t.epoch,
             t.global_slot,
             t.slot,
-            t.scam
+            (case when t.scam = 1 then 'scam' else '' end) as scam
         from v_trans t
         where (t.trans_owner = $1 or t.trans_receiver = $1)
         order by timestamp desc, nonce desc

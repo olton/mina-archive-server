@@ -255,16 +255,6 @@ section.container-fluid.mt-8
                             div.mt-2-minus
                                 input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="Payment" onchange="addressTransApplyFilter(this, 'type:payment')")
                                 input(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="Delegation" onchange="addressTransApplyFilter(this, 'type:delegation')")
-                        div.ml-3-sm.mr-3-sm.pl-3-sm.pr-3-sm
-                            span.ml-1.text-muted.reduce-4.text-bold DIRECTION
-                            div.mt-2-minus
-                                input(type="checkbox" checked data-cls-check="bg-lightViolet no-border" data-role="checkbox" data-caption="Incoming" onchange="addressTransApplyFilter(this, 'dir:in')")
-                                input(type="checkbox" checked data-cls-check="bg-lightBlue no-border" data-role="checkbox" data-caption="Outgoing" onchange="addressTransApplyFilter(this, 'dir:out')")
-                        div
-                            span.ml-1.text-muted.reduce-4.text-bold TRANSACTION STATUS
-                            div.mt-2-minus
-                                input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="Applied" onchange="addressTransApplyFilter(this, 'state:applied')")
-                                input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="Failed" onchange="addressTransApplyFilter(this, 'state:failed')")
                         div.ml-auto
                             button.button(onclick="refreshAddressTransactionsTable()")
                                 span Refresh table
@@ -280,18 +270,18 @@ section.container-fluid.mt-8
                     data-cls-table-container="no-border"
                     data-activity-type="bars"
                     data-filters-operator="or"
-                    data-search-fields="type, hash, height, status, trans_agent, trans_agent_name"
-                    data-table-search-placeholder="Enter height, hash, slot or coinbase"
+                    data-search-fields="type, hash, height, status, agent, scam"
+                    data-table-search-placeholder="Enter height, hash, slot or coinbase, or scam, payment, delegation words"
                 )
                     thead
                         tr
                             th.d-none(data-name="type")
                                 span #T
 
-                            th(data-name="dir")
+                            th(data-name="dir" data-size='30')
                                 span #D
 
-                            th(data-name="status")
+                            th(data-name="status" data-size="30")
                                 span #S
 
                             th.d-none(data-name="timestamp")

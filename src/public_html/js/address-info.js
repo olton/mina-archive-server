@@ -265,30 +265,34 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = (ws) => {
-        ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
-        ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
-        ws.send(JSON.stringify({channel: 'address_balance', data: address}));
         ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
 
         setTimeout(requestLastActivity, 60000, ws)
     }
 
+    const requestData = (ws) => {
+        ws.send(JSON.stringify({channel: 'epoch'}));
+        ws.send(JSON.stringify({channel: 'address', data: address}));
+        ws.send(JSON.stringify({channel: 'address_balance', data: address}));
+        ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
+    }
+
     switch(channel) {
         case 'welcome': {
-            ws.send(JSON.stringify({channel: 'epoch'}));
-            ws.send(JSON.stringify({channel: 'address', data: address}));
-            ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
-            ws.send(JSON.stringify({channel: 'address_trans', data: address}));
+            requestData(ws)
             requestLastActivity(ws)
+            ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+            ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
+            ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             break;
         }
         case 'new_block': {
-            ws.send(JSON.stringify({channel: 'epoch'}));
-            ws.send(JSON.stringify({channel: 'address', data: address}));
+            requestData(ws)
             if (data.creator_key === address) {
                 ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+                ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
+                // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             }
-            // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             break;
         }
         case 'address': {
@@ -336,13 +340,17 @@ function refreshAddressTransactionsTable(){
         globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
 }
 
-let fltBlockPending, fltBlockCanonical, fltBlockOrphaned
+let fltBlockPending,
+    fltBlockCanonical,
+    fltBlockOrphaned,
+    fltTransPayment,
+    fltTransDelegation
 
-function blockFilter(flt) {
+function tableFilter(field, flt) {
     return function(row, heads){
         let is_active_index = 0;
         heads.forEach(function(el, i){
-            if (el.name === "chain_status") {
+            if (el.name === field) {
                 is_active_index = i;
             }
         });
@@ -353,43 +361,58 @@ function blockFilter(flt) {
 function initBlocksFilters(){
     const table = Metro.getPlugin("#address-blocks-table", "table")
 
-    fltBlockPending = table.addFilter(blockFilter('pending'), false);
-    fltBlockCanonical = table.addFilter(blockFilter('canonical'), false);
-    fltBlockOrphaned = table.addFilter(blockFilter('orphaned'), false);
+    fltBlockPending = table.addFilter(tableFilter('chain_status', 'pending'), false);
+    fltBlockCanonical = table.addFilter(tableFilter('chain_status', 'canonical'), false);
+    fltBlockOrphaned = table.addFilter(tableFilter('chain_status', 'orphaned'), false);
+
+    table.draw()
+}
+
+function initTransFilters(){
+    const table = Metro.getPlugin("#address-trans-table", "table")
+
+    fltTransPayment = table.addFilter(tableFilter('type','payment'), false);
+    fltTransDelegation = table.addFilter(tableFilter('type','delegation'), false);
 
     table.draw()
 }
 
 $(()=>{
     initBlocksFilters()
+    initTransFilters()
 })
 
 
 function addressBlocksApplyFilter(el, filter) {
     const table = Metro.getPlugin("#address-blocks-table", "table")
-
-    if (filter === 'pending') {
-        if (el.checked) {
-            fltBlockPending = table.addFilter(blockFilter('pending'), false);
-        } else {
-            table.removeFilter(fltBlockPending, false);
-        }
+    const filters = {
+        'pending': fltBlockPending,
+        'canonical': fltBlockCanonical,
+        'orphaned': fltBlockOrphaned,
     }
 
-    if (filter === 'canonical') {
-        if (el.checked) {
-            fltBlockCanonical = table.addFilter(blockFilter('canonical'), false);
-        } else {
-            table.removeFilter(fltBlockCanonical, false);
-        }
+    if (el.checked) {
+        filters[filter] = table.addFilter(tableFilter('chain_status',filter), false)
+    } else {
+        table.removeFilter(filters[filter], false)
     }
 
-    if (filter === 'orphaned') {
-        if (el.checked) {
-            fltBlockOrphaned = table.addFilter(blockFilter('orphaned'), false);
-        } else {
-            table.removeFilter(fltBlockOrphaned, false);
-        }
+    table.draw()
+}
+
+function addressTransApplyFilter(el, flt){
+    const [field, filter] = flt.split(":")
+    const filters = {
+        'type:payment': fltTransPayment,
+        'type:delegation': fltTransDelegation,
+    }
+
+    const table = Metro.getPlugin("#address-trans-table", "table")
+
+    if (el.checked) {
+        filters[flt] = table.addFilter(tableFilter(field, filter), false)
+    } else {
+        table.removeFilter(filters[flt], false)
     }
 
     table.draw()
