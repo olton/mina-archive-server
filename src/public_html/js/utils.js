@@ -105,7 +105,7 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="text-center"><span class="${transStatus}"></span></td>
             <td class="">
                 <div style="line-height: 1">
-                    <span class="${t.type === 'payment' ? transIncoming ? 'bg-green' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${t.type}</span>
+                    <span class="${t.type === 'payment' ? transIncoming ? 'bg-lightViolet' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${t.type}</span>
                     ${+t.scam ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
                 </div>
                 <div style="line-height: 1" class="no-wrap">
