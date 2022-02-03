@@ -323,6 +323,9 @@ footer a:hover {
 tr.no-hover:hover {
   background: inherit!important;
 }
+.scroll-table-container {
+  overflow-x: auto;
+}
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
     max-width: 95%;

@@ -36,27 +36,28 @@ div.container-fluid
 
 section.container-fluid
     div.container
-        table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2#leaderboard
-            thead
-                tr
-                    th(style="width: 30px;")
-                        span Position
-                    th
-                        span Address
-                    th.text-right
-                        span Current Stack
-                        div.text-small For Next Epoch
-                    th.text-center(style="width: 100px;")
-                        span Score
-                    th.text-center
-                        span Rate
-                    th(style="width: 30px;" title="Block Producer")
-                        span BP
-            tbody
-                tr
-                    td.text-center(colspan="5")
-                        div.d-flex.flex-align-center.flex-justify-center
-                            div(data-role="activity" data-type="bars" data-style="color")
+        div.scroll-table-container
+            table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2#leaderboard
+                thead
+                    tr
+                        th(style="width: 30px;")
+                            span Position
+                        th
+                            span Address
+                        th.text-right
+                            span Current Stack
+                            div.text-small For Next Epoch
+                        th.text-center(style="width: 100px;")
+                            span Score
+                        th.text-center
+                            span Rate
+                        th(style="width: 30px;" title="Block Producer")
+                            span BP
+                tbody
+                    tr
+                        td.text-center(colspan="5")
+                            div.d-flex.flex-align-center.flex-justify-center
+                                div(data-role="activity" data-type="bars" data-style="color")
 
 
 include components/footer

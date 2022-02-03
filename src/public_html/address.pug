@@ -155,11 +155,13 @@ section.container-fluid.mt-8
 
                 div#last-trans
                     div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
-                        +trans-table("address-last-trans")
+                        div.scroll-table-container
+                            +trans-table("address-last-trans")
 
                 div#last-blocks
                     div.radius.mt-4(data-role="panel" data-title-caption="Last 20 Blocks" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-apps mif-3x'></span>")
-                        +blocks-table("address-last-blocks")
+                        div.scroll-table-container
+                            +blocks-table("address-last-blocks")
 
 
         div#general.pt-5

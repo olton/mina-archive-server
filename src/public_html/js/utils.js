@@ -53,7 +53,7 @@ const drawBlocksTable = (data) => {
                 </div>                
             </td>
             <td>
-                <div>
+                <div class="no-wrap">
                     <a class="link" href="/address/${r.creator_key}">${shorten(r.creator_key, 8)}</a>       
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.creator_key}"></span>             
                 </div>                
@@ -61,24 +61,15 @@ const drawBlocksTable = (data) => {
                     ${r.creator_name || 'Unknown'}                
                 </div>
             </td>
-            <td>
-                <div>
-                    <a class="link" href="/address/${r.coinbase_receiver_key || r.creator_key}">${shorten(r.coinbase_receiver_key || r.creator_key, 8)}</a>         
-                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.coinbase_receiver_key || r.creator_key}"></span>           
-                </div>                
-                <div>
-                    <a class="text-small text-muted no-decor" href="/address/${r.winner_key}">${shorten(r.winner_key, 10)}</a>                    
-                </div>
-            </td>
             <td class="text-center">
                 <span>${normMina(r.coinbase)}</span>
                 <div class="text-small text-muted">${normMina(r.snark_fee)}</div>                                
             </td>
-            <td class="text-center d-none-fs d-table-cell-lg" style="width: 80px">
+            <td class="text-center" style="width: 80px">
                 <span>${r.slot}</span>
                 <div class="text-small text-muted">${r.global_slot}</div>                                
             </td>
-            <td class="text-center d-none-fs d-table-cell-lg" style="width: 80px">
+            <td class="text-center" style="width: 80px">
                 <span>${r.epoch}</span>
                 <div class="text-small text-muted">epoch</div>                                
             </td>
@@ -86,8 +77,8 @@ const drawBlocksTable = (data) => {
                 <span>${r.tr_applied}</span>
                 <div class="text-small text-muted">${r.trans_fee / 10**9}</div>                                
             </td>
-            <td class="d-none-fs d-table-cell-md" style="width: 200px">
-                <div class="reduce-1">
+            <td style="width: 200px">
+                <div class="reduce-1 no-wrap">
                     <a class="link" href="/block/${r.state_hash}">${shorten(r.state_hash, 7)}</a>
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.state_hash}"></span>            
                 </div>        
@@ -114,19 +105,21 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="text-center"><span class="${transStatus}"></span></td>
             <td class="">
                 <div style="line-height: 1">
-                    <span class="${t.type === 'payment' ? transIncoming ? 'bg-green' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4">${t.type}</span>
+                    <span class="${t.type === 'payment' ? transIncoming ? 'bg-green' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${t.type}</span>
                     ${+t.scam ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
                 </div>
-                <div style="line-height: 1">
+                <div style="line-height: 1" class="no-wrap">
                     <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
+                </div>                
+                <div style="line-height: 1">
                     <div class="text-muted text-small">                        
                         ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
                     </div>
+                    <div class="text-small text-muted">
+                        ${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}
+                    </div>
                 </div>                
-            </td>
-            <td class="text-center" style="width: 160px">
-                <div class="table-time">${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}</div>
             </td>
             <td class="text-center">
                 <span>
@@ -138,11 +131,11 @@ const drawTransTable = (data, address, noDir = false) => {
             </td>
             <td class="text-center">
                 <div>
-                    <div class="${address && transIncoming ? '' : 'd-none'}">
+                    <div class="no-wrap ${address && transIncoming ? '' : 'd-none'}">
                         <a class="link" href="/address/${t.trans_owner}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_owner_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_owner, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_owner}"></span>
                     </div>
-                    <div class="${address && transIncoming ? 'd-none' : ''}">
+                    <div class="no-wrap ${address && transIncoming ? 'd-none' : ''}">
                         <a class="link" href="/address/${t.trans_receiver}" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${t.trans_receiver_name || 'Unknown'}" data-hint-position="left">${shorten(t.trans_receiver, 7)}</a>
                         <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.trans_receiver}"></span>
                     </div>                             
