@@ -341,45 +341,6 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
     }
 }
 
-function addressTableDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
-        td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 12)}</a>
-        `)
-    }
-    if (idx === 1 || idx === 2) {
-        td.html(`
-            ${normMina(val)}
-        `)
-    }
-}
-
-function topStackHoldersTableDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
-        td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
-        `)
-    }
-    if (idx === 1 || idx === 2) {
-        td.html(`
-            ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
-        `).addClass('text-right')
-    }
-}
-
-function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
-        td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
-        `)
-    }
-    if (idx === 2) {
-        td.html(`
-            ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
-        `).addClass('text-right')
-    }
-}
-
 function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
     if (head.name === 'name') {
         td.addClass("d-none")

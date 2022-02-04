@@ -29,7 +29,7 @@ section.container-fluid
             div.cell-xl-6
                 div.radius(data-role="panel" data-title-caption="Stake Leaders" data-cls-content="p-0 flex-justify-start" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-coins mif-3x'></span>")
                     div
-                        table.table.striped.monospace.data-table.row-hover#top-stacks-table(
+                        table.table.striped.monospace.data-table.row-hover.cell-border#top-stacks-table(
                             data-role="table"
                             data-rows=20
                             data-rownum="true"
@@ -53,7 +53,7 @@ section.container-fluid
             div.cell-xl-6
                 div.radius(data-role="panel" data-title-caption="Last Blocks Winners" data-cls-content="p-0 flex-justify-start" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-medal mif-3x'></span>")
                     div
-                        table.table.striped.monospace.data-table.row-hover#last-winners-table(
+                        table.table.striped.monospace.data-table.row-hover.cell-border#last-winners-table(
                             data-role="table"
                             data-rows=20
                             data-rownum="true"
@@ -78,11 +78,11 @@ section.container-fluid
 
         div.mt-4.radius(data-role="panel" data-title-caption="Scammers List" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-bug mif-3x'></span>")
             div.pt-2
-                table.table.striped.monospace.data-table.row-hover#scammer-list-table(
+                table.table.striped.monospace.data-table.row-hover.cell-border#scammer-list-table(
                     data-role="table"
                     data-rows=20
                     data-rownum="true"
-                    data-on-draw-cell="addressTableDrawCell"
+                    data-on-draw-cell="scammerListDrawCell"
                     data-horizontal-scroll="true"
                     data-horizontal-scroll-stop="xl"
                     data-cls-table-container="no-border"
@@ -92,13 +92,13 @@ section.container-fluid
                     thead
                         tr
                             th(data-name="address") Address
-                            th(data-name="ledger_balance")
+                            th.text-right(data-name="ledger_balance")
                                 span Ledger
                                 div.text-small Balance
-                            th(data-name="ledger_balance_next")
+                            th.text-right(data-name="ledger_balance_next")
                                 span Ledger
                                 div.text-small Balance Next
-                            th(data-name="trans_count")
+                            th.text-center(data-name="trans_count")
                                 span Trans
                                 div.text-small Count
 

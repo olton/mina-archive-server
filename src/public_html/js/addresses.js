@@ -19,7 +19,47 @@ const updateLastBlockWinnersList = data => {
     table.setData({data})
 }
 
+function topStackHoldersTableDrawCell(td, val, idx, head, row, table){
+    if (idx === 0) {
+        td.html(`
+            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
+        `)
+    }
+    if (idx === 1 || idx === 2) {
+        td.html(`
+            ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
+        `).addClass('text-right')
+    }
+}
 
+function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
+    if (idx === 0) {
+        td.html(`
+            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
+        `)
+    }
+    if (idx === 2) {
+        td.html(`
+            ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
+        `).addClass('text-right')
+    }
+}
+
+function scammerListDrawCell(td, val, idx, head, row, table){
+    if (idx === 0) {
+        td.html(`
+            <a class="link ml-2" href="/address/${val}">${shorten(val, 12)}</a>
+        `)
+    }
+    if (idx === 1 || idx === 2) {
+        td.addClass("text-right").html(`
+            ${normMina(val)}
+        `)
+    }
+    if (idx === 3) {
+        td.addClass("text-center")
+    }
+}
 
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
