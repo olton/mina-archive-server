@@ -36,8 +36,8 @@ const updateAddressInfo = (data) => {
         cliff_amount: "Cliff Amount",
         vesting_period: "Vesting Period",
         vesting_increment: "Vesting Increment",
-        delegate_key: "Stack Delegated in Epoch To",
-        ledger_balance: "Stack Size in Epoch"
+        delegate_key: "Stake Delegated in Epoch To",
+        ledger_balance: "Stake Size in Epoch"
     }
     const target = $("#address-info tbody").clear()
     const targetLedger = $("#ledger-info tbody").clear()
