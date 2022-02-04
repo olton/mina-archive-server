@@ -233,7 +233,6 @@ footer a:hover {
   position: absolute;
   right: 14px;
   top: 4px;
-  background: red;
   color: white;
   border-radius: 0;
   overflow: hidden;
@@ -245,10 +244,14 @@ footer a:hover {
   align-items: center;
   z-index: 2;
 }
+.live {
+  background: #7700b3;
+}
 .scam {
   left: 14px;
   right: auto;
   display: none;
+  background: red;
 }
 .minataur-toast {
   background: var(--color-info3);
