@@ -338,7 +338,7 @@ function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
     }
     if (head.name === 'stack_holder') {
         td.html(`
-            ${val === 1 ? '<span title="Stack Holder" class="reduce-4 pl-2 pr-2 pt-1 pb-1 bg-green fg-white">SH</span>' : ''}
+            ${val === 1 ? '<span title="Stack Holder" class="text-small radius success p-1">SH</span>' : ''}
         `)
     }
     if (head.name === 'ledger_balance') {
