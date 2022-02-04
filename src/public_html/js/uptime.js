@@ -46,7 +46,7 @@ const updateUptimeTable = data => {
         tr.append( $("<td>").addClass("text-center").html(`${r.position}`) )
         tr.append( $("<td>").html(`
             <a class="link" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${r.name || 'Unknown'}" data-hint-position="right" href="/address/${r.public_key}">${r.public_key}</a>
-            <div>${r.name ? "<span class='text-small bg-darkViolet fg-white pl-1 pr-1'>"+r.name+"</span>" : ""}</div>
+            <div>${r.name ? "<span class='text-small fg-darkViolet'>"+r.name+"</span>" : ""}</div>
         `) )
         tr.append( $("<td>").addClass("text-right").html(`
             <div>${normMina(r.stack, 'number').format(0, null, " ", ".")}</div>

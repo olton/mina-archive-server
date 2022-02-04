@@ -57,8 +57,8 @@ const drawBlocksTable = (data) => {
                     <a class="link" href="/address/${r.creator_key}">${shorten(r.creator_key, 8)}</a>       
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.creator_key}"></span>             
                 </div>                
-                <div class="text-small text-muted">
-                    ${r.creator_name || 'Unknown'}                
+                <div class="text-small">
+                    <span class="fg-darkViolet">${r.creator_name || 'Unknown'}</span>                
                 </div>
             </td>
             <td class="text-center">
