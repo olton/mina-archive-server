@@ -162,6 +162,55 @@ const drawTransTable = (data, address, noDir = false) => {
     return rows
 }
 
+function blockTransDrawCell(td, val, idx, head, row, table){
+    if (['type', 'timestamp', 'trans_receiver', 'fee', 'memo', 'scam'].includes(head.name)) {
+        td.addClass("d-none")
+    }
+    if (head.name === 'status') {
+        td.addClass("text-center").html(`
+            <span class="${val === 'applied' ? 'fg-green mif-checkmark' : 'fg-red mif-blocked'}"></span>
+        `)
+    }
+    if (head.name === 'hash') {
+        td.html(`
+            <div class="text-small">
+                <span class="${row[1] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[1]}</span>
+                ${row[11] === 1 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+            </div>
+            <a class="link" href="/transaction/${val}">${shorten(val, 12)}</a>
+            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
+            <div class="text-small text-muted">
+                ${row[10]}
+            </div>
+        `)
+    }
+    if (head.name === 'trans_owner') {
+        td.html(`
+            <div>
+                FROM:&nbsp;<a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
+            </div>
+            <div>
+                TO:&nbsp;&nbsp;&nbsp;<a class="link" href="/address/${row[6]}">${shorten(row[6], 12)}</a>
+                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row[6]}"></span>
+            </div>
+        `)
+    }
+    if (head.name === 'amount') {
+        td.addClass("text-right").html(`
+            <span>${normMina(val)}</span>
+            <div class="text-muted text-small">
+                ${normMina(row[8])}            
+            </div>
+        `)
+    }
+    if (head.name === 'confirmation') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+        `)
+    }
+}
+
 const drawTransPoolTable = (data) => {
     let rows = []
 
@@ -248,7 +297,6 @@ function addressBlocksTableDrawCell(td, val, idx, head, row, table){
 }
 
 function addressTransTableDrawCell(td, val, idx, head, row, table){
-    // console.log(val, head)
     if (['type', 'agent_name', 'timestamp', 'state_hash', 'memo', 'fee', 'epoch', 'global_slot', 'slot', 'scam'].includes(head.name)) {
         td.addClass("d-none")
     }
@@ -276,7 +324,7 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
     }
     if (head.name === 'height') {
         td.addClass('text-center').html(`
-            <a class="link" href="/block/${row[10]}">${val}</a>
+            <a class="link" href="/block/${row[11]}">${val}</a>
             <div class="text-small text-muted" title="Epoch/Slot in">
                 <span class="text-bold">${row[13]}/${row[15]}</span>            
             </div>

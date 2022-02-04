@@ -126,13 +126,26 @@ export const qBlockInfo = async (hash) => {
     return (await query(sql, [hash])).rows[0]
 }
 
-export const qBlockTransactions = async (hash) => {
+export const getBlockTransactions = async (hash) => {
     if (!hash) {
         throw new Error('You must specified block state hash for this query [qBlockTransactions]')
     }
 
     const sql = `
-        select * from v_trans_all 
+        select 
+            t.status, 
+            t.type,
+            t.hash,
+            t.timestamp,
+            t.nonce,
+            t.trans_owner,
+            t.trans_receiver,
+            t.amount,
+            t.fee,
+            t.confirmation,
+            t.memo,
+            t.scam
+        from v_trans_all t 
         where state_hash = $1
         order by timestamp desc, nonce desc
     `

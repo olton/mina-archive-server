@@ -9,13 +9,12 @@ import {
     qAddressBlocks,
     qAddressTransactions,
     qBlockInfo,
-    qBlockTransactions,
     getLeaderboard,
     getAddressUptime,
     getTransaction,
     getScammerList,
     getTopStackHolders,
-    getLastBlockWinners, getAddressBlocks, getAddressTrans, getAddressDelegations
+    getLastBlockWinners, getAddressBlocks, getAddressTrans, getAddressDelegations, getBlockTransactions
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -76,7 +75,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'block_trans': {
-                    response(ws, channel, await qBlockTransactions(data));
+                    response(ws, channel, await getBlockTransactions(data));
                     break;
                 }
                 case 'address': {

@@ -113,9 +113,68 @@ section.container-fluid
                                     div#trans_count.box-value 0
 
 
-        div
+        div.mt-4
             div.radius.mt-4(data-role="panel" data-title-caption="Block Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
-                +trans-table("block-trans")
+                div.mt-4
+                    table.table.striped.monospace.data-table.row-hover#block-trans-table(
+                        data-role="table"
+                        data-rows=50
+                        data-rownum="true"
+                        data-on-draw-cell="blockTransDrawCell"
+                        data-horizontal-scroll="true"
+                        data-horizontal-scroll-stop="xl"
+                        data-cls-table-container="no-border"
+                        data-activity-type="bars"
+                        data-filters-operator="or"
+                        data-search-fields=""
+                        data-table-search-placeholder=""
+                    )
+                        thead
+                            tr
+                                th.text-center(data-size="30" data-name="status")
+                                    span #TR
+                                    div.text-small Status
+
+                                th.d-none(data-name="type")
+                                    span Type
+                                    div.text-small Memo/Type/Date
+
+                                th(data-name="hash")
+                                    span Hash
+                                    div.text-small Memo/Type/Date
+
+                                th.d-none(data-name="timestamp")
+                                    span Date
+                                    div.text-small Time
+
+                                th.text-center(data-name="nonce")
+                                    span Nonce
+
+                                th.text-center(data-name="trans_owner")
+                                    span Sent
+                                    div.text-small from/to
+
+                                th.d-none(data-name="trans_receiver")
+                                    span Receiver
+
+                                th.text-right(data-name="amount")
+                                    span Amount
+                                    div.text-small Fee
+
+                                th.d-none(data-name="fee")
+                                    span Amount
+                                    div.text-small Fee
+
+                                th.text-center(data-name="confirmation")
+                                    span Confirm
+                                    div.text-small Blocks
+
+                                th.d-none(data-name="memo")
+                                    span Memo
+
+                                th.d-none(data-name="scam")
+                                    span Scam
+
 
 include components/footer
 include components/scripts

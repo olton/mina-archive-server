@@ -67,19 +67,8 @@ const updateBlockInfo = data => {
 const updateBlockTransactions = data => {
     if (!data || !Array.isArray(data)) return
 
-    const target = $("#block-trans tbody").clear()
-    const rows = drawTransTable(data, "", true)
-    if (rows.length) {
-        rows.map(r => target.append(r))
-    } else {
-        target.html(`
-            <tr>
-                <td colspan="7">
-                    <div class="m-4 text-center">Nothing to show</div>                
-                </td>
-            </tr>            
-        `)
-    }
+    const table = Metro.getPlugin("#block-trans-table", "table")
+    table.setData({data})
 }
 
 const wsMessageController = (ws, response) => {
