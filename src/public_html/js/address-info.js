@@ -69,13 +69,13 @@ const updateAddressInfo = (data) => {
     }
 
     let stack = normMina(data.stack, 'array')
-    $("#stack-current").html(`
+    $("#stack-current, #stack-value").html(`
         <span>${(+stack[0]).format(0, null, " ", ".")}</span>
         <span class="reduce-5 ml-2-minus">.${stack[1]}</span>    
     `)
 
     let stack_next = normMina(data.stack_next, 'array')
-    $("#stack-next").html(`
+    $("#stack-next, #next-stack-value").html(`
         <span>${(+stack_next[0]).format(0, null, " ", ".")}</span>
         <span class="reduce-5 ml-2-minus">.${stack_next[1]}</span>    
     `)
@@ -221,11 +221,14 @@ const updateAddressLastTrans = data => {
 const updateAddressTransPool = data => {
     if (!data || !Array.isArray(data)) return
 
+    const wrapper = $("#trans-pool-wrapper")
     const target = $("#address-pool-trans tbody").clear()
     const rows = drawTransPoolTable(data, address)
     if (rows.length) {
+        wrapper.show()
         rows.map(r => target.append(r))
     } else {
+        wrapper.hide()
         target.html(`
             <tr>
                 <td colspan="7">
@@ -257,6 +260,14 @@ const updateAddressTransTable = data => {
     table.setData({data})
 }
 
+const updateAddressDelegations = (data, next = false) => {
+    if (!data || !Array.isArray(data)) return
+
+    const table = Metro.getPlugin(`#address-delegations${next ? '-next' : ''}-table`, 'table')
+
+    table.setData({data})
+}
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -277,10 +288,16 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
     }
 
+    const requestDelegations = (ws) => {
+        ws.send(JSON.stringify({channel: 'address_delegations', data: address}));
+        ws.send(JSON.stringify({channel: 'address_delegations_next', data: address}));
+    }
+
     switch(channel) {
         case 'welcome': {
             requestData(ws)
             requestLastActivity(ws)
+            requestDelegations(ws)
             ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
             ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
@@ -332,12 +349,27 @@ const wsMessageController = (ws, response) => {
             updateAddressTransTable(data)
             break;
         }
+        case 'address_delegations': {
+            updateAddressDelegations(data)
+            break;
+        }
+        case 'address_delegations_next': {
+            updateAddressDelegations(data, true)
+            break;
+        }
     }
 }
 
 function refreshAddressTransactionsTable(){
     if (globalThis.webSocket)
         globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
+}
+
+function refreshAddressDelegations(){
+    if (globalThis.webSocket) {
+        globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations', data: address}))
+        globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations_next', data: address}))
+    }
 }
 
 let fltBlockPending,

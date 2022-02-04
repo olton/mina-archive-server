@@ -141,7 +141,7 @@ section.container-fluid.mt-8
                                 div#snark_jobs.box-value 0
 
 
-            div.mt-10
+            div.mt-10#trans-pool-wrapper
                 div.radius(data-role="panel" data-title-caption="Transaction Pool" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-broadcast mif-3x'></span>")
                     +pool-trans-table("address-pool-trans")
 
@@ -330,11 +330,69 @@ section.container-fluid.mt-8
                             th.d-none(data-name="scam")
                                 span Scam
 
-
-
-        div#snarks
-
         div#delegations
+            div.mt-4
+                button.button(onclick="refreshAddressDelegations()")
+                    span Refresh Tables
+                    span.mif-refresh
+
+            div.mt-4
+                div.radius(data-role="panel" data-title-caption="Current Epoch<span id='stack-value' class='ml-auto text-normal'>0</span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-clipboard mif-3x'></span>")
+                    div.mt-4
+                        table.table.striped.monospace.data-table.row-hover#address-delegations-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rows-steps="-1, 10, 20, 50, 100"
+                            data-rownum="true"
+                            data-on-draw-cell="addressDelegationsTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                            data-filters-operator="or"
+                            data-search-fields=""
+                            data-table-search-placeholder=""
+                        )
+                            thead
+                                th(data-name="stack_holder" data-size="20")
+                                    span #SH
+                                th(data-name="public_key")
+                                    span Address
+                                th.d-none(data-name="name")
+                                    span Name
+                                th.text-right(data-name="ledger_balance" data-sortable="true" data-format="number" data-sort-dir="desc")
+                                    span Balance
+                                    div.text-small Current
+
+            div.mt-4
+                div.radius(data-role="panel" data-title-caption="Next Epoch <span id='next-stack-value' class='ml-auto text-normal'>0</span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-clipboard mif-3x'></span>")
+                    div.mt-4
+                        table.table.striped.monospace.data-table.row-hover#address-delegations-next-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rows-steps="-1, 10, 20, 50, 100"
+                            data-rownum="true"
+                            data-on-draw-cell="addressDelegationsTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                            data-filters-operator="or"
+                            data-search-fields=""
+                            data-table-search-placeholder=""
+                        )
+                            thead
+                                th(data-name="stack_holder" data-size="20")
+                                    span #SH
+                                th(data-name="public_key")
+                                    span Address
+                                th.d-none(data-name="name")
+                                    span Name
+                                th.text-right(data-name="ledger_balance" data-sortable="true" data-format="number" data-sort-dir="desc")
+                                    span Balance
+                                    div.text-small Next
+
+
 
 include components/footer
 

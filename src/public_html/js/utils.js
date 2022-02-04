@@ -332,6 +332,26 @@ function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
     }
 }
 
+function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
+    if (head.name === 'name') {
+        td.addClass("d-none")
+    }
+    if (head.name === 'stack_holder') {
+        td.html(`
+            ${val === 1 ? '<span title="Stack Holder" class="reduce-4 pl-2 pr-2 pt-1 pb-1 bg-green fg-white">SH</span>' : ''}
+        `)
+    }
+    if (head.name === 'ledger_balance') {
+        td.addClass("text-right").html(`${normMina(val)}`)
+    }
+    if (head.name === 'public_key') {
+        td.html(`
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <div class="text-small">${row[2] || ""}</div>
+        `)
+    }
+}
+
 function searchInBlockchain(val) {
     const _val = val.trim()
 

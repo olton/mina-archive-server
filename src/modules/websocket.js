@@ -15,7 +15,7 @@ import {
     getTransaction,
     getScammerList,
     getTopStackHolders,
-    getLastBlockWinners, getAddressBlocks, getAddressTrans
+    getLastBlockWinners, getAddressBlocks, getAddressTrans, getAddressDelegations
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -137,6 +137,14 @@ export const websocket = (server) => {
                 }
                 case 'address_trans': {
                     response(ws, channel, await getAddressTrans(data));
+                    break;
+                }
+                case 'address_delegations': {
+                    response(ws, channel, await getAddressDelegations(data, false));
+                    break;
+                }
+                case 'address_delegations_next': {
+                    response(ws, channel, await getAddressDelegations(data, true));
                     break;
                 }
             }

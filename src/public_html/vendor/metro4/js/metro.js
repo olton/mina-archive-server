@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 03/02/2022 20:50:08
+ * Built at 04/02/2022 13:10:52
  * Licensed under MIT
  */
 /*!
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "03/02/2022 20:50:08",
+        compileTime: "04/02/2022 13:10:52",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -33643,9 +33643,21 @@ $.noConflict = function() {
 
                 if (Utils.isValue(item.title)) {th.html(item.title);}
                 if (Utils.isValue(item.format)) {th.attr("data-format", item.format);}
+                if (Utils.isValue(item.formatMask)) {th.attr("data-format-mask", item.formatMask);}
                 if (Utils.isValue(item.name)) {th.attr("data-name", item.name);}
                 if (Utils.isValue(item.colspan)) {th.attr("colspan", item.colspan);}
                 if (Utils.isValue(item.size)) {th.attr("data-size", item.size);}
+                if (Utils.isValue(item.sortable)) {th.attr("data-sortable", item.sortable);}
+                if (Utils.isValue(item.sortDir)) {th.attr("data-sort-dir", item.sortDir);}
+                if (Utils.isValue(item.clsColumn)) {th.attr("data-cls-column", item.clsColumn);}
+                if (Utils.isValue(item.cls)) {th.attr("data-cls", item.cls);}
+                if (Utils.isValue(item.colspan)) {th.attr("colspan", item.colspan);}
+                if (Utils.isValue(item.show)) {th.attr("data-show", item.show);}
+                if (Utils.isValue(item.required)) {th.attr("data-required", item.required);}
+                if (Utils.isValue(item.field)) {th.attr("data-field", item.field);}
+                if (Utils.isValue(item.fieldType)) {th.attr("data-field-type", item.fieldType);}
+                if (Utils.isValue(item.validator)) {th.attr("data-validator", item.validator);}
+                if (Utils.isValue(item.template)) {th.attr("data-template", item.template);}
                 if (Utils.isValue(view[cell_index]['size'])) {th.css({width: view[cell_index]['size']});}
                 if (item.sortable === true) {
                     classes.push("sortable-column");

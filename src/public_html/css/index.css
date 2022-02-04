@@ -248,6 +248,7 @@ footer a:hover {
 .scam {
   left: 14px;
   right: auto;
+  display: none;
 }
 .minataur-toast {
   background: var(--color-info3);

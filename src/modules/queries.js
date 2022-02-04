@@ -356,3 +356,19 @@ export const getAddressByName = async name => {
 
     return (await query(sql, ["%"+name.toLowerCase()+"%"])).rows
 }
+
+export const getAddressDelegations = async (address, next = false) => {
+    const sql = `
+        select
+            (case when a.public_key = $1 then 1 else 0 end) as stack_holder,
+            a.public_key,
+            a.name,
+            %balance_field% as ledger_balance
+        from v_address a
+        where %delegate_field% = $1
+    `
+        .replace("%balance_field%", !next ? "ledger_balance" : "ledger_balance_next")
+        .replace("%delegate_field%", !next ? "delegate_key" : "delegate_key_next")
+
+    return (await query(sql, [address])).rows
+}
