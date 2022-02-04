@@ -44,8 +44,6 @@ pool.on('error', (err, client) => {
         const blacklist = await blacklistRequest.json()
         await client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
 
-        console.log(blacklist)
-
         for(let o of blacklist) {
             await client.query(`
                     insert into blacklist (public_key, reason)

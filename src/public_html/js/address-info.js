@@ -55,6 +55,14 @@ const updateAddressInfo = (data) => {
     $("#address-name").html(`${data.name || 'No data'}`)
 
     const addressTags = $("#address-tags").clear()
+    if (data.scammer) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-red fg-white text-upper").html(`SCAMMER`)
+        )
+        $("#scammer-reason").parent().removeClass("d-none")
+        $("#scammer-reason").html(data.scammer_reason)
+    }
+
     if (data.is_producer) {
         addressTags.append(
             $("<span>").addClass("radius reduce-4 badge inline bg-green fg-white text-upper").html(`Block Producer`)

@@ -47,23 +47,20 @@ pool.on('error', (err, client) => {
         `, ["E4%"])
         for (let r of res.rows) {
             const decoded = (new TextDecoder().decode(decode(r.memo).slice(3, -4))).toLowerCase()
+            if (r.type.toLowerCase() !== 'payment') continue
             if (
-                r.type.toLowerCase() === 'payment'
-                && regexp.test(decoded)
-                && (
-                decoded.includes('airdrop')
-                || decoded.includes('announcing')
-                || decoded.includes('clorio-mina')
-                || decoded.includes('mina-foundation.org')
-                || decoded.includes('warning')
-                || decoded.includes('delegate-mina-protocol.com')
-            )) {
+                decoded.includes('airdrop') ||
+                decoded.includes('announcing') ||
+                decoded.includes('warning') ||
+                decoded.includes('delegate') ||
+                decoded.includes('important')
+            ) {
                 await client.query(`
-                    insert into addresses (public_key_id, scammer) 
-                    values ($1, 1) 
-                    on conflict (public_key_id) do update
-                        set scammer = 1
-                `, [r.source_id])
+                    insert into scam (user_command_id, reason) 
+                    values ($1, $2) 
+                    on conflict (user_command_id) do update
+                        set reason = $2
+                `, [r.id, decoded.replace(/\0/g, "")])
                 log(`Potential scam found in memo: ${decoded}...Marked!`)
             }
         }

@@ -143,46 +143,46 @@ body {
 .panel.disabled {
   opacity: 0.5;
 }
-*.alert,
-*.warning,
-*.catchup,
-*.success,
-*.soft-alert,
-* .health-alert,
-* .exp-alert {
+*:not(.remark).alert,
+*:not(.remark).warning,
+*:not(.remark).catchup,
+*:not(.remark).success,
+*:not(.remark).soft-alert,
+*:not(.remark) .health-alert,
+*:not(.remark) .exp-alert {
   color: var(--color-white) !important;
 }
-*.alert *,
-*.warning *,
-*.catchup *,
-*.success *,
-*.soft-alert *,
-* .health-alert *,
-* .exp-alert * {
+*:not(.remark).alert *,
+*:not(.remark).warning *,
+*:not(.remark).catchup *,
+*:not(.remark).success *,
+*:not(.remark).soft-alert *,
+*:not(.remark) .health-alert *,
+*:not(.remark) .exp-alert * {
   color: var(--color-white) !important;
   background-color: transparent!important;
 }
-*.alert,
-* .health-alert {
+*:not(.remark).alert,
+*:not(.remark) .health-alert {
   background: var(--color-alert) !important;
 }
-*.soft-alert {
+*:not(.remark).soft-alert {
   background: var(--color-alert-soft) !important;
 }
-*.exp-alert {
+*:not(.remark).exp-alert {
   background: var(--color-info3) !important;
 }
-*.yellow-warning {
+*:not(.remark).yellow-warning {
   background: var(--color-yellow) !important;
   color: var(--color-text) !important;
 }
-*.warning {
+*:not(.remark).warning {
   background: var(--color-warning) !important;
 }
-*.catchup {
+*:not(.remark).catchup {
   background: var(--color-info) !important;
 }
-*.success {
+*:not(.remark).success {
   background: var(--color-success) !important;
 }
 a.link {

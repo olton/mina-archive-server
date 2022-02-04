@@ -2,6 +2,8 @@ import {query} from  "./postgres"
 import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts"
 import {TextDecoder} from 'util'
 import {decode} from "@faustbrian/node-base58"
+import {checkMemoForScam} from "../helpers/scam.js";
+import {decodeMemo} from "../helpers/memo.js";
 
 export const qDisputeBlocks = async () => {
     const sql = `
@@ -70,7 +72,8 @@ export const qAddressTransactions = async (pk, {
     const result = (await query(sql, [pk, limit, offset])).rows
 
     result.map((r) => {
-        r.memo = (new TextDecoder().decode(decode(r.memo).slice(3, -4)))
+        r.memo = decodeMemo(r.memo)
+        r.scam = checkMemoForScam(r.memo)
     })
 
     return result
@@ -101,10 +104,16 @@ export const qGetStat = async () => {
 export const qAddressInfo = async (address) => {
     // console.log("Address request: ", address)
     const sql = `
-        select a.*, s.stack, s.stack_next 
+        select 
+               a.*, 
+               s.stack, 
+               s.stack_next,
+               (case when b.public_key is null then 0 else 1 end ) as scammer,
+               b.reason as scammer_reason
         from v_address a
         left join v_stack s on s.id = a.public_key_id
-        where public_key = $1
+        left join blacklist b on b.public_key = a.public_key
+        where a.public_key = $1
     `
     return (await query(sql, [address])).rows[0]
 }
@@ -153,7 +162,8 @@ export const getBlockTransactions = async (hash) => {
     const result = (await query(sql, [hash])).rows
 
     result.map((r) => {
-        r.memo = (new TextDecoder().decode(decode(r.memo).slice(3, -4)))
+        r.memo = decodeMemo(r.memo)
+        r.scam = checkMemoForScam(r.memo)
     })
 
     return result
@@ -204,7 +214,8 @@ export const getTransaction = async (hash) => {
     `
     let result = (await query(sql, [hash])).rows[0]
 
-    result.memo = (new TextDecoder().decode(decode(result.memo).slice(3, -4))).replace(/\0/g, "")
+    result.memo = decodeMemo(result.memo)
+    result.scam = checkMemoForScam(result.memo)
 
     return result
 }
@@ -315,8 +326,7 @@ export const getAddressTrans = async (address) => {
             t.memo,
             t.epoch,
             t.global_slot,
-            t.slot,
-            (case when t.scam = 1 then 'scam' else '' end) as scam
+            t.slot
         from v_trans t
         where (t.trans_owner = $1 or t.trans_receiver = $1)
         order by timestamp desc, nonce desc
@@ -326,6 +336,9 @@ export const getAddressTrans = async (address) => {
     const result = []
 
     for(let r of rows) {
+        r.memo = decodeMemo(r.memo)
+        r.scam = checkMemoForScam(r.memo)
+
         result.push([
             r.type,
             r.dir,
@@ -339,7 +352,7 @@ export const getAddressTrans = async (address) => {
             r.fee,
             r.confirmation,
             r.state_hash,
-            (new TextDecoder().decode(decode(r.memo).slice(3, -4))).replace(/\0/g, ""),
+            r.memo,
             r.epoch,
             r.global_slot,
             r.slot,

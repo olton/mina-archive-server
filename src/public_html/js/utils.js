@@ -106,7 +106,8 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="">
                 <div style="line-height: 1">
                     <span class="${t.type === 'payment' ? transIncoming ? 'bg-lightViolet' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${t.type}</span>
-                    ${+t.scam ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+                    ${t.type === 'payment' && +t.scam && +t.amount > 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
+                    ${t.type === 'payment' && +t.scam && +t.amount == 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SPAM</span>' : ''}
                 </div>
                 <div style="line-height: 1" class="no-wrap">
                     <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 7)}</a>        
@@ -310,7 +311,7 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
         td.html(`
             <div class="text-small">
                 <span class="${row[0] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[0]}</span>
-                ${row[16] === 'scam' ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+                ${row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
             </div>
             <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
             <div class="text-small text-muted">${datetime(+row[3]).format("DD/MM/YYYY HH:mm")}</div>
