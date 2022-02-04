@@ -175,8 +175,9 @@ function blockTransDrawCell(td, val, idx, head, row, table){
     if (head.name === 'hash') {
         td.html(`
             <div class="text-small">
-                <span class="${row[1] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[1]}</span>
-                ${row[11] === 1 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+                <span class="${row[1] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-3 text-upper">${row[1]}</span>
+                ${row[11] && +(row[8]) > 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-3">SCAM</span>' : ''}
+                ${row[11] && +(row[8]) == 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-3">SPAM</span>' : ''}
             </div>
             <a class="link" href="/transaction/${val}">${shorten(val, 12)}</a>
             <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
@@ -311,7 +312,7 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
         td.html(`
             <div class="text-small">
                 <span class="${row[0] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[0]}</span>
-                ${row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM!</span>' : ''}
+                ${row[0] === 'payment' && row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
             </div>
             <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
             <div class="text-small text-muted">${datetime(+row[3]).format("DD/MM/YYYY HH:mm")}</div>
