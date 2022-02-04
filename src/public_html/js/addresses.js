@@ -51,14 +51,6 @@ function scammerListDrawCell(td, val, idx, head, row, table){
             <a class="link ml-2" href="/address/${val}">${shorten(val, 12)}</a>
         `)
     }
-    if (idx === 1 || idx === 2) {
-        td.addClass("text-right").html(`
-            ${normMina(val)}
-        `)
-    }
-    if (idx === 3) {
-        td.addClass("text-center")
-    }
 }
 
 const wsMessageController = (ws, response) => {

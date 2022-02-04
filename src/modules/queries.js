@@ -220,18 +220,18 @@ export const getTransaction = async (hash) => {
     return result
 }
 
-export const getScammerList = async (limit = 20) => {
+export const getScammerList = async () => {
     const sql = `
-        select * from v_address a 
-        where a.scammer = 1
-        order by trans_count desc
-        limit $1
+        select * from blacklist b 
     `
-    const rows = (await query(sql, [limit])).rows
+    const rows = (await query(sql)).rows
     const result = []
 
     for(let r of rows) {
-        result.push([r.public_key, r.ledger_balance, r.ledger_balance_next, r.trans_count])
+        result.push([
+            r.public_key,
+            r.reason
+        ])
     }
 
     return result
