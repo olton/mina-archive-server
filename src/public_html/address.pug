@@ -20,10 +20,14 @@ div.container-fluid
 
                     hr.thin
 
-                    div.h3.mt-2.mb-2
-                        span #{addressShort}
-                        span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
-                        div#address-name.reduce-6.text-normal
+                    div.row
+                        div.cell-1
+                            img#address-logo
+                        div.cell-10
+                            div.h3.mt-0.mb-2
+                                span #{addressShort}
+                                span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
+                                div#address-name.reduce-6.text-normal
 
                     div
                         div#address-tags
@@ -179,8 +183,8 @@ section.container-fluid.mt-8
 
                     div.mt-4
                         h4.enlarge-8.text-light Validator Rules
-                        div.remark
-                            div#validator-rules.text-normal(style="overflow: auto; height: 220px;")
+                        div
+                            div#validator-rules.text-normal
 
 
                 div.cell-lg-6

@@ -22,7 +22,7 @@ const parseSearchResult = (data) => {
                 ${a.public_key !== a.delegate_key ? '<span class="reduce-4 pt-1 pb-1 pl-2 pr-2 fg-white bg-orange">DELEGATOR</span>' : ''}
                 ${a.scammer ? '<span class="ml-2-minus reduce-4 pt-1 pb-1 pl-2 pr-2 fg-white bg-darkRed">SCAMMER</span>' : ''}
                 <div class="text-small">
-                    <span>Name: </span><span class="text-bold">${a.name}</span>
+                    <span>Name: </span><span class="text-bold">${a.name || 'No data'}</span>
                 </div>
                 <div class="text-small">
                     <span>Ledger Balance: </span><span class="text-bold">${normMina(a.ledger_balance)}</span>

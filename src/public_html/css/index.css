@@ -330,6 +330,10 @@ tr.no-hover:hover {
 .scroll-table-container {
   overflow-x: auto;
 }
+#address-log {
+  width: 40px;
+  max-height: 40px;
+}
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
     max-width: 95%;

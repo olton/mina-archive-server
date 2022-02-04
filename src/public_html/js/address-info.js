@@ -25,7 +25,10 @@ const updateAddressInfo = (data) => {
         name: "Name",
         site: "Website",
         telegram: "Telegram",
-        discord: "Discord"
+        discord: "Discord",
+        email: "Email",
+        twitter: "Twitter",
+        github: "GitHub",
     }
     const fieldsLedger = {
         initial_balance: "Initial Balance",
@@ -46,6 +49,8 @@ const updateAddressInfo = (data) => {
     let tr, val
 
     $(".scam")[data.scammer ? 'show' : 'hide']()
+
+    $("#address-logo").attr("src", data.logo ? data.logo : "/images/no-image.png")
 
     $("#address-name").html(`${data.name || 'No data'}`)
 

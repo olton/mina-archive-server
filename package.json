@@ -11,7 +11,8 @@
     "chain": "node --experimental-modules --es-module-specifier-resolution=node src/chain.js",
     "scam": "node --experimental-modules --es-module-specifier-resolution=node src/scam.js",
     "blacklist": "node --experimental-modules --es-module-specifier-resolution=node src/blacklist.js",
-    "uptime": "node --experimental-modules --es-module-specifier-resolution=node src/uptime.js"
+    "uptime": "node --experimental-modules --es-module-specifier-resolution=node src/uptime.js",
+    "providers": "node --experimental-modules --es-module-specifier-resolution=node src/providers.js"
   },
   "repository": {
     "type": "git",
