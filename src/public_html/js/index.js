@@ -69,32 +69,29 @@ const wsMessageController = (ws, response) => {
         return
     }
 
-    const requestBlockData = () => {
+    const requestPeriodically = () => {
+        ws.send(JSON.stringify({channel: 'trans_pool_count'}))
+        ws.send(JSON.stringify({channel: 'price'}))
+
+        setTimeout(requestPeriodically, 60000)
+    }
+
+    const requestChain = () => {
         ws.send(JSON.stringify({channel: 'last_block_time'}))
         ws.send(JSON.stringify({channel: 'dispute'}))
         ws.send(JSON.stringify({channel: 'lastChain'}))
-        ws.send(JSON.stringify({channel: 'trans_pool_count'}))
-
-        setTimeout(requestBlockData, 60000)
-    }
-
-    const requestStat = () => {
         ws.send(JSON.stringify({channel: 'epoch'}))
         ws.send(JSON.stringify({channel: 'stat'}))
     }
 
     switch(channel) {
         case 'welcome': {
-            log(data);
-            requestStat()
-            ws.send(JSON.stringify({channel: 'price'}))
-            requestBlockData()
+            requestChain()
+            requestPeriodically()
             break;
         }
         case 'new_block': {
-            clearInterval(intervalBlocksData)
-            requestStat()
-            requestBlockData()
+            requestChain()
             break;
         }
         case 'epoch': updateHeight(data); break;

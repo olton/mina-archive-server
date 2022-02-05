@@ -5,6 +5,8 @@ import {TextDecoder} from "util";
 import {decode} from "@faustbrian/node-base58";
 import {isset} from "../helpers/isset.js";
 import {parseTime} from "../helpers/parsers.js";
+import {decodeMemo} from "../helpers/memo.js";
+import {checkMemoForScam} from "../helpers/scam.js";
 
 const fetchGraphQL = async (query, variables = {}) => {
     try {
@@ -127,7 +129,8 @@ export const getTransactionInPool = async (address) => {
     result = result.data.pooledUserCommands
 
     result.map((r) => {
-        r.memo = (new TextDecoder().decode(decode(r.memo).slice(3, -4)))
+        r.memo = decodeMemo(r.memo)
+        r.scam = checkMemoForScam(r.memo)
     })
 
     return result
