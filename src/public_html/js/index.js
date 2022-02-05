@@ -72,6 +72,7 @@ const wsMessageController = (ws, response) => {
     const requestPeriodically = () => {
         ws.send(JSON.stringify({channel: 'trans_pool_count'}))
         ws.send(JSON.stringify({channel: 'price'}))
+        ws.send(JSON.stringify({channel: 'stat'}))
 
         setTimeout(requestPeriodically, 60000)
     }
@@ -81,7 +82,6 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'dispute'}))
         ws.send(JSON.stringify({channel: 'lastChain'}))
         ws.send(JSON.stringify({channel: 'epoch'}))
-        ws.send(JSON.stringify({channel: 'stat'}))
     }
 
     switch(channel) {

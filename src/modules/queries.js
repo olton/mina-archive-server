@@ -106,12 +106,12 @@ export const qAddressInfo = async (address) => {
     const sql = `
         select 
                a.*, 
-               s.stack, 
-               s.stack_next,
+               s.stake, 
+               s.stake_next,
                (case when b.public_key is null then 0 else 1 end ) as scammer,
                b.reason as scammer_reason
         from v_address a
-        left join v_stack s on s.id = a.public_key_id
+        left join v_stakes s on s.id = a.public_key_id
         left join blacklist b on b.public_key = a.public_key
         where a.public_key = $1
     `
@@ -240,15 +240,15 @@ export const getScammerList = async () => {
 export const getTopStackHolders = async (limit = 20) => {
     const sql = `
         select *
-        from v_stack
-        order by stack desc
+        from v_stakes
+        order by stake desc
         limit $1
     `
     const rows = (await query(sql, [limit])).rows
     const result = []
 
     for(let r of rows) {
-        result.push([r.value, r.stack, r.stack_next])
+        result.push([r.value, r.stake, r.stake_next])
     }
 
     return result
@@ -374,9 +374,9 @@ export const getBlocksByHeight = async height => {
 
 export const getAddressByName = async name => {
     const sql = `
-        select a.*, s.stack, s.stack_next
+        select a.*, s.stake, s.stake_next
         from v_address a
-        left join v_stack s on s.id = a.public_key_id
+        left join v_stakes s on s.id = a.public_key_id
         where lower(name) like $1
     `
 
@@ -386,7 +386,7 @@ export const getAddressByName = async name => {
 export const getAddressDelegations = async (address, next = false) => {
     const sql = `
         select
-            (case when a.public_key = $1 then 1 else 0 end) as stack_holder,
+            (case when a.public_key = $1 then 1 else 0 end) as stake_holder,
             a.public_key,
             a.name,
             %balance_field% as ledger_balance

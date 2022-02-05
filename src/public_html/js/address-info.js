@@ -81,16 +81,16 @@ const updateAddressInfo = (data) => {
         )
     }
 
-    let stack = normMina(data.stack, 'array')
+    let stake = normMina(data.stake, 'array')
     $("#stack-current, #stack-value").html(`
-        <span>${(+stack[0]).format(0, null, " ", ".")}</span>
-        <span class="reduce-5 ml-2-minus">.${stack[1]}</span>    
+        <span>${(+stake[0]).format(0, null, " ", ".")}</span>
+        <span class="reduce-5 ml-2-minus">.${stake[1]}</span>    
     `)
 
-    let stack_next = normMina(data.stack_next, 'array')
+    let stake_next = normMina(data.stake_next, 'array')
     $("#stack-next, #next-stack-value").html(`
-        <span>${(+stack_next[0]).format(0, null, " ", ".")}</span>
-        <span class="reduce-5 ml-2-minus">.${stack_next[1]}</span>    
+        <span>${(+stake_next[0]).format(0, null, " ", ".")}</span>
+        <span class="reduce-5 ml-2-minus">.${stake_next[1]}</span>    
     `)
 
     $("#blocks_count").html(`
