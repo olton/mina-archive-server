@@ -238,16 +238,8 @@ const drawTransPoolTable = (data) => {
                 </div>                
             </td>
             <td class="text-center">
-                <div>
-                    <div>
-                        FROM: <a class="link" href="/address/${t.from}">${shorten(t.from, 7)}</a>
-                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.from}"></span>
-                    </div>
-                    <div>
-                        &nbsp;&nbsp;TO: <a class="link" href="/address/${t.to}">${shorten(t.to, 7)}</a>
-                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.to}"></span>
-                    </div>                                            
-                </div>                
+                <a class="link" href="/address/${t.to}">${shorten(t.to, 7)}</a>
+                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${t.to}"></span>
             </td>
             <td class="text-center">
                 <div>

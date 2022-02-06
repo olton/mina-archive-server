@@ -290,6 +290,7 @@ const wsMessageController = (ws, response) => {
 
     const requestLastActivity = (ws) => {
         ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
+        ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
 
         setTimeout(requestLastActivity, 60000, ws)
     }
@@ -298,7 +299,6 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'epoch'}));
         ws.send(JSON.stringify({channel: 'address', data: address}));
         ws.send(JSON.stringify({channel: 'address_balance', data: address}));
-        ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
     }
 
     const requestDelegations = (ws) => {
