@@ -403,7 +403,7 @@ export const getProducers = async () => {
     const sql = `
         select *
         from v_block_producers
-        where delegators > 0
+        where delegators > 0 and cast (stake / 10^9 as int) > 66000
         order by random()
     `
     const rows = (await query(sql)).rows

@@ -51,14 +51,31 @@ function reloadProducersTable(){
 
 
 function producersTableDrawCell(td, val, idx, head, row, table){
+    const [
+        _id,
+        _public_key,
+        _name,
+        _blocks_total,
+        _blocks_canonical,
+        _cop,
+        _stake,
+        _stake_next,
+        _delegators,
+        _delegators_next,
+        _pos,
+        _pos_next,
+        _scammer
+    ] = row
     if (['id', 'name', 'delegators_next', 'pos', 'pos_next', 'scammer'].includes(head.name)) {
         td.addClass("d-none")
     }
     if (head.name === 'public_key') {
         td.html(`
             <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${val}"></span>
             <div class="text-small">
-                <span class="fg-darkViolet">${row[2] || 'Unknown'}</span>                
+                <span class="fg-darkViolet">${_name || 'Unknown'}</span>
+                ${_scammer === 1 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAMMER</span>' : ''}                
             </div>
         `)
     }
@@ -78,7 +95,7 @@ function producersTableDrawCell(td, val, idx, head, row, table){
     if (head.name === 'stake' || head.name === 'stake_next') {
         td.addClass("text-right").html(`
             <span>${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}</span>
-            <div class="text-small text-muted">${((head.name === 'stake' ? row[10] : row[11]) * 1 ).toFixed(4)}<span class="ml-1 reduce-3">%</span></div>
+            <div class="text-small text-muted">${((head.name === 'stake' ? _pos : _pos_next) * 1 ).toFixed(4)}<span class="ml-1 reduce-3">%</span></div>
         `)
     }
     if (head.name === 'delegators') {
