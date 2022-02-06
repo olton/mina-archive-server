@@ -108,6 +108,13 @@ const runWebServer = () => {
         })
     })
 
+    app.get('/producers', async (req, res) => {
+        res.render('producers', {
+            title: `Block Producers in Mina Blockchain`,
+            clientConfig
+        })
+    })
+
     app.get('/not-found', async (req, res) => {
         res.render('404', {
             title: `Information not found in Mina Blockchain by your request`,

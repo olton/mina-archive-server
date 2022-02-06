@@ -1,0 +1,85 @@
+include components/head
+include components/appbar
+
+div.container-fluid
+    div.container
+        include components/live
+
+        div.hero.hero-padding-secondary
+            div.row
+                div.cell-lg-6
+                    div
+                        div.h1.mb-0.page-title Block Producers
+
+                    hr.thin
+
+                    div.text-leader.mt-2.mb-2
+                        div.
+                            In the table below you can see active producers, who have non-zero delegations.
+
+
+                div.cell-lg-6
+                    div.mb-4
+                        include components/search-form
+
+section.container-fluid
+    div.container
+        div.mt-4
+            div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+        div.mt-4
+            div.radius(data-role="panel" data-title-caption="Active Producers ( <span id='active-producers-count' class='text-normal'>0</span> ) <button class='ml-auto button small info mt-2' onclick='reloadProducersTable()'>Reload table <span class='mif-refresh'></span></span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-cog mif-3x'></span>")
+                div.mt-4
+                    table.table.striped.monospace.data-table.row-hover.cell-border#producers-table(
+                        data-role="table"
+                        data-rows=50
+                        data-rows-steps="-1, 10, 20, 50, 100"
+                        data-rownum="true"
+                        data-on-draw-cell="producersTableDrawCell"
+                        data-horizontal-scroll="true"
+                        data-horizontal-scroll-stop="xl"
+                        data-cls-table-container="no-border"
+                        data-activity-type="bars"
+                        data-filters-operator="or"
+                        data-search-fields=""
+                        data-table-search-placeholder=""
+                    )
+                        thead
+                            tr
+                                th(data-name="id" data-show="false") ID
+                                th(data-name="public_key")
+                                    span Address
+                                    div.text-small Name
+                                th(data-name="name" data-show="false") Name
+                                th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
+                                    span Blocks
+                                    div.text-small Total
+                                th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
+                                    span Blocks
+                                    div.text-small Canonical
+                                th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
+                                    span(title="Coefficient of Performance") COP
+                                    div.text-small %
+                                th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
+                                    span Stake
+                                    div.text-small Current
+                                th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
+                                    span Stake
+                                    div.text-small Next
+                                th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
+                                    span Stakes
+                                    div.text-small Count
+                                th(data-name="delegators_next" data-show="false") Delegators Next
+                                th(data-name="pos" data-show="false") Part of Stake
+                                th(data-name="pos_next" data-show="false") Part of Stake Next
+                                th(data-name="scammer" data-show="false") Scammer
+
+
+    div.mb-10 &nbsp;
+
+include components/footer
+
+include components/scripts
+
+script
+    include ./js/producers.js
+

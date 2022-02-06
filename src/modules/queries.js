@@ -398,3 +398,34 @@ export const getAddressDelegations = async (address, next = false) => {
 
     return (await query(sql, [address])).rows
 }
+
+export const getProducers = async () => {
+    const sql = `
+        select *
+        from v_block_producers
+        where delegators > 0
+        order by random()
+    `
+    const rows = (await query(sql)).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([
+            r.id,
+            r.public_key,
+            r.name,
+            r.blocks_total,
+            r.blocks_canonical,
+            r.cop,
+            r.stake,
+            r.stake_next,
+            r.delegators,
+            r.delegators_next,
+            r.pos,
+            r.pos_next,
+            r.scammer
+        ])
+    }
+
+    return result
+}

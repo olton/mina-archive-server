@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 04/02/2022 13:10:52
+ * Built at 06/02/2022 02:00:39
  * Licensed under MIT
  */
 /*!
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "04/02/2022 13:10:52",
+        compileTime: "06/02/2022 02:00:39",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -34818,23 +34818,27 @@ $.noConflict = function() {
         },
 
         setData: function(/*obj*/ data){
-            var o = this.options;
+            var that = this, o = this.options;
 
-            this.items = [];
-            this.heads = [];
-            this.foots = [];
+            this.activity.show(function() {
+                that.items = [];
+                that.heads = [];
+                that.foots = [];
 
-            if (Array.isArray(o.head)) {
-                this.heads = o.head;
-            }
+                if (Array.isArray(o.head)) {
+                    that.heads = o.head;
+                }
 
-            if (Array.isArray(o.body)) {
-                this.items = o.body;
-            }
+                if (Array.isArray(o.body)) {
+                    that.items = o.body;
+                }
 
-            this._createItemsFromJSON(data);
+                that._createItemsFromJSON(data);
 
-            this._rebuild(true);
+                that._rebuild(true);
+
+                that.activity.hide();
+            })
 
             return this;
         },
