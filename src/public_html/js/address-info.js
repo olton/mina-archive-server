@@ -381,6 +381,11 @@ function refreshAddressTransactionsTable(){
         globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
 }
 
+function refreshAddressBlocksTable(){
+    if (globalThis.webSocket)
+        globalThis.webSocket.send(JSON.stringify({channel: 'address_blocks', data: address}))
+}
+
 function refreshAddressDelegations(){
     if (globalThis.webSocket) {
         globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations', data: address}))

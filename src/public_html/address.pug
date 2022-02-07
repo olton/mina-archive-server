@@ -212,13 +212,18 @@ section.container-fluid.mt-8
         div#blocks
             div.mt-4
                 div.filters.mb-4
-                    div.row
+                    div.row.flex-align-end
                         div
                             span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE
                             div.mt-2-minus
                                 input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="addressBlocksApplyFilter(this, 'pending')")
                                 input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="addressBlocksApplyFilter(this, 'canonical')")
                                 input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="addressBlocksApplyFilter(this, 'orphaned')")
+
+                        div.ml-auto
+                            button.button.success.small(onclick="refreshAddressBlocksTable()")
+                                span RELOAD DATA
+                                span.mif-refresh
 
                 table.table.striped.monospace.data-table.row-hover#address-blocks-table(
                     data-role="table"
@@ -271,8 +276,8 @@ section.container-fluid.mt-8
                                 input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="Payment" onchange="addressTransApplyFilter(this, 'type:payment')")
                                 input(type="checkbox" checked data-cls-check="bg-pink no-border" data-role="checkbox" data-caption="Delegation" onchange="addressTransApplyFilter(this, 'type:delegation')")
                         div.ml-auto
-                            button.button(onclick="refreshAddressTransactionsTable()")
-                                span Refresh table
+                            button.button.success.small(onclick="refreshAddressTransactionsTable()")
+                                span RELOAD DATA
                                 span.mif-refresh
 
                 table.table.striped.monospace.data-table.row-hover#address-trans-table(
