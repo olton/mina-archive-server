@@ -11,7 +11,7 @@ const updatePrice = (data) => {
 
     $("#mina-price").html(current_price)
     $("#mina-price-currency").html(currency)
-    $("#mina-price-update").html(datetime(last_updated).format("DD/MM/YYYY HH:mm"))
+    $("#mina-price-update").html(datetime(last_updated).format(config.format.datetime))
     $("#mina-total-supply").html(Math.round(total_supply).format(0, null, " ", "."))
 }
 

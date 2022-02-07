@@ -19,7 +19,7 @@ const updateTransactionInfo = (data) => {
         )
     }
 
-    const [transDate, transTime] = datetime(+data.timestamp).format("DD/MM/YYYY HH:mm").split(" ")
+    const [transDate, transTime] =  [datetime(+data.timestamp).format(config.format.date), datetime(+data.timestamp).format(config.format.time)]
     $("#trans-date").html(`
         <span>${transDate}</span>
         <span class="reduce-4">${transTime}</span>

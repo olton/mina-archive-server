@@ -148,7 +148,7 @@ const updateAddressInfo = (data) => {
         tr = $("<tr>").appendTo(targetLedger)
         tr.append($("<td>").css({width: 160}).addClass("light").html(fieldsLedger[o]))
         if (o === 'cliff_time') {
-            tr.append($("<td>").html(cliffTime.format("DD/MM/YYYY HH:mm")))
+            tr.append($("<td>").html(cliffTime.format(config.format.datetime)))
         } else if (o === 'cliff_amount' || o === 'vesting_increment' || o === 'initial_balance' || o === 'initial_minimum_balance') {
             tr.append($("<td>").html( normMina(data[o]) + ' <span class="text-small">MINA</span>' ))
         } else if (o === 'vesting_period') {

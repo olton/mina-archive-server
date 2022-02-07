@@ -82,7 +82,7 @@ const drawBlocksTable = (data) => {
                     <a class="link" href="/block/${r.state_hash}">${shorten(r.state_hash, 7)}</a>
                     <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.state_hash}"></span>            
                 </div>        
-                <div class="text-small text-muted">${datetime(+r.timestamp).format("DD/MM/YYYY HH:mm")}</div>
+                <div class="text-small text-muted">${datetime(+r.timestamp).format(config.format.datetime)}</div>
             </td>
         `)
 
@@ -118,7 +118,7 @@ const drawTransTable = (data, address, noDir = false) => {
                         ${t.status === 'failed' ? '<span class="bg-red fg-white pl-1 pr-1 reduce-1">'+t.failure_reason+'</span>' : ''}
                     </div>
                     <div class="text-small text-muted">
-                        ${datetime(+t.timestamp).format("DD/MM/YYYY HH:mm")}
+                        ${datetime(+t.timestamp).format(config.format.datetime)}
                     </div>
                 </div>                
             </td>
@@ -261,7 +261,7 @@ function addressBlocksTableDrawCell(td, val, idx, head, row, table){
         )
     }
     if (head.name === 'timestamp') {
-        td.clear().html(`${datetime(+val).format("DD/MM/YYYY HH:mm")}`)
+        td.clear().html(`${datetime(+val).format(config.format.datetime)}`)
     }
     if (head.name === 'height') {
         td.clear().addClass("text-center").append(
@@ -307,7 +307,7 @@ function addressTransTableDrawCell(td, val, idx, head, row, table){
                 ${row[0] === 'payment' && row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
             </div>
             <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
-            <div class="text-small text-muted">${datetime(+row[3]).format("DD/MM/YYYY HH:mm")}</div>
+            <div class="text-small text-muted">${datetime(+row[3]).format(config.format.datetime)}</div>
         `)
     }
     if (head.name === 'agent') {

@@ -14,7 +14,7 @@ const updateBlockInfo = data => {
     $("#slot").html(Number(data.slot).format(0, null, " ", "."))
     $("#global-slot").html(Number(data.global_slot).format(0, null, " ", "."))
 
-    const [blockDate, blockTime] = datetime(+data.timestamp).format("DD/MM/YYYY HH:mm").split(" ")
+    const [blockDate, blockTime] = [datetime(+data.timestamp).format(config.format.date), datetime(+data.timestamp).format(config.format.time)]
     $("#block-date").html(`
         <span>${blockDate}</span>
         <span class="reduce-4">${blockTime}</span>

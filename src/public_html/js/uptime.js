@@ -3,13 +3,14 @@ const updateUptimeTable = data => {
     let {segment, rows, next} = data
     let timestamp = datetime(segment)
 
-    let [segmentDate, segmentTime] = datetime(timestamp).format("DD/MM/YYYY HH:mm").split(" ")
-    let [nextDate, nextTime] = datetime(next).format("DD/MM/YYYY HH:mm").split(" ")
+    let [segmentDate, segmentTime] = [datetime(timestamp).format(config.format.date), datetime(timestamp).format(config.format.time)]
 
     $("#segment").html(`
         <span>${segmentDate}</span>
         <span class="reduce-4">${segmentTime}</span>
     `)
+
+    let [nextDate, nextTime] = [datetime(next).format(config.format.date), datetime(next).format(config.format.time)]
 
     $("#next-round").html(`
         <span>${nextDate}</span>

@@ -1,20 +1,41 @@
 export const defaultConfig = {
     "archive": {
-        "user": "postgres",
-        "host": "localhost",
+        "user": "mina",
+        "host": "localhost:5432",
         "database": "archive",
-        "password": "",
-        "port": 5432
+        "password": "archive_password"
+    },
+    "mina": {
+        "graphql": "localhost:3085"
     },
     "server": {
-        "name": "Archivist",
-        "host": "localhost:8000",
+        "name": "",
+        "host": "0.0.0.0:8001",
         "ssl": {
             "cert": "",
             "key": ""
         }
     },
-    debug: false
+    "client": {
+        "theme": "auto",
+        "server": {
+            "host": "localhost:8001",
+            "secure": false
+        }
+    },
+    "debug": {
+        "pg_notify": false,
+        "pg_query": false
+    },
+    "coinbase": {
+        "regular": [720],
+        "supercharge": [1440]
+    },
+    "price": {
+        "currency": "usd",
+        "updateInterval": "1m",
+        "saveToDB": false
+    }
 }
 
 export const getDefaultConfig = (extConfig) => Object.assign({}, defaultConfig, extConfig)

@@ -208,13 +208,13 @@ export const getAddressUptime = async (address) => {
 export const getTransaction = async (hash) => {
     const sql = `
         select *
-        from v_trans t
+        from v_trans_all t
         where t.hash = $1
         limit 1
     `
     let result = (await query(sql, [hash])).rows[0]
 
-    result.memo = decodeMemo(result.memo)
+    result.memo = decodeMemo(result.memo || "")
     result.scam = checkMemoForScam(result.memo)
 
     return result

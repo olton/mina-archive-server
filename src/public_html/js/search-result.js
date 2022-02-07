@@ -52,7 +52,7 @@ const parseSearchResult = (data) => {
                 </div>
                 <div class="text-small">
                     <span>Block Height: </span><span class="text-bold">${a.height}</span>
-                    <span>Block Date: </span><span class="text-bold">${datetime(+a.timestamp).format("DD/MM/YYYY HH:mm")}</span>
+                    <span>Block Date: </span><span class="text-bold">${datetime(+a.timestamp).format(config.format.datetime)}</span>
                     <span>Epoch: </span><span class="text-bold">${a.epoch}</span>
                     <span>Slot: </span><span class="text-bold">${a.slot}</span>
                     <span>Global Slot: </span><span class="text-bold">${a.global_slot}</span>
@@ -85,7 +85,7 @@ const parseSearchResult = (data) => {
                 </div>
                 <div class="text-small">
                     <span>Block Height: </span><span class="text-bold">${a.height}</span>
-                    <span>Block date: </span><span class="text-bold">${datetime(+a.timestamp).format("DD/MM/YYYY HH:mm")}</span>
+                    <span>Block date: </span><span class="text-bold">${datetime(+a.timestamp).format(config.format.datetime)}</span>
                     <span>Epoch: </span><span class="text-bold">${a.epoch}</span>
                     <span>Slot: </span><span class="text-bold">${a.slot}</span>
                     <span>Global Slot: </span><span class="text-bold">${a.global_slot}</span>
