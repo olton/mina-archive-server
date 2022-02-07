@@ -265,7 +265,8 @@ footer a:hover {
 #trans-fail,
 #block-time,
 #snarks-fee,
-#trans-fee {
+#trans-fee,
+#start_block {
   position: absolute;
   top: 5px;
   right: 10px;
@@ -275,6 +276,9 @@ footer a:hover {
 }
 #blocks-cpy {
   color: var(--color-info);
+}
+#start_block {
+  color: var(--color-text);
 }
 #block-time,
 #snarks-fee {

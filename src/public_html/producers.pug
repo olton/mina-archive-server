@@ -3,8 +3,6 @@ include components/appbar
 
 div.container-fluid
     div.container
-        include components/live
-
         div.hero.hero-padding-secondary
             div.row
                 div.cell-lg-6
@@ -24,10 +22,10 @@ div.container-fluid
 
 section.container-fluid
     div.container
-        div.mt-4
+        div.mt-4(style="height: 10px")
             div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
         div.mt-4
-            div.radius(data-role="panel" data-title-caption="Active Producers ( <span id='active-producers-count' class='text-normal'>0</span> ) <button class='ml-auto button small info mt-2' onclick='reloadProducersTable()'>Reload table <span class='mif-refresh'></span></span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-cog mif-3x'></span>")
+            div.radius(data-role="panel" data-title-caption="Active Producers ( <span id='active-producers-count' class='text-normal'>0</span> ) <button class='ml-auto button small bg-lightViolet fg-white mt-2' onclick='reloadProducersTable()'><span class='mif-refresh'></span></span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-cog mif-3x'></span>")
                 div.mt-4
                     table.table.striped.monospace.data-table.row-hover.cell-border#producers-table(
                         data-role="table"

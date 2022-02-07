@@ -18,12 +18,18 @@ const updatePrice = (data) => {
 const updateHeight = data => {
     if (!data) return
 
-    const {height, epoch, slot, global_slot} = data
+    const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
 
-    $("#height").html((+height).format(0, null, " ", "."))
+    $("#height").html(`
+        <span>${(+height).format(0, null, " ", ".")}</span>
+        <div class="reduce-4 text-bold ml-auto">
+            <span class="fg-violet" title="Blocks Produced in Epoch">${blocks_produced}</span>
+        </div>
+    `)
     $("#epoch").html((+epoch).format(0, null, " ", "."))
     $("#slot").html((+slot).format(0, null, " ", "."))
     $("#global-slot").html((+global_slot).format(0, null, " ", "."))
+    $("#start_block").addClass("reduce-2").html("<span class='text-muted mr-1 mif-cake'></span>"+(+epoch_start_block).format(0, null, " ", "."))
 }
 
 const updateStat = data => {
