@@ -25,7 +25,7 @@ div.container-fluid
                             img#address-logo
                         div.cell-10
                             div.h3.mt-0.mb-2
-                                span #{addressShort}
+                                span.reduce-2 #{addressShort}
                                 span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
                                 div#address-name.reduce-6.text-normal
 
@@ -52,7 +52,42 @@ div.container-fluid
             div.remark.alert.d-none
                 div#scammer-reason
 
-div.container-fluid.border-top.border-bottom.bd-system(style="min-height: 70px")
+div.container-fluid.bg-lightViolet.fg-white
+    div.container
+        div.pt-2.pb-2
+            div.row.text-light.mt-1-minus
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Epoch:
+                        div.box-value.mt-0#epoch-number 0
+
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Slot:
+                        div.box-value.mt-0#epoch-slot 0
+
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Global Slot:
+                        div.box-value.mt-0#epoch-global-slot 0
+
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Height:
+                        div.box-value.mt-0#epoch-current-height 0
+
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Produced:
+                        div.box-value.mt-0#epoch-blocks-produced 0
+
+                div.cell-fs-4.cell-lg-2
+                    div
+                        div.text-bold.text-upper.reduce-4 Started from:
+                        div.box-value.mt-0#epoch-start-block 0
+
+
+div.container-fluid.border-bottom.bd-system(style="min-height: 70px")
     div.container.pt-4.pb-4
         div.row
             div.cell-xl-3.cell-md-6

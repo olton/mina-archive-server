@@ -1,9 +1,12 @@
 const updateEpoch = data => {
-    const {height, epoch, slot, global_slot} = data
+    const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
 
-    $("#height").html((+height).format(0, null, " ", "."))
-    $("#epoch").html((+epoch).format(0, null, " ", "."))
-    $("#slot").html((+slot).format(0, null, " ", "."))
+    $("#epoch-number").html((+epoch).format(0, null, " ", "."))
+    $("#epoch-current-height").html((+height).format(0, null, " ", "."))
+    $("#epoch-start-block").html((+epoch_start_block).format(0, null, " ", "."))
+    $("#epoch-blocks-produced").html((+blocks_produced).format(0, null, " ", "."))
+    $("#epoch-slot").html((+slot).format(0, null, " ", "."))
+    $("#epoch-global-slot").html((+global_slot).format(0, null, " ", "."))
 }
 
 const updateAddressBalance = (data) => {
