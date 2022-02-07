@@ -136,7 +136,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_blocks': {
-                    response(ws, channel, await getAddressBlocks(data));
+                    response(ws, channel, await getAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
                     break;
                 }
                 case 'address_trans': {

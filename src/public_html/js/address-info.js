@@ -315,7 +315,7 @@ const wsMessageController = (ws, response) => {
             requestData(ws)
             requestLastActivity(ws)
             requestDelegations(ws)
-            ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+            ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
             ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             break;
@@ -323,7 +323,7 @@ const wsMessageController = (ws, response) => {
         case 'new_block': {
             requestData(ws)
             if (data.creator_key === address) {
-                ws.send(JSON.stringify({channel: 'address_blocks', data: address}));
+                ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
                 ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
                 // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             }
@@ -384,7 +384,7 @@ function refreshAddressTransactionsTable(){
 
 function refreshAddressBlocksTable(){
     if (globalThis.webSocket)
-        globalThis.webSocket.send(JSON.stringify({channel: 'address_blocks', data: address}))
+        globalThis.webSocket.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
 }
 
 function refreshAddressDelegations(){
