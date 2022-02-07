@@ -21,6 +21,11 @@ export const defaultConfig = {
         "server": {
             "host": "localhost:8001",
             "secure": false
+        },
+        "format": {
+            "datetime": "DD, MMM YYYY HH:mm",
+            "date": "DD, MMM YYYY",
+            "time": "HH:mm"
         }
     },
     "debug": {
