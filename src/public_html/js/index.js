@@ -1,5 +1,51 @@
 let intervalBlocksData
 
+const drawLastChainTable = data => {
+    const rows = []
+
+    for(let row of data) {
+        let tr = $("<tr>")
+
+        tr.html(`
+            <td>
+                <span class="mif-stop ${row.chain_status === 'pending' ? 'fg-cyan' : row.chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span>
+            </td>
+            <td>
+                <span>${row.height}</span>            
+                <div class="text-muted text-small">${datetime(+row.timestamp).timeLapse()}</div>            
+            </td>
+            <td>
+                <a class="link" href="/address/${row.creator_key}">${shorten(row.creator_key, 12)}</a>            
+                <div class="text-muted text-small fg-violet">${row.creator_name || ''}</div>            
+            </td>
+            <td class="text-center">
+                <span>${normMina(row.coinbase)}</span>
+                <div class="text-muted text-small">${normMina(row.snark_fee)}</div>            
+            </td>
+            <td class="text-center">
+                <span>${row.slot}</span>
+                <div class="text-muted text-small">${row.global_slot}</div>            
+            </td>
+            <td class="text-center">
+                <span>${row.epoch}</span>
+                <div class="text-muted text-small">epoch</div>            
+            </td>
+            <td class="text-center">
+                <span>${row.trans_count}</span>
+                <div class="text-muted text-small">${normMina(row.trans_fee)}</div>            
+            </td>
+            <td>
+                <a class="link" href="/block/${row.state_hash}">${shorten(row.state_hash, 5)}</a>
+                <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>            
+            </td>
+        `)
+
+        rows.push(tr)
+    }
+
+    return rows
+}
+
 const updateTransPoolCount = data => {
     $("#pool-trans").html(data)
 }
@@ -48,7 +94,7 @@ const updateDispute = data => {
     if (!data) return
 
     const target = $("#dispute-blocks-table tbody").clear()
-    const rows = drawBlocksTable(data, 'dispute')
+    const rows = drawLastChainTable(data, 'dispute')
     rows.map( r => target.append(r) )
     $("#dispute-block-length").html(rows.length)
 }
@@ -57,7 +103,7 @@ const updateBlocks = data => {
     if (!data) return
 
     const target = $("#canonical-blocks-table tbody").clear()
-    const rows = drawBlocksTable(data, 'canonical')
+    const rows = drawLastChainTable(data, 'canonical')
     rows.map( r => target.append(r) )
     $("#canonical-block-length").html(rows.length)
 }
