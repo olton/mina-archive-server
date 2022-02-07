@@ -9,31 +9,37 @@ div.container-fluid
                     div
                         div.h1.mb-0.page-title Blocks
 
-                    hr.thin
-
-                    div.text-leader.mt-2.mb-2
-                        div.
-
                 div.cell-lg-6
                     div.mb-4
                         include components/search-form
 
-section.container-fluid
+div.container-fluid(style="background-color: #f8f8f8")
     div.container
-        div.mt-4(style="height: 10px")
+        div.h3.mt-4.mb-0.text-light.border-bottom.bd-system.pb-2 Blockchain State
+        div.pt-2.pb-2
+            include ./components/epoch-small
+
+section.container-fluid.mt-4
+    div.container
+        div(style="height: 10px")
             div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
-        div.mt-4
-            div.mt-4
-                table.table.striped#blocks-table
+
+        div
+            div.scroll-table-container.border.bd-system
+                table.table.striped.data-table.monospace.row-hover#blocks-table
                     thead
                         tr
+                            th(data-name="height")
+                                span.mif-link
                             th(data-name="height") Height
                             th(data-name="creator_key") Block Producer
-                            th(data-name="coinbase") Coinbase
-                            th(data-name="slot") Slot
-                            th(data-name="epoch") Epoch
-                            th(data-name="trans") Trans
+                            th.text-center(data-name="coinbase") Coinbase
+                            th.text-center(data-name="slot") Slot
+                            th.text-center(data-name="epoch") Epoch
+                            th.text-center(data-name="trans") Trans
                             th(data-name="state_hash") Hash
+                    tbody
+
             div.mt-4
                 div#pagination
 

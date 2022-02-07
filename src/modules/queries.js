@@ -29,6 +29,8 @@ export const getBlocks = async ({
         limit $2 offset $3        
     `
 
+    console.log(`limit ${limit} offset ${offset}`)
+
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 
@@ -59,10 +61,11 @@ export const getAddressTransactions = async (pk, {
 
 export const getTotalBlocks = async () => {
     const sql = `
-        select max(height) as height
+        select count(id) as total
         from blocks
+        where chain_status <> 'pending'
     `
-    return (await query(sql)).rows[0].height
+    return (await query(sql)).rows[0].total
 }
 
 export const getEpoch = async () => {
@@ -80,7 +83,6 @@ export const getStat = async () => {
 }
 
 export const getAddressInfo = async (address) => {
-    // console.log("Address request: ", address)
     const sql = `
         select 
                a.*, 

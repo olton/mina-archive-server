@@ -19,7 +19,7 @@ import {
     getLastBlockTime,
     getBlockInfo,
     getEpoch,
-    getAddressTransactions
+    getAddressTransactions, getTotalBlocks
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -72,7 +72,9 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'blocks': {
-                    response(ws, channel, await getBlocks({type: data.type, limit: data.count, offset: data.offset}));
+                    const totalBlocks = await getTotalBlocks()
+                    const blocks = await getBlocks({type: data.type, limit: data.count, offset: data.offset})
+                    response(ws, channel, {totalBlocks, blocks});
                     break;
                 }
                 case 'block': {

@@ -100,6 +100,13 @@ const runWebServer = () => {
         })
     })
 
+    app.get('/blocks', async (req, res) => {
+        res.render('blocks', {
+            title: `Blocks in Mina Blockchain`,
+            clientConfig
+        })
+    })
+
     app.get('/producers', async (req, res) => {
         res.render('producers', {
             title: `Block Producers in Mina Blockchain`,
