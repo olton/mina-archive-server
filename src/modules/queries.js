@@ -48,6 +48,7 @@ export const qAddressBlocks = async (pk, {
         from v_blocks b
         where b.creator_key = $1
         and chain_status = ANY($2::chain_status_type[])
+        order by height desc
         limit $3 offset $4
     `
 
@@ -424,6 +425,34 @@ export const getProducers = async () => {
             r.pos,
             r.pos_next,
             r.scammer
+        ])
+    }
+
+    return result
+}
+
+export const getZeroBlocks = async () => {
+    const sql = `
+        select *
+        from v_blocks
+        where coinbase = 0
+        and chain_status = 'canonical'
+        and height > 1
+        order by height desc
+    `
+    const rows = (await query(sql)).rows
+    const result = []
+
+    for(let r of rows) {
+        result.push([
+            r.height,
+            r.epoch,
+            r.slot,
+            r.global_slot,
+            r.creator_key,
+            r.creator_name,
+            r.timestamp,
+            r.state_hash
         ])
     }
 

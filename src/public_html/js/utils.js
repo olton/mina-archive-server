@@ -262,26 +262,33 @@ const drawTransPoolTable = (data) => {
 }
 
 function addressBlocksTableDrawCell(td, val, idx, head, row, table){
+    console.log(row)
     if (head.name === 'chain_status') {
         td.clear().addClass("text-center").append(
             $("<span>").attr("title", val).addClass("mif-stop").addClass(val === 'pending' ? 'fg-cyan' : val === 'canonical' ? 'fg-green' : 'fg-red')
         )
     }
     if (head.name === 'timestamp') {
-        td.clear().html(`${datetime(+val).format(config.format.datetime)}`)
+        td.addClass("d-none")
     }
     if (head.name === 'height') {
-        td.clear().addClass("text-center").append(
-            $("<a>").addClass("link").attr("href", `/block/${row[3]}`).html(val)
-        )
+        td.html(`
+            <a class="link" href="/block/${row[3]}">${val}</a>
+            <div class="text-small text-muted">${datetime(+row[2]).timeLapse()}</div>
+        `)
     }
     if (head.name === 'state_hash') {
-        td.clear().append(
-            $("<a>").addClass("link").attr("href", `/block/${val}`).html(shorten(val, 12))
-        )
+        td.html(`
+            <a class="link" href="/block/${val}">${shorten(val, 12)}</a>
+            <div class="text-muted text-small">${datetime(+timestamp).timeLapse()}</div>
+            <div class="text-small text-muted">${datetime(+row[2]).format(config.format.datetime)}</div>
+        `)
     }
     if (head.name === 'coinbase') {
-        td.addClass("text-center").html(`${normMina(val)}`)
+        td.addClass("text-center").html(`
+            ${normMina(val)}
+            <div class="text-small text-muted">${normMina(val) === 720 ? "norm" : "super"}</div>
+        `)
     }
     if (head.name === 'epoch' || head.name === 'trans_count') {
         td.addClass("text-center").html(`${val}`)
