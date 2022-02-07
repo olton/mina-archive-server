@@ -55,36 +55,7 @@ div.container-fluid
 div.container-fluid.bg-lightViolet.fg-white
     div.container
         div.pt-2.pb-2
-            div.row.text-light.mt-1-minus
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Epoch:
-                        div.box-value.mt-0#epoch-number 0
-
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Slot:
-                        div.box-value.mt-0#epoch-slot 0
-
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Global Slot:
-                        div.box-value.mt-0#epoch-global-slot 0
-
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Height:
-                        div.box-value.mt-0#epoch-current-height 0
-
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Produced:
-                        div.box-value.mt-0#epoch-blocks-produced 0
-
-                div.cell-fs-4.cell-lg-2
-                    div
-                        div.text-bold.text-upper.reduce-4 Started from:
-                        div.box-value.mt-0#epoch-start-block 0
+            include ./components/epoch-small
 
 
 div.container-fluid.border-bottom.bd-system(style="min-height: 70px")
