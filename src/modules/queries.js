@@ -1,11 +1,9 @@
 import {query} from  "./postgres"
 import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts"
-import {TextDecoder} from 'util'
-import {decode} from "@faustbrian/node-base58"
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
 
-export const qDisputeBlocks = async () => {
+export const getDisputeBlocks = async () => {
     const sql = `
         select distinct * 
         from v_blocks b 
@@ -19,7 +17,7 @@ export const qDisputeBlocks = async () => {
     return (await query(sql)).rows
 }
 
-export const qBlocks = async ({
+export const getBlocks = async ({
     type = CHAIN_STATUS_CANONICAL,
     limit = 50,
     offset = 0
@@ -34,28 +32,7 @@ export const qBlocks = async ({
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
 
-export const qAddressBlocks = async (pk, {
-    type = CHAIN_STATUS_ALL,
-    limit = 50,
-    offset = 0,
-} = {}) => {
-    if (!pk) {
-        throw new Error('You must specified address for this query [qAddressBlocks]')
-    }
-
-    const sql = `
-        select * 
-        from v_blocks b
-        where b.creator_key = $1
-        and chain_status = ANY($2::chain_status_type[])
-        order by height desc
-        limit $3 offset $4
-    `
-
-    return (await query(sql, [pk, Array.isArray(type) ? type : [type], limit, offset])).rows
-}
-
-export const qAddressTransactions = async (pk, {
+export const getAddressTransactions = async (pk, {
     limit = 50,
     offset = 0,
 } = {}) => {
@@ -80,7 +57,7 @@ export const qAddressTransactions = async (pk, {
     return result
 }
 
-export const qTotalBlocks = async () => {
+export const getTotalBlocks = async () => {
     const sql = `
         select max(height) as height
         from blocks
@@ -88,21 +65,21 @@ export const qTotalBlocks = async () => {
     return (await query(sql)).rows[0].height
 }
 
-export const qGetEpoch = async () => {
+export const getEpoch = async () => {
     const sql = `
         select * from v_epoch
     `
     return (await query(sql)).rows[0]
 }
 
-export const qGetStat = async () => {
+export const getStat = async () => {
     const sql = `
         select * from v_stat
     `
     return (await query(sql)).rows[0]
 }
 
-export const qAddressInfo = async (address) => {
+export const getAddressInfo = async (address) => {
     // console.log("Address request: ", address)
     const sql = `
         select 
@@ -119,7 +96,7 @@ export const qAddressInfo = async (address) => {
     return (await query(sql, [address])).rows[0]
 }
 
-export const qLastBlockTime = async () => {
+export const getLastBlockTime = async () => {
     const sql = `
         select * 
         from v_last_block_time
@@ -127,7 +104,7 @@ export const qLastBlockTime = async () => {
     return (await query(sql)).rows[0].timestamp
 }
 
-export const qBlockInfo = async (hash) => {
+export const getBlockInfo = async (hash) => {
     const sql = `
         select b.*
         from v_blocks b 
@@ -273,7 +250,11 @@ export const getLastBlockWinners = async (limit = 20) => {
     return result
 }
 
-export const getAddressBlocks = async (address) => {
+export const getAddressBlocks = async (address, {
+    type = CHAIN_STATUS_CANONICAL,
+    limit = 50,
+    offset = 0
+} = {}) => {
     const sql = `
         select 
                b.chain_status, 
@@ -287,10 +268,12 @@ export const getAddressBlocks = async (address) => {
                b.trans_count 
         from v_blocks b
         where b.creator_key = $1
+        and chain_status = ANY($2::chain_status_type[])
         order by height desc
+        limit $3 offset $4
     `
 
-    const rows = (await query(sql, [address])).rows
+    const rows = (await query(sql, [address, Array.isArray(type) ? type : [type], limit, offset])).rows
     const result = []
 
     for(let r of rows) {

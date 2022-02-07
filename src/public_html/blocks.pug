@@ -1,0 +1,47 @@
+include components/head
+include components/appbar
+
+div.container-fluid
+    div.container
+        div.hero.hero-padding-secondary
+            div.row
+                div.cell-lg-6
+                    div
+                        div.h1.mb-0.page-title Blocks
+
+                    hr.thin
+
+                    div.text-leader.mt-2.mb-2
+                        div.
+
+                div.cell-lg-6
+                    div.mb-4
+                        include components/search-form
+
+section.container-fluid
+    div.container
+        div.mt-4(style="height: 10px")
+            div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+        div.mt-4
+            div.mt-4
+                table.table.striped#blocks-table
+                    thead
+                        tr
+                            th(data-name="height") Height
+                            th(data-name="creator_key") Block Producer
+                            th(data-name="coinbase") Coinbase
+                            th(data-name="slot") Slot
+                            th(data-name="epoch") Epoch
+                            th(data-name="trans") Trans
+                            th(data-name="state_hash") Hash
+            div.mt-4
+                div#pagination
+
+    div.mb-10 &nbsp;
+
+include components/footer
+
+include components/scripts
+
+script
+    include ./js/blocks.js

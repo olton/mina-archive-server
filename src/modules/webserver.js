@@ -4,18 +4,10 @@ import path from "path";
 import http from "http";
 import express from "express";
 import {
-    qBlocks,
-    qGetEpoch,
-    qGetStat,
-    qDisputeBlocks,
-    qAddressInfo,
     getUptimeNext,
-    qBlockInfo,
-    getBlocksByHeight, getTransaction, getAddressByName
+    getBlocksByHeight, getTransaction, getAddressByName, getAddressInfo, getBlockInfo
 } from "./queries";
 import {shorten} from "../helpers/short-address";
-import {timestamp} from "../helpers/timestamp";
-import {formatNumber} from "../helpers/numbers";
 import {log} from "../helpers/logging.js";
 import {websocket} from "./websocket.js"
 import {datetime, Datetime} from "@olton/datetime"
@@ -141,9 +133,9 @@ const runWebServer = () => {
         for(let key in query) {
             const val = query[key].trim()
             if (val.substring(0, 4) === 'B62q') {
-                result.addresses.push(await qAddressInfo(val))
+                result.addresses.push(await getAddressInfo(val))
             } else if (val.substring(0, 3) === '3NK' || val.substring(0, 3) === '3NL') {
-                result.blocks.push(await qBlockInfo(val))
+                result.blocks.push(await getBlockInfo(val))
             } else if (val.substring(0, 3) === 'Ckp') {
                 result.transactions.push(await getTransaction(val))
             } else if (!isNaN(+val)) {

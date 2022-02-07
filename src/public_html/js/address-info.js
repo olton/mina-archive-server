@@ -203,6 +203,7 @@ const updateAddressLastBlocks = data => {
 
     const target = $("#address-last-blocks tbody").clear()
     const rows = drawBlocksTable(data, 'any')
+    console.log(rows.length)
     if (rows.length) {
         rows.map(r => target.append(r))
     } else {

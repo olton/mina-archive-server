@@ -42,47 +42,39 @@ const normMina = (nano = 0, type = "number") => {
 const drawBlocksTable = (data) => {
     let rows = []
 
-    for(let r of data) {
+    for(let row of data) {
+        const [chain_status, height, timestamp, state_hash, coinbase, slots, epoch, trans] = row
+        const [global_slot, slot] = slots.split(":")
+
         let tr = $("<tr>")
         tr.html(`
-            <td class="text-center"><span class="mif-stop ${r.chain_status === 'pending' ? 'fg-cyan' : r.chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span></td>
+            <td class="text-center"><span class="mif-stop ${chain_status === 'pending' ? 'fg-cyan' : chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span></td>
             <td class="text-left">
                 <div>
-                    <a class="link" href="/block/${r.state_hash}">${r.height}</a>
-                    <div class="text-muted text-small">${datetime(+r.timestamp).timeLapse()}</div>                        
+                    <a class="link" href="/block/${state_hash}">${height}</a>
+                    <div class="text-muted text-small">${datetime(+timestamp).timeLapse()}</div>                        
                 </div>                
-            </td>
-            <td>
-                <div class="no-wrap">
-                    <a class="link" href="/address/${r.creator_key}">${shorten(r.creator_key, 8)}</a>       
-                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${r.creator_key}"></span>             
-                </div>                
-                <div class="text-small">
-                    <span class="fg-darkViolet">${r.creator_name || 'Unknown'}</span>                
-                </div>
-            </td>
-            <td class="text-center">
-                <span>${normMina(r.coinbase)}</span>
-                <div class="text-small text-muted">${normMina(r.snark_fee)}</div>                                
-            </td>
-            <td class="text-center" style="width: 80px">
-                <span>${r.slot}</span>
-                <div class="text-small text-muted">${r.global_slot}</div>                                
-            </td>
-            <td class="text-center" style="width: 80px">
-                <span>${r.epoch}</span>
-                <div class="text-small text-muted">epoch</div>                                
-            </td>
-            <td class="text-center">
-                <span>${r.tr_applied}</span>
-                <div class="text-small text-muted">${r.trans_fee / 10**9}</div>                                
             </td>
             <td style="width: 200px">
                 <div class="reduce-1 no-wrap">
-                    <a class="link" href="/block/${r.state_hash}">${shorten(r.state_hash, 7)}</a>
-                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.state_hash}"></span>            
+                    <a class="link" href="/block/${state_hash}">${shorten(state_hash, 12)}</a>
+                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${state_hash}"></span>            
                 </div>        
-                <div class="text-small text-muted">${datetime(+r.timestamp).format(config.format.datetime)}</div>
+                <div class="text-small text-muted">${datetime(+timestamp).format(config.format.datetime)}</div>
+            </td>
+            <td class="text-center">
+                <span>${normMina(coinbase)}</span>
+            </td>
+            <td class="text-center" style="width: 80px">
+                <span>${slot}</span>
+                <div class="text-small text-muted">${global_slot}</div>                                
+            </td>
+            <td class="text-center" style="width: 80px">
+                <span>${epoch}</span>
+                <div class="text-small text-muted">epoch</div>                                
+            </td>
+            <td class="text-center">
+                <span>${trans}</span>
             </td>
         `)
 
@@ -262,7 +254,7 @@ const drawTransPoolTable = (data) => {
 }
 
 function addressBlocksTableDrawCell(td, val, idx, head, row, table){
-    console.log(row)
+    const [chain_status, height, timestamp, state_hash, coinbase, slot, epoch, trans] = row
     if (head.name === 'chain_status') {
         td.clear().addClass("text-center").append(
             $("<span>").attr("title", val).addClass("mif-stop").addClass(val === 'pending' ? 'fg-cyan' : val === 'canonical' ? 'fg-green' : 'fg-red')
@@ -273,15 +265,14 @@ function addressBlocksTableDrawCell(td, val, idx, head, row, table){
     }
     if (head.name === 'height') {
         td.html(`
-            <a class="link" href="/block/${row[3]}">${val}</a>
-            <div class="text-small text-muted">${datetime(+row[2]).timeLapse()}</div>
+            <a class="link" href="/block/${state_hash}">${val}</a>
+            <div class="text-small text-muted">${datetime(+timestamp).timeLapse()}</div>
         `)
     }
     if (head.name === 'state_hash') {
         td.html(`
             <a class="link" href="/block/${val}">${shorten(val, 12)}</a>
-            <div class="text-muted text-small">${datetime(+timestamp).timeLapse()}</div>
-            <div class="text-small text-muted">${datetime(+row[2]).format(config.format.datetime)}</div>
+            <div class="text-small text-muted">${datetime(+timestamp).format(config.format.datetime)}</div>
         `)
     }
     if (head.name === 'coinbase') {

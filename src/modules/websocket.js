@@ -1,14 +1,5 @@
 import WebSocket, {WebSocketServer} from "ws";
 import {
-    qBlocks,
-    qAddressInfo,
-    qDisputeBlocks,
-    qGetStat,
-    qLastBlockTime,
-    qGetEpoch,
-    qAddressBlocks,
-    qAddressTransactions,
-    qBlockInfo,
     getLeaderboard,
     getAddressUptime,
     getTransaction,
@@ -20,7 +11,15 @@ import {
     getAddressDelegations,
     getBlockTransactions,
     getProducers,
-    getZeroBlocks
+    getZeroBlocks,
+    getDisputeBlocks,
+    getBlocks,
+    getStat,
+    getAddressInfo,
+    getLastBlockTime,
+    getBlockInfo,
+    getEpoch,
+    getAddressTransactions
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -34,30 +33,30 @@ export const websocket = (server) => {
     wss.on('connection', (ws) => {
         ws.send(JSON.stringify({
             channel: "welcome",
-            data: `Welcome from Minataur v${version}`
+            data: `Welcome to Minataur v${version}`
         }))
 
-        ws.on('message', async (msg, isBinary) => {
+        ws.on('message', async (msg) => {
             const {channel, data} = JSON.parse(msg)
             switch (channel) {
                 case 'epoch': {
-                    response(ws, channel, await qGetEpoch())
+                    response(ws, channel, await getEpoch())
                     break
                 }
                 case 'last_block_time': {
-                    response(ws, channel, await qLastBlockTime())
+                    response(ws, channel, await getLastBlockTime())
                     break
                 }
                 case 'stat': {
-                    response(ws, channel, await qGetStat())
+                    response(ws, channel, await getStat())
                     break
                 }
                 case 'dispute': {
-                    response(ws, channel, await qDisputeBlocks())
+                    response(ws, channel, await getDisputeBlocks())
                     break
                 }
                 case 'lastChain': {
-                    response(ws, channel, await qBlocks({limit: 20}))
+                    response(ws, channel, await getBlocks({limit: 20}))
                     break
                 }
                 case 'price': {
@@ -65,19 +64,19 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_last_blocks': {
-                    response(ws, channel, await qAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
+                    response(ws, channel, await getAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
                     break;
                 }
                 case 'address_last_trans': {
-                    response(ws, channel, await qAddressTransactions(data.pk, {limit: data.count, offset: data.offset}));
+                    response(ws, channel, await getAddressTransactions(data.pk, {limit: data.count, offset: data.offset}));
                     break;
                 }
                 case 'blocks': {
-                    response(ws, channel, await qBlocks({type: data.type, limit: data.count, offset: data.offset}));
+                    response(ws, channel, await getBlocks({type: data.type, limit: data.count, offset: data.offset}));
                     break;
                 }
                 case 'block': {
-                    response(ws, channel, await qBlockInfo(data));
+                    response(ws, channel, await getBlockInfo(data));
                     break;
                 }
                 case 'block_trans': {
@@ -85,7 +84,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address': {
-                    response(ws, channel, await qAddressInfo(data));
+                    response(ws, channel, await getAddressInfo(data));
                     break;
                 }
                 case 'address_balance': {
