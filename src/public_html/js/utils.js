@@ -188,13 +188,20 @@ function blockTransDrawCell(td, val, idx, head, row, table){
     }
     if (head.name === 'trans_owner') {
         td.html(`
-            <div>
-                FROM:&nbsp;<a class="link" href="/address/${val}">${shorten(val, 12)}</a>
-                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
-            </div>
-            <div>
-                TO:&nbsp;&nbsp;&nbsp;<a class="link" href="/address/${row[6]}">${shorten(row[6], 12)}</a>
-                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row[6]}"></span>
+            <div class="row">
+                <div class="mr-2">
+                    <span class="ml-2 mt-2 mif-move-down mif-2x"></span>                
+                </div>
+                <div>
+                    <div>
+                        <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
+                    </div>
+                    <div>
+                        <a class="link" href="/address/${row[6]}">${shorten(row[6], 12)}</a>
+                        <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row[6]}"></span>
+                    </div>                                    
+                </div>            
             </div>
         `)
     }
