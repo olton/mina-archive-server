@@ -32,7 +32,7 @@ const runWebServer = () => {
             res.end()
         })
 
-        httpServer.listen(+server_port, server_host)
+        httpServer.listen(+server_port)
     } else {
         webserver = http.createServer({}, app)
     }
