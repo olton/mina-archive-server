@@ -342,8 +342,8 @@ tr.no-hover:hover {
   border-top: 1px solid var(--color-border);
   padding-top: 10px;
 }
-#pagination.disabled * {
-  opacity: 0.5 !important;
+.disabled * {
+  opacity: 0.8 !important;
 }
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {

@@ -29,11 +29,15 @@ export const getBlocks = async ({
         where chain_status = ANY($1::chain_status_type[])
         %BLOCK_SEARCH%
         %HASH_SEARCH%
+        %COINBASE_SEARCH%
         limit $2 offset $3        
     `
 
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
+    sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
+
+    // if (search && !isNaN(search.coinbase)) console.log(search, sql, limit, offset)
 
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
 }
@@ -48,10 +52,12 @@ export const getBlocksCount = async ({
         where chain_status = ANY($1::chain_status_type[])
         %BLOCK_SEARCH%
         %HASH_SEARCH%
+        %COINBASE_SEARCH%
     `
 
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
     sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
+    sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
 }

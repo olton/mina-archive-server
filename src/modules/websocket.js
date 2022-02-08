@@ -159,7 +159,9 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'zero_blocks': {
-                    response(ws, channel, await getZeroBlocks());
+                    const count = await getBlocksCount({...data})
+                    const blocks = await getBlocks({type: data.type, limit: data.count, search: data.search})
+                    response(ws, channel, {blocks, count});
                     break;
                 }
             }

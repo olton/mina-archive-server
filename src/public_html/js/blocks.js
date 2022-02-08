@@ -16,7 +16,7 @@ const updateEpoch = data => {
 }
 
 const updateBlocksTable = data => {
-    $("#total-blocks").html(Number(data.totalBlocks.total).format(0, null, " ", "."))
+    $("#total-blocks, #tab-blocks-count").html(Number(data.totalBlocks.total).format(0, null, " ", "."))
     $("#pending-blocks").html(Number(data.totalBlocks.pending).format(0, null, " ", "."))
     $("#canonical-blocks").html(Number(data.totalBlocks.canonical).format(0, null, " ", "."))
     $("#orphaned-blocks").html(Number(data.totalBlocks.orphaned).format(0, null, " ", "."))
@@ -93,14 +93,21 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = () => {
+
         ws.send(JSON.stringify({channel: 'epoch'}))
         ws.send(JSON.stringify({channel: 'blocks', data: getBlocksRequest()}))
+
+    }
+
+    const requestZeroBlocks = () => {
+        $("#zero-blocks-table").addClass("disabled")
+        ws.send(JSON.stringify({channel: 'zero_blocks', data: {type: blockZeroState, count: 1000000000, search: {coinbase: 0}}}))
     }
 
     switch(channel) {
         case 'welcome': {
             requestLastActivity()
-
+            requestZeroBlocks()
             break;
         }
         case 'new_block': {
@@ -113,6 +120,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'epoch': {
             updateEpoch(data)
+            break;
+        }
+        case 'zero_blocks': {
+            updateZeroBlocksTable(data)
             break;
         }
     }
@@ -164,19 +175,121 @@ $("#pagination").on("click", ".page-link", function(){
 let block_search_input_interval = false
 
 const flushBlockSearchInterval = () => {
-    clearInterval(block_search_input_interval);
-    block_search_input_interval = false;
+    clearInterval(block_search_input_interval)
+    block_search_input_interval = false
 }
 
 $("#blocks-search").on(Metro.events.inputchange, function(){
-    searchBlockString = this.value.trim().toLowerCase();
+    searchBlockString = this.value.trim().toLowerCase()
 
     flushBlockSearchInterval()
 
     if (!block_search_input_interval) block_search_input_interval = setTimeout(function(){
-        console.log(searchBlockString)
         flushBlockSearchInterval()
-        currentPage = 1;
+        currentPage = 1
         refreshBlocksTable()
-    }, searchThreshold);
-});
+    }, searchThreshold)
+})
+
+//!--------------------- ZERO -------------------------------------------
+let blockZeroState = ['pending', 'canonical', 'orphaned']
+
+const updateZeroBlocksTable = data => {
+    if (!data || !Array.isArray(data.blocks)) return
+
+    $("#zero-found-blocks, #tab-zero-count").html(data.blocks.length)
+
+    const rows = []
+
+    for(let row of data.blocks) {
+        rows.push([
+            row.chain_status,
+            row.height,
+            row.creator_key,
+            row.creator_name,
+            row.coinbase,
+            row.slot,
+            row.global_slot,
+            row.epoch,
+            row.trans_count,
+            row.trans_fee,
+            row.state_hash,
+            row.timestamp,
+        ])
+    }
+
+    const table = Metro.getPlugin('#zero-blocks-table', 'table')
+    table.setData({data: rows})
+    $("#zero-blocks-table").removeClass("disabled")
+}
+
+function refreshZeroTable(){
+    $("#zero-blocks-table").addClass("disabled")
+    if (globalThis.webSocket) {
+        globalThis.webSocket.send(JSON.stringify({channel: 'zero_blocks', data: {type: blockZeroState, count: 1000000000, search: {coinbase: 0}}}))
+    }
+}
+
+function zeroApplyFilter(el, state) {
+    if (!el.checked) {
+        Metro.utils.arrayDelete(blockZeroState, state)
+    } else {
+        if (!blockZeroState.includes(state)) blockZeroState.push(state)
+    }
+    refreshZeroTable()
+}
+
+function zeroBlocksTableDrawCell(td, val, idx, head, row, table){
+    const [chain_status, height, creator_key, creator_name, coinbase, slot, global_slot, epoch, trans_count, trans_fee, state_hash, timestamp] = row
+    if (['global_slot', 'creator_name', 'timestamp', 'trans_fee'].includes(head.name)) {
+        td.addClass("d-none")
+    }
+    if (head.name === 'chain_status') {
+        td.html(`
+            <span class="mif-stop ${chain_status === 'pending' ? 'fg-cyan' : chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span>
+        `)
+    }
+    if (head.name === 'height') {
+        td.html(`
+            <a class="link" href="/block/${state_hash}">${val}</a>
+            <div class="text-muted text-small">${datetime(+timestamp).timeLapse()}</div>
+        `)
+    }
+    if (head.name === 'creator_key') {
+        td.html(`
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
+            <div class="fg-violet text-small">${creator_name || ''}</div>
+        `)
+    }
+    if (head.name === 'slot') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+            <div class="text-muted text-small">${global_slot}</div>
+        `)
+    }
+    if (head.name === 'epoch') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+            <div class="text-muted text-small">epoch</div>
+        `)
+    }
+    if (head.name === 'state_hash') {
+        td.html(`
+            <a class="link" href="/block/${val}">${shorten(val, 5)}</a>
+            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${val}"></span>
+            <div class="text-muted text-small">${datetime(+timestamp).format(config.format.datetime)}</div>
+        `)
+    }
+    if (head.name === 'trans') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+            <div class="text-muted text-small">${normMina(trans_fee)}</div>
+        `)
+    }
+    if (head.name === 'coinbase') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+        `)
+    }
+}

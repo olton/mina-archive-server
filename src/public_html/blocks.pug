@@ -26,11 +26,15 @@ section.container-fluid.mt-4
         ul(data-role="tabs" data-expand="true")
             li.ml-2
                 a(href="#blockchain")
-                    span Blockchain Blocks
+                    span Blockchain Blocks (
+                        span.ml-1.mr-1#tab-blocks-count 0
+                        span )
 
             li
                 a(href="#zero")
-                    span Zero Blocks
+                    span Zero Blocks (
+                        span.ml-1.mr-1#tab-zero-count 0
+                        span )
 
         div#blockchain
 
@@ -40,16 +44,16 @@ section.container-fluid.mt-4
             div.row.text-leader
                 div.cell-lg-3.cell-md-6
                     span.reduce-2 Total:
-                    span.ml-2.text-bold#total-blocks
+                    span.ml-2#total-blocks
                 div.cell-lg-3.cell-md-6
                     span.reduce-2 Pending:
-                    span.ml-2.fg-cyan.text-bold#pending-blocks
+                    span.ml-2.fg-cyan#pending-blocks
                 div.cell-lg-3.cell-md-6
                     span.reduce-2 Canonical:
-                    span.ml-2.fg-green.text-bold#canonical-blocks
+                    span.ml-2.fg-green#canonical-blocks
                 div.cell-lg-3.cell-md-6
                     span.reduce-2 Orphaned:
-                    span.ml-2.fg-red.text-bold#orphaned-blocks
+                    span.ml-2.fg-red#orphaned-blocks
 
             hr
 
@@ -57,14 +61,14 @@ section.container-fluid.mt-4
                 div.row.flex-align-start
 
                     div.cell-md-4
-                        span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE
+                        span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
                         div.mt-2-minus
                             input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="blocksApplyFilter(this, 'pending')")
                             input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
                             input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="blocksApplyFilter(this, 'orphaned')")
 
                     div.cell-md-4
-                        span.ml-1.text-muted.reduce-4.text-bold FOUND
+                        span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
                         div.mt-1-minus
                             span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
 
@@ -95,7 +99,7 @@ section.container-fluid.mt-4
                     table.table.striped.data-table.monospace.row-hover#blocks-table
                         thead
                             tr
-                                th(data-name="height")
+                                th(data-name="state")
                                     span.mif-link
                                 th(data-name="height") Height
                                 th(data-name="creator_key") Block Producer
@@ -110,6 +114,61 @@ section.container-fluid.mt-4
                     div#pagination
 
         div#zero
+            div.row.flex-align-start
+
+                div.cell-md-4
+                    span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
+                    div.mt-2-minus
+                        input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="zeroApplyFilter(this, 'pending')")
+                        input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="zeroApplyFilter(this, 'canonical')")
+                        input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="zeroApplyFilter(this, 'orphaned')")
+
+                div.cell-md-4
+                    span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
+                    div.mt-1-minus
+                        span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#zero-found-blocks 0
+
+                div.cell-md-4
+                    div.text-left-fs.text-right-md
+                        button.mt-6.button.success.small(onclick="refreshZeroTable()")
+                            span RELOAD DATA
+                            span.mif-refresh
+
+            div.mt-4
+                table.table.striped.monospace.data-table.row-hover.border.bd-system#zero-blocks-table(
+                    data-role="table"
+                    data-rows=50
+                    data-rows-steps="-1, 10, 20, 50, 100"
+                    data-rownum="true"
+                    data-on-draw-cell="zeroBlocksTableDrawCell"
+                    data-horizontal-scroll="true"
+                    data-horizontal-scroll-stop="xl"
+                    data-cls-table-container="no-border"
+                    data-activity-type="bars"
+                    data-filters-operator="or"
+                    data-search-fields="height, creator_name, creator_key, state_hash"
+                    data-table-search-placeholder="Enter block height, creator key or name, or block hash "
+                )
+                    thead
+                        tr
+                            th(data-name="chain_status")
+                                span.mif-link
+                            th(data-name="height" data-sortable="true" data-format="int" data-size="30")
+                                span Height
+                            th(data-name="creator_key")
+                                span Block Producer
+                                div.text-small Name
+                            th.text-center(data-name="creator_name" data-show="false") Creator Name
+                            th.text-center(data-name="coinbase" data-size="30") Coinbase
+                            th.text-center(data-name="slot") Slot
+                            th(data-name="global_slot" data-show="false") Global Slot
+                            th.text-center(data-name="epoch") Epoch
+                            th.text-center(data-name="trans") Trans
+                            th(data-name="trans_fee" data-show="false") Trans Fee
+                            th(data-name="state_hash") Hash
+                            th(data-name="timestamp" data-show="false") Time
+
+
 
     div.mb-10 &nbsp;
 
