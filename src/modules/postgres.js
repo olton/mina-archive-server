@@ -37,15 +37,27 @@ export const createDBConnection = () => {
     })
 }
 
+export const flushPendingBlocks = async () => {
+    const sql = `
+        update blocks
+        set chain_status = 'orphaned'
+        where height < (select max(height) from blocks)
+        and chain_status = 'pending'
+    `
+    await query(sql)
+    log(`Pending blocks flushed!`)
+}
+
 export const listenNotifies = async () => {
     const client = await globalThis.postgres.connect()
 
     client.query('LISTEN new_block')
     client.on('notification', async (data) => {
         if (config.debug.pg_notify) {
-            log(`New block notification:`, 'info', data.payload)
+            log(`${data.channel} notification:`, 'info', data.payload)
         }
-        globalThis.broadcast.new_block = JSON.parse(data.payload)
+        if (data.channel === 'new_block') globalThis.broadcast.new_block = JSON.parse(data.payload)
+        await flushPendingBlocks()
     })
 }
 

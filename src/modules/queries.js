@@ -20,18 +20,40 @@ export const getDisputeBlocks = async () => {
 export const getBlocks = async ({
     type = CHAIN_STATUS_CANONICAL,
     limit = 50,
-    offset = 0
+    offset = 0,
+    search = null
 } = {}) => {
-    const sql = `
+    let sql = `
         select * 
         from v_blocks b 
         where chain_status = ANY($1::chain_status_type[])
+        %BLOCK_SEARCH%
+        %HASH_SEARCH%
         limit $2 offset $3        
     `
 
-    console.log(`limit ${limit} offset ${offset}`)
+    sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
+}
+
+export const getBlocksCount = async ({
+    type = CHAIN_STATUS_CANONICAL,
+    search = null
+} = {}) => {
+    let sql = `
+        select count(*) as length 
+        from v_blocks b 
+        where chain_status = ANY($1::chain_status_type[])
+        %BLOCK_SEARCH%
+        %HASH_SEARCH%
+    `
+
+    sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
+
+    return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
 }
 
 export const getAddressTransactions = async (pk, {
@@ -61,11 +83,14 @@ export const getAddressTransactions = async (pk, {
 
 export const getTotalBlocks = async () => {
     const sql = `
-        select count(id) as total
+        select 
+               count(id) as total, 
+               (select count(id) from blocks where chain_status = 'pending') as pending,
+               (select count(id) from blocks where chain_status = 'orphaned') as orphaned,
+               (select max(height) - 1 from blocks) as canonical
         from blocks
-        where chain_status <> 'pending'
     `
-    return (await query(sql)).rows[0].total
+    return (await query(sql)).rows[0]
 }
 
 export const getEpoch = async () => {
@@ -443,3 +468,4 @@ export const getZeroBlocks = async () => {
 
     return result
 }
+

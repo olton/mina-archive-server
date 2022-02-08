@@ -1,6 +1,8 @@
 let currentPage = 1
 let recordsOnPage = 50
-let totalRecords = 0
+let blockChainState = ['pending', 'canonical', 'orphaned']
+let searchBlockString = null
+let searchThreshold = 500
 
 const updateEpoch = data => {
     const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
@@ -14,11 +16,15 @@ const updateEpoch = data => {
 }
 
 const updateBlocksTable = data => {
-    totalRecords = data.totalBlocks
+    $("#total-blocks").html(Number(data.totalBlocks.total).format(0, null, " ", "."))
+    $("#pending-blocks").html(Number(data.totalBlocks.pending).format(0, null, " ", "."))
+    $("#canonical-blocks").html(Number(data.totalBlocks.canonical).format(0, null, " ", "."))
+    $("#orphaned-blocks").html(Number(data.totalBlocks.orphaned).format(0, null, " ", "."))
+    $("#found-blocks").html(Number(data.count).format(0, null, " ", "."))
 
     Metro.pagination({
         target: "#pagination",
-        length: totalRecords,
+        length: data.count,
         rows: recordsOnPage,
         current: currentPage
     })
@@ -66,6 +72,19 @@ const updateBlocksTable = data => {
     $("#pagination").removeClass("disabled")
 }
 
+const getBlocksRequest = () => {
+    return {
+        type: blockChainState,
+        count: recordsOnPage,
+        offset: recordsOnPage * (currentPage - 1),
+        search: searchBlockString ? {
+            block: isNaN(+searchBlockString) ? null : +searchBlockString,
+            producer: isNaN(+searchBlockString) ? searchBlockString : null,
+            hash: isNaN(+searchBlockString) ? searchBlockString : null,
+        } : null
+    }
+}
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -74,13 +93,14 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = () => {
-        ws.send(JSON.stringify({channel: 'epoch'}));
+        ws.send(JSON.stringify({channel: 'epoch'}))
+        ws.send(JSON.stringify({channel: 'blocks', data: getBlocksRequest()}))
     }
 
     switch(channel) {
         case 'welcome': {
             requestLastActivity()
-            ws.send(JSON.stringify({channel: 'blocks', data: {type: ['canonical', 'orphaned'], count: recordsOnPage, offset: recordsOnPage * (currentPage - 1)}}));
+
             break;
         }
         case 'new_block': {
@@ -96,6 +116,26 @@ const wsMessageController = (ws, response) => {
             break;
         }
     }
+}
+
+function blocksApplyRowsCount(selected){
+    recordsOnPage = +selected[0]
+    refreshBlocksTable()
+}
+
+function refreshBlocksTable(){
+    if (globalThis.webSocket) {
+        globalThis.webSocket.send(JSON.stringify({channel: 'blocks', data: getBlocksRequest()}))
+    }
+}
+
+function blocksApplyFilter(el, state) {
+    if (!el.checked) {
+        Metro.utils.arrayDelete(blockChainState, state)
+    } else {
+        if (!blockChainState.includes(state)) blockChainState.push(state)
+    }
+    refreshBlocksTable()
 }
 
 $("#pagination").on("click", ".page-link", function(){
@@ -120,3 +160,23 @@ $("#pagination").on("click", ".page-link", function(){
         })
     );
 })
+
+let block_search_input_interval = false
+
+const flushBlockSearchInterval = () => {
+    clearInterval(block_search_input_interval);
+    block_search_input_interval = false;
+}
+
+$("#blocks-search").on(Metro.events.inputchange, function(){
+    searchBlockString = this.value.trim().toLowerCase();
+
+    flushBlockSearchInterval()
+
+    if (!block_search_input_interval) block_search_input_interval = setTimeout(function(){
+        console.log(searchBlockString)
+        flushBlockSearchInterval()
+        currentPage = 1;
+        refreshBlocksTable()
+    }, searchThreshold);
+});

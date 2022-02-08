@@ -3,6 +3,8 @@ include components/appbar
 
 div.container-fluid
     div.container
+        include ./components/live
+
         div.hero.hero-padding-secondary
             div.row
                 div.cell-lg-6
@@ -21,27 +23,93 @@ div.container-fluid(style="background-color: #f8f8f8")
 
 section.container-fluid.mt-4
     div.container
-        div(style="height: 10px")
-            div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+        ul(data-role="tabs" data-expand="true")
+            li.ml-2
+                a(href="#blockchain")
+                    span Blockchain Blocks
 
-        div
-            div.scroll-table-container.border.bd-system
-                table.table.striped.data-table.monospace.row-hover#blocks-table
-                    thead
-                        tr
-                            th(data-name="height")
-                                span.mif-link
-                            th(data-name="height") Height
-                            th(data-name="creator_key") Block Producer
-                            th.text-center(data-name="coinbase") Coinbase
-                            th.text-center(data-name="slot") Slot
-                            th.text-center(data-name="epoch") Epoch
-                            th.text-center(data-name="trans") Trans
-                            th(data-name="state_hash") Hash
-                    tbody
+            li
+                a(href="#zero")
+                    span Zero Blocks
 
-            div.mt-4
-                div#pagination
+        div#blockchain
+
+            div(style="height: 10px")
+                div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+
+            div.row.text-leader
+                div.cell-lg-3.cell-md-6
+                    span.reduce-2 Total:
+                    span.ml-2#total-blocks
+                div.cell-lg-3.cell-md-6
+                    span.reduce-2 Pending:
+                    span.ml-2.fg-cyan#pending-blocks
+                div.cell-lg-3.cell-md-6
+                    span.reduce-2 Canonical:
+                    span.ml-2.fg-green#canonical-blocks
+                div.cell-lg-3.cell-md-6
+                    span.reduce-2 Orphaned:
+                    span.ml-2.fg-red#orphaned-blocks
+
+            hr
+
+            div
+                div.row.flex-align-start
+
+                    div.cell-md-4
+                        span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE
+                        div.mt-2-minus
+                            input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="blocksApplyFilter(this, 'pending')")
+                            input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
+                            input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="blocksApplyFilter(this, 'orphaned')")
+
+                    div.cell-md-4
+                        span.ml-1.text-muted.reduce-4.text-bold FOUND
+                        div.mt-1-minus
+                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
+
+                    div.cell-md-4
+                        div.text-left-fs.text-right-md
+                            button.mt-6.button.success.small(onclick="refreshBlocksTable()")
+                                span RELOAD DATA
+                                span.mif-refresh
+
+
+                div.row.mt-2
+                    div.cell-9
+                        input#blocks-search(
+                            data-role="input"
+                            data-prepend="Search: "
+                            placeholder="Enter block number, producer key or name, or block hash"
+                            data-search-button="false"
+                        )
+
+                    div.cell-3
+                        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksApplyRowsCount")
+                            option(value="10") 10
+                            option(value="20") 20
+                            option(value="50" selected) 50
+                            option(value="100") 100
+
+                div.mt-2.scroll-table-container.border.bd-system
+                    table.table.striped.data-table.monospace.row-hover#blocks-table
+                        thead
+                            tr
+                                th(data-name="height")
+                                    span.mif-link
+                                th(data-name="height") Height
+                                th(data-name="creator_key") Block Producer
+                                th.text-center(data-name="coinbase") Coinbase
+                                th.text-center(data-name="slot") Slot
+                                th.text-center(data-name="epoch") Epoch
+                                th.text-center(data-name="trans") Trans
+                                th(data-name="state_hash") Hash
+                        tbody
+
+                div.mt-4
+                    div#pagination
+
+        div#zero
 
     div.mb-10 &nbsp;
 
