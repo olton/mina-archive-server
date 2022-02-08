@@ -26,13 +26,6 @@ const runWebServer = () => {
             key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
             cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
         }, app)
-
-        // const httpServer = http.createServer((req, res)=>{
-        //     res.writeHead(301, {Location: `https://${req.headers.host}:${server_port}${req.url}`})
-        //     res.end()
-        // })
-        //
-        // httpServer.listen(+server_port)
     } else {
         webserver = http.createServer({}, app)
     }
