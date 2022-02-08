@@ -43,6 +43,21 @@ const runWebServer = () => {
     app.set('views', path.resolve(rootPath, 'public_html'))
     app.set('view engine', 'pug')
 
+    function isSecure(req) {
+        if (req.headers['x-forwarded-proto']) {
+            return req.headers['x-forwarded-proto'] === 'https'
+        }
+        return req.secure
+    }
+
+    app.use((req, res, next) => {
+        if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test' && !isSecure(req)) {
+            res.redirect(301, `https://${req.headers.host}:${server_port}${req.url}`)
+        } else {
+            next()
+        }
+    })
+
     const clientConfig = JSON.stringify(config.client)
 
     app.get('/', async (req, res) => {
