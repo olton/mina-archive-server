@@ -1,4 +1,4 @@
-# Mina Archive
+# Minataur :: Blockchain Explorer and Archive Manager
 
 <p align="center">
 <img src="minataur-banner.jpg"/>
