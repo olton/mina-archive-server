@@ -293,19 +293,24 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = (ws) => {
-        ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
-        ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
-
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
+            ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
+        }
         setTimeout(requestLastActivity, 60000, ws)
     }
 
     const requestData = (ws) => {
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'epoch'}));
         ws.send(JSON.stringify({channel: 'address', data: address}));
         ws.send(JSON.stringify({channel: 'address_balance', data: address}));
     }
 
     const requestDelegations = (ws) => {
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'address_delegations', data: address}));
         ws.send(JSON.stringify({channel: 'address_delegations_next', data: address}));
     }

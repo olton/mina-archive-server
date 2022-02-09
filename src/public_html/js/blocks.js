@@ -93,13 +93,15 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = () => {
+        if (!isOpen(ws)) return
 
         ws.send(JSON.stringify({channel: 'epoch'}))
         ws.send(JSON.stringify({channel: 'blocks', data: getBlocksRequest()}))
-
     }
 
     const requestZeroBlocks = () => {
+        if (!isOpen(ws)) return
+
         $("#zero-blocks-table").addClass("disabled")
         ws.send(JSON.stringify({channel: 'zero_blocks', data: {type: blockZeroState, count: 1000000000, search: {coinbase: 0}}}))
     }

@@ -122,15 +122,18 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestPeriodically = () => {
-        ws.send(JSON.stringify({channel: 'trans_pool_count'}))
-        ws.send(JSON.stringify({channel: 'price'}))
-        ws.send(JSON.stringify({channel: 'stat'}))
-
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'trans_pool_count'}))
+            ws.send(JSON.stringify({channel: 'price'}))
+            ws.send(JSON.stringify({channel: 'stat'}))
+            ws.send(JSON.stringify({channel: 'last_block_time'}))
+        }
         setTimeout(requestPeriodically, 60000)
     }
 
     const requestChain = () => {
-        ws.send(JSON.stringify({channel: 'last_block_time'}))
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'dispute'}))
         ws.send(JSON.stringify({channel: 'lastChain'}))
         ws.send(JSON.stringify({channel: 'epoch'}))

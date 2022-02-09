@@ -79,6 +79,8 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestData = () => {
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'epoch'}));
         ws.send(JSON.stringify({channel: 'block', data: blockHash}));
         ws.send(JSON.stringify({channel: 'block_trans', data: blockHash}));

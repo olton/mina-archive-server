@@ -1,6 +1,8 @@
 
 globalThis.webSocket = null
 
+const isOpen = (ws) => ws && ws.readyState === ws.OPEN
+
 const connect = () => {
     const {host, secure} = config.server
     const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${host}`)

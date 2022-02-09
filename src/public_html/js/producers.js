@@ -19,6 +19,8 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = () => {
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'epoch'}));
     }
 

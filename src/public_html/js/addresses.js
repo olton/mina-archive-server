@@ -61,6 +61,8 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLastActivity = () => {
+        if (!isOpen(ws)) return
+
         ws.send(JSON.stringify({channel: 'epoch'}));
         ws.send(JSON.stringify({channel: 'scammer_list'}));
         ws.send(JSON.stringify({channel: 'top_stack_holders', data: 20}));

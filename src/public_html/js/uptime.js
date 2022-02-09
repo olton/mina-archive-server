@@ -74,8 +74,10 @@ const wsMessageController = (ws, response) => {
     }
 
     const requestLeaderboard = () => {
-        ws.send(JSON.stringify({channel: 'uptime'}))
-        ws.send(JSON.stringify({channel: 'uptime_next'}))
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'uptime'}))
+            ws.send(JSON.stringify({channel: 'uptime_next'}))
+        }
         setTimeout(requestLeaderboard, 300000)
     }
 
