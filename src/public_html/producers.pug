@@ -3,7 +3,8 @@ include components/appbar
 
 div.container-fluid
     div.container
-        div.hero.hero-padding-secondary
+
+        div.hero.hero-padding-secondary.pt-5
             div.row
                 div.cell-lg-6
                     div
@@ -19,57 +20,81 @@ div.container-fluid
                 div.cell-lg-6
                     div.mb-4
                         include components/search-form
+div.container-fluid
+    div.container
+        ul.breadcrumbs.mb-0.ml-4-minus
+            li.page-item
+                a.page-link(href="/") Home
+            li.page-item
+                a.page-link(href="/producers") Producers
+
+div.container-fluid.bg-lightSystem
+    div.container
+        div.h3.mt-4.mb-0.text-light.border-bottom.bd-system.pb-2 Blockchain State
+        div.pt-2.pb-2
+            include ./components/epoch-small
 
 section.container-fluid
     div.container
-        div.mt-4(style="height: 10px")
-            div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
         div.mt-4
-            div.radius(data-role="panel" data-title-caption="Active Producers ( <span id='active-producers-count' class='text-normal'>0</span> ) <button class='ml-auto button small success mt-2' onclick='reloadProducersTable()'>RELOAD DATA <span class='ml-1 mif-refresh'></span></span>" data-cls-content="p-0" data-cls-title-caption="enlarge-8 text-light d-flex" data-title-icon="<span class='mif-cog mif-3x'></span>")
-                div.mt-4
-                    table.table.striped.monospace.data-table.row-hover.cell-border#producers-table(
-                        data-role="table"
-                        data-rows=50
-                        data-rows-steps="-1, 10, 20, 50, 100"
-                        data-rownum="true"
-                        data-on-draw-cell="producersTableDrawCell"
-                        data-horizontal-scroll="true"
-                        data-horizontal-scroll-stop="xl"
-                        data-cls-table-container="no-border"
-                        data-activity-type="bars"
-                        data-filters-operator="or"
-                        data-search-fields=""
-                        data-table-search-placeholder=""
-                    )
-                        thead
-                            tr
-                                th(data-name="id" data-show="false") ID
-                                th(data-name="public_key")
-                                    span Address
-                                    div.text-small Name
-                                th(data-name="name" data-show="false") Name
-                                th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
-                                    span Blocks
-                                    div.text-small Total
-                                th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
-                                    span Blocks
-                                    div.text-small Canonical
-                                th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
-                                    span(title="Coefficient of Performance") COP
-                                    div.text-small %
-                                th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
-                                    span Stake
-                                    div.text-small Current
-                                th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
-                                    span Stake
-                                    div.text-small Next
-                                th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
-                                    span Stakes
-                                    div.text-small Count
-                                th(data-name="delegators_next" data-show="false") Delegators Next
-                                th(data-name="pos" data-show="false") Part of Stake
-                                th(data-name="pos_next" data-show="false") Part of Stake Next
-                                th(data-name="scammer" data-show="false") Scammer
+            div.row.text-leader.text-center
+                div.cell-lg-4.cell-md-6
+                    span.reduce-2 Total Addresses:
+                    span.ml-2#total-addresses 0
+                div.cell-lg-4.cell-md-6
+                    span.reduce-2 Total Producers:
+                    span.ml-2.fg-cyan#total-producers 0
+                div.cell-lg-4.cell-md-6
+                    span.reduce-2 Active Producers:
+                    span.ml-2.fg-green#active-producers 0
+
+            div.mt-4(style="height: 10px")
+                div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+
+            div.mt-4
+                table.table.striped.monospace.data-table.row-hover.cell-border.border.bd-system#producers-table(
+                    data-role="table"
+                    data-rows=50
+                    data-rows-steps="-1, 10, 20, 50, 100"
+                    data-rownum="true"
+                    data-on-draw-cell="producersTableDrawCell"
+                    data-horizontal-scroll="true"
+                    data-horizontal-scroll-stop="xl"
+                    data-cls-table-container="no-border"
+                    data-activity-type="bars"
+                    data-filters-operator="or"
+                    data-search-fields=""
+                    data-table-search-placeholder=""
+                )
+                    thead
+                        tr
+                            th(data-name="id" data-show="false") ID
+                            th(data-name="public_key")
+                                span Address
+                                div.text-small Name
+                            th(data-name="name" data-show="false") Name
+                            th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
+                                span Blocks
+                                div.text-small Total
+                            th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
+                                span Blocks
+                                div.text-small Canonical
+                            th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
+                                span(title="Coefficient of Performance") COP
+                                div.text-small %
+                            th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
+                                span Stake
+                                div.text-small Current
+                            th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
+                                span Stake
+                                div.text-small Next
+                            th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
+                                span Stakes
+                                div.text-small Count
+                            th(data-name="delegators_next" data-show="false") Delegators Next
+                            th(data-name="pos" data-show="false") Part of Stake
+                            th(data-name="pos_next" data-show="false") Part of Stake Next
+                            th(data-name="scammer" data-show="false") Scammer
 
 
     div.mb-10 &nbsp;

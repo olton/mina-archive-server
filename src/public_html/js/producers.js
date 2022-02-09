@@ -1,7 +1,7 @@
 const updateProducersTable = data => {
     if (!data || !Array.isArray(data)) return
 
-    $("#active-producers-count").html(data.length)
+    $("#active-producers").html(data.length)
 
     const table = Metro.getPlugin('#producers-table', 'table')
     setTimeout(() => {
@@ -9,6 +9,22 @@ const updateProducersTable = data => {
         $("#producers-table").removeClass("disabled")
         $("#load-data-activity").hide()
     }, 100)
+}
+
+const updateStat = data => {
+    $("#total-addresses").html(data.total_addresses)
+    $("#total-producers").html(data.total_producers)
+}
+
+const updateEpoch = data => {
+    const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
+
+    $("#epoch-number").html((+epoch).format(0, null, " ", "."))
+    $("#epoch-current-height").html((+height).format(0, null, " ", "."))
+    $("#epoch-start-block").html((+epoch_start_block).format(0, null, " ", "."))
+    $("#epoch-blocks-produced").html((+blocks_produced).format(0, null, " ", "."))
+    $("#epoch-slot").html((+slot).format(0, null, " ", "."))
+    $("#epoch-global-slot").html((+global_slot).format(0, null, " ", "."))
 }
 
 const wsMessageController = (ws, response) => {
@@ -21,24 +37,35 @@ const wsMessageController = (ws, response) => {
     const requestLastActivity = () => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'epoch'}));
+        ws.send(JSON.stringify({channel: 'epoch'}))
+        ws.send(JSON.stringify({channel: 'stat'}))
     }
 
     switch(channel) {
         case 'welcome': {
             requestLastActivity()
+
             $("#producers-table").addClass("disabled")
             $("#load-data-activity").show()
-            ws.send(JSON.stringify({channel: 'block_producers'}));
-            break;
+            ws.send(JSON.stringify({channel: 'block_producers'}))
+
+            break
         }
         case 'new_block': {
             requestLastActivity()
-            break;
+            break
         }
         case 'block_producers': {
             updateProducersTable(data)
-            break;
+            break
+        }
+        case 'stat': {
+            updateStat(data)
+            break
+        }
+        case 'epoch': {
+            updateEpoch(data)
+            break
         }
     }
 }

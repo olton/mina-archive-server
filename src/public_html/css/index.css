@@ -198,7 +198,7 @@ a.link:hover {
   height: auto;
 }
 .hero {
-  padding: 48px 0;
+  padding: 48px 0 24px;
 }
 .hero.hero-padding-secondary {
   padding: 48px 0 28px;
@@ -344,6 +344,9 @@ tr.no-hover:hover {
 }
 .disabled * {
   opacity: 0.8 !important;
+}
+.bg-lightSystem {
+  background: #f7f3ff;
 }
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {

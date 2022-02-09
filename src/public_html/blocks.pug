@@ -17,7 +17,15 @@ div.container-fluid
                     div.mb-4
                         include components/search-form
 
-div.container-fluid(style="background-color: #f8f8f8")
+div.container-fluid
+    div.container
+        ul.breadcrumbs.mb-0.ml-4-minus
+            li.page-item
+                a.page-link(href="/") Home
+            li.page-item
+                a.page-link(href="/blocks") Blocks
+
+div.container-fluid.bg-lightSystem
     div.container
         div.h3.mt-4.mb-0.text-light.border-bottom.bd-system.pb-2 Blockchain State
         div.pt-2.pb-2
@@ -43,7 +51,7 @@ section.container-fluid.mt-4
             div(style="height: 10px")
                 div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
 
-            div.row.text-leader
+            div.row.text-leader.text-center
                 div.cell-lg-3.cell-md-6
                     span.reduce-2 Total:
                     span.ml-2#total-blocks
@@ -69,7 +77,7 @@ section.container-fluid.mt-4
                             input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
                             input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="blocksApplyFilter(this, 'orphaned')")
 
-                    div.cell-md-4
+                    div.cell-md-4.text-center
                         span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
                         div.mt-1-minus
                             span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
