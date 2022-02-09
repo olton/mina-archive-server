@@ -7,31 +7,38 @@ div.container-fluid
 
         div.hero.hero-padding-secondary
             div.row
-                div.cell-lg-6.order-fs-2.order-lg-1
-                    div
-                        div.h1.mb-0.page-title Uptime  Leaderboard
+                div.cell-lg-6
+                    div.h1.page-title Uptime  Leaderboard
+                    div.text-leader2.
+                        To get Mina Foundation delegation you must stay in TOP120 by uptime.
 
-                    hr.thin
+                div.cell-lg-6
+                    div.mt-2
+                        include components/search-form
 
-                    div.text-small.text-bold.mt-10.text-muted
-                        span TOP
-                            span 120
-                            span.ml-1 LEADERS AT
 
-                    div.h1.mt-0#segment
-                        div(data-role="activity" data-type="metro" data-style="color")
+            div.row.bg-lightSystem.mt-4
+                div.cell-lg-6.order-fs-2.order-lg-1.text-center
+                    div.next-round-container.p-3-fs.p-8-md
+                        div.text-small.text-bold.text-muted
+                            span TOP
+                                span 120
+                                span.ml-1 LEADERS AT
 
-                    div.text-leader2
-                        Block Producers Uptime Tracker
+                        div.h1.mt-0.mb-1(style="font-size: 48px; min-height: 48px")#segment
+                            div(data-role="activity" data-type="metro" data-style="color")
 
-                div.cell-lg-6.order-fs-1.order-lg-2
-                    div.next-round-container.p-3-fs.p-8-md.radius.bd-system.border
+                        div.text-light.text-center.mt-1-minus(style="font-size: 14.4px") EXTRACTED TIME POINT
+                        div.reduce-4.text-bold.text-center MINA UPTIME TRACKER
+
+                div.cell-lg-6.order-fs-1.order-lg-2.text-center
+                    div.next-round-container.p-3-fs.p-8-md
                         - var stopdate = nextRound
-                        div.text-leader.text-center
-                            span.text-muted NEXT ROUND:
+                        div.text-small.text-bold.text-muted
+                            span NEXT ROUND:
                             span.ml-2#next-round #{nextRoundAt}
-                        div#next-round-timer(data-role="countdown" data-start="true" data-date=stopdate data-cls-part="text-light" style="font-size: 72px")
-                        div.reduce-4.text-bold.text-center.text-muted TIME LEFT TO SNAPSHOT
+                        div#next-round-timer(data-role="countdown" data-start="true" data-date=stopdate data-cls-part="text-light" style="font-size: 48px;")
+                        div.reduce-4.text-bold.text-center TIME LEFT TO SNAPSHOT
 
 
 section.container-fluid
