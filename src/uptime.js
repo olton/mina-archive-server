@@ -59,7 +59,7 @@ const getUptimeData = async () => {
                 }
             }
             page++
-            if (page >= 1) dataExists = false
+            if (page >= 8) dataExists = false
         }
 
         // console.log(table)
