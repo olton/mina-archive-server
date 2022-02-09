@@ -1,5 +1,10 @@
 # Mina Archive
-**Mina Archive** is a special server-manager to provide various data from the Mina Archive Node.
+
+<p align="center">
+<img src="minataur-banner.jpg"/>
+</p>
+
+**Minataur** The live blockchain explorer for the Mina Blockchain by Serhii Pimenov.
 
 ## Donate a project
 You can support project, donate Mina to address:
