@@ -30,6 +30,50 @@ div.container-fluid.bg-lightSystem
         div.pt-2.pb-2
             include ./components/epoch-small
 
+div.container-fluid.mt-4
+    div.container
+        div
+            div.row
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-grayMouse.fg-white
+                            span.mif-apps
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Total
+                                div.text-upper Blocks
+                                div.box-value#total-blocks 0
+
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-cyan.fg-white
+                            span.mif-apps
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Pending
+                                div.text-upper Blocks
+                                div.box-value.fg-cyan#pending-blocks 0
+
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-green.fg-white
+                            span.mif-apps
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Canonical
+                                div.text-upper Blocks
+                                div.box-value.fg-green#canonical-blocks 0
+
+                div.cell-xl-3.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-red.fg-white
+                            span.mif-apps
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Orphaned
+                                div.text-upper Blocks
+                                div.box-value.fg-red#orphaned-blocks 0
+
 section.container-fluid.mt-4
     div.container
         ul(data-role="tabs" data-expand="true")
@@ -50,21 +94,21 @@ section.container-fluid.mt-4
             div(style="height: 10px")
                 div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
 
-            div.row.text-leader.text-center
-                div.cell-lg-3.cell-md-6
-                    span.reduce-2 Total:
-                    span.ml-2#total-blocks
-                div.cell-lg-3.cell-md-6
-                    span.reduce-2 Pending:
-                    span.ml-2.fg-cyan#pending-blocks
-                div.cell-lg-3.cell-md-6
-                    span.reduce-2 Canonical:
-                    span.ml-2.fg-green#canonical-blocks
-                div.cell-lg-3.cell-md-6
-                    span.reduce-2 Orphaned:
-                    span.ml-2.fg-red#orphaned-blocks
+            //div.row.text-leader.text-center
+            //    div.cell-lg-3.cell-md-6
+            //        span.reduce-2 Total:
+            //        span.ml-2#total-blocks
+            //    div.cell-lg-3.cell-md-6
+            //        span.reduce-2 Pending:
+            //        span.ml-2.fg-cyan#pending-blocks
+            //    div.cell-lg-3.cell-md-6
+            //        span.reduce-2 Canonical:
+            //        span.ml-2.fg-green#canonical-blocks
+            //    div.cell-lg-3.cell-md-6
+            //        span.reduce-2 Orphaned:
+            //        span.ml-2.fg-red#orphaned-blocks
 
-            hr
+            //hr
 
             div
                 div.row.flex-align-start
