@@ -5,17 +5,6 @@ let chainType = ['payment', 'delegation']
 let searchString = ""
 let searchThreshold = 500
 
-const updateEpoch = data => {
-    const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
-
-    $("#epoch-number").html((+epoch).format(0, null, " ", "."))
-    $("#epoch-current-height").html((+height).format(0, null, " ", "."))
-    $("#epoch-start-block").html((+epoch_start_block).format(0, null, " ", "."))
-    $("#epoch-blocks-produced").html((+blocks_produced).format(0, null, " ", "."))
-    $("#epoch-slot").html((+slot).format(0, null, " ", "."))
-    $("#epoch-global-slot").html((+global_slot).format(0, null, " ", "."))
-}
-
 const updateTransStat = data => {
     console.log(data)
     const {tr_total = 0, tr_applied = 0, tr_failed = 0, pool = 0} = data || {}
