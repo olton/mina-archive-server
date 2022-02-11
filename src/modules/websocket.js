@@ -19,7 +19,7 @@ import {
     getLastBlockTime,
     getBlockInfo,
     getEpoch,
-    getAddressTransactions, getTotalBlocks, getBlocksCount
+    getAddressTransactions, getTotalBlocks, getBlocksCount, getTransactionsCount, getTransactions, getTransactionsStat
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -163,6 +163,15 @@ export const websocket = (server) => {
                     const blocks = await getBlocks({type: data.type, limit: data.count, search: data.search})
                     response(ws, channel, {blocks, count});
                     break;
+                }
+                case 'transactions': {
+                    const count = await getTransactionsCount({type: data.type, status: data.status, search: data.search})
+                    const trans = await getTransactions({type: data.type, status: data.status, limit: data.count, offset: data.offset, search: data.search})
+                    response(ws, channel, {transactions: trans, count})
+                    break
+                }
+                case 'trans_stat': {
+                    response(ws, channel, await getTransactionsStat())
                 }
             }
         })

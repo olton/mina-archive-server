@@ -72,9 +72,15 @@ const updateAddressInfo = (data) => {
         )
     }
 
-    if (data.delegate_key !== address) {
+    if (data.delegate_key && data.delegate_key !== address) {
         addressTags.append(
             $("<span>").addClass("radius reduce-4 badge inline bg-orange fg-white text-upper").html(`Delegator`)
+        )
+    }
+
+    if (!data.delegate_key || data.delegate_key === address) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`PERSONAL`)
         )
     }
 
@@ -203,7 +209,6 @@ const updateAddressLastBlocks = data => {
 
     const target = $("#address-last-blocks tbody").clear()
     const rows = drawBlocksTable(data, 'any')
-    console.log(rows.length)
     if (rows.length) {
         rows.map(r => target.append(r))
     } else {

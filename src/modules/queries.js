@@ -2,6 +2,7 @@ import {query} from  "./postgres"
 import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts"
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
+import {getTransactionInPool} from "./graphql.js";
 
 export const getDisputeBlocks = async () => {
     const sql = `
@@ -473,3 +474,92 @@ export const getZeroBlocks = async () => {
     return result
 }
 
+export const getTransactions = async ({
+  type,
+  status,
+  limit = 50,
+  offset = 0,
+  search = null
+} = {}) => {
+    let sql = `
+        select *
+        from v_trans t
+        where type = ANY($1::user_command_type[])
+        and status = ANY($2::user_command_status[])
+        %BLOCK_HEIGHT%
+        %BLOCK_HASH%
+        %TRANS_PARTICIPANT%
+        %TRANS_HASH%
+        order by height desc, timestamp desc
+        limit $3 offset $4
+    `
+
+    const _type = type ? Array.isArray(type) ? type : [type] : ['payment', 'delegation']
+    const _status = status ? Array.isArray(status) ? status : [status] : ['applied', 'failed']
+
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%BLOCK_HASH%", search && search.block_hash ? `and state_hash = '${search.block_hash}'` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
+    and (
+        trans_owner = '${search.participant}'
+        or lower(trans_owner_name) like '%${search.participant.toLowerCase()}%'
+        or trans_receiver = '${search.participant}'
+        or lower(trans_receiver_name) like '%${search.participant.toLowerCase()}%'
+    )
+    ` : "")
+
+    const result = (await query(sql, [_type, _status, limit, offset])).rows
+
+    for(let row of result) {
+        row.memo = decodeMemo(row.memo)
+        row.scam = checkMemoForScam(row.memo)
+    }
+
+    return result
+}
+
+export const getTransactionsCount = async ({
+    type,
+    status,
+    search = null
+} = {}) => {
+    let sql = `
+        select count(*) as length
+        from v_trans t
+        where type = ANY($1::user_command_type[])
+        and status = ANY($2::user_command_status[])
+        %BLOCK_HEIGHT%
+        %BLOCK_HASH%
+        %TRANS_PARTICIPANT%
+        %TRANS_HASH%
+    `
+
+    const _type = type ? Array.isArray(type) ? type : [type] : ['payment', 'delegation']
+    const _status = status ? Array.isArray(status) ? status : [status] : ['applied', 'failed']
+
+    sql = sql.replace("%BLOCK_HEIGHT%", search && search.block ? `and height = ${search.block}` : "")
+    sql = sql.replace("%BLOCK_HASH%", search && search.block_hash ? `and state_hash = '${search.block_hash}'` : "")
+    sql = sql.replace("%TRANS_HASH%", search && search.hash ? `and hash = '${search.hash}'` : "")
+    sql = sql.replace("%TRANS_PARTICIPANT%", search && search.participant ? `
+    and (
+        trans_owner = '${search.participant}'
+        or lower(trans_owner_name) like '%${search.participant.toLowerCase()}%'
+        or trans_receiver = '${search.participant}'
+        or lower(trans_receiver_name) like '%${search.participant.toLowerCase()}%'
+    )
+    ` : "")
+
+    console.log(sql)
+
+    return (await query(sql, [_type, _status])).rows[0].length
+}
+
+export const getTransactionsStat = async () => {
+    const sql = `select * from v_trans_stat`
+    const result = (await query(sql)).rows[0]
+
+    result.pool = (await getTransactionInPool()).length
+
+    return result
+}
