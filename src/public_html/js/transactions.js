@@ -6,7 +6,6 @@ let searchString = ""
 let searchThreshold = 500
 
 const updateTransStat = data => {
-    console.log(data)
     const {tr_total = 0, tr_applied = 0, tr_failed = 0, pool = 0} = data || {}
     $("#trans-total").html((+tr_total).format(0, null, " ", "."))
     $("#trans-applied").html((+tr_applied).format(0, null, " ", "."))
@@ -168,7 +167,6 @@ $("#transactions-search").on(Metro.events.inputchange, function(){
     if (!trans_search_input_interval) trans_search_input_interval = setTimeout(function(){
         flushTransSearchInterval()
         currentPage = 1
-        console.log(getRequestData())
         refreshTransTable()
     }, searchThreshold)
 })
@@ -183,7 +181,6 @@ const wsMessageController = (ws, response) => {
     const requestLastActivity = () => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'epoch'}))
         ws.send(JSON.stringify({channel: 'transactions', data: getRequestData()}))
     }
 
@@ -203,10 +200,6 @@ const wsMessageController = (ws, response) => {
         }
         case 'new_block': {
             requestLastActivity()
-            break;
-        }
-        case 'epoch': {
-            updateEpoch(data)
             break;
         }
         case 'transactions': {
