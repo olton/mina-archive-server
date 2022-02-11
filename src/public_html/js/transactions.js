@@ -51,11 +51,11 @@ const updateTransTable = data => {
                 </div>
                 <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 12)}</a><span class="ml-2 text-small text-muted" title="Nonce">[${t.nonce}]</span>                
                 <div class="text-small text-muted">
-                    ${t.memo ? "<span class='reduce-2 bg-darkGray fg-white pl-1 pr-1 mr-1'>MEMO:</span>" + t.memo : ""}
-                </div>                               
-                <div class="text-small text-muted">
                     <span>${datetime(+t.timestamp).format(config.format.datetime)}</span>
                 </div>      
+                <div class="text-small text-muted">
+                    ${t.memo ? "<span class='reduce-2 bg-darkGray fg-white pl-1 pr-1 mr-1'>MEMO:</span>" + t.memo : ""}
+                </div>                               
             </td>
             <td>
                 <span>${t.height}</span>            
