@@ -184,13 +184,21 @@ const wsMessageController = (ws, response) => {
         if (!isOpen(ws)) return
 
         ws.send(JSON.stringify({channel: 'epoch'}))
-        ws.send(JSON.stringify({channel: 'trans_stat'}))
         ws.send(JSON.stringify({channel: 'transactions', data: getRequestData()}))
+    }
+
+    const requestStat = () => {
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'trans_stat'}))
+        }
+
+        setTimeout(requestStat, 60000)
     }
 
     switch(channel) {
         case 'welcome': {
             requestLastActivity()
+            requestStat()
             break;
         }
         case 'new_block': {
