@@ -550,8 +550,6 @@ export const getTransactionsCount = async ({
     )
     ` : "")
 
-    console.log(sql)
-
     return (await query(sql, [_type, _status])).rows[0].length
 }
 
