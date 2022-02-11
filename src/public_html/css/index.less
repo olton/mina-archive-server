@@ -365,6 +365,21 @@ tr.no-hover {
     background: #f7f3ff;
 }
 
+.tabs {
+    ul, li {
+        border-color: #7700b3!important;
+    }
+    li.active {
+        background: #7700b3!important;
+        color: var(--color-white)!important;
+    }
+    li:not(.active){
+        &:hover {
+            background: rgb(244, 233, 255) !important;
+        }
+    }
+}
+
 @media (min-width: 992px) and (max-width: 1451px) {
     .container {
         max-width: 95%;

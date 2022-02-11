@@ -52,7 +52,15 @@ div.container-fluid.border-bottom.border-top.bd-system
 
 div.container-fluid
     div.container
-        div
+        ul.mt-4(data-role="tabs" data-expand="true")
+            li.ml-2
+                a(href="#trans-included") Included
+
+            li
+                a(href="#trans-in-pool") In Pool
+
+
+        div#trans-included
             div.row.flex-align-start
 
                 div.cell-md-3

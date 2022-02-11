@@ -17,6 +17,7 @@ const updateEpoch = data => {
 }
 
 const updateTransStat = data => {
+    console.log(data)
     const {tr_total = 0, tr_applied = 0, tr_failed = 0, pool = 0} = data || {}
     $("#trans-total").html((+tr_total).format(0, null, " ", "."))
     $("#trans-applied").html((+tr_applied).format(0, null, " ", "."))
@@ -25,7 +26,6 @@ const updateTransStat = data => {
 }
 
 const updateTransTable = data => {
-    console.log(data)
     $("#found-transactions").html(Number(data.count).format(0, null, " ", "."))
 
     Metro.pagination({

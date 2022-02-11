@@ -348,6 +348,17 @@ tr.no-hover:hover {
 .bg-lightSystem {
   background: #f7f3ff;
 }
+.tabs ul,
+.tabs li {
+  border-color: #7700b3 !important;
+}
+.tabs li.active {
+  background: #7700b3 !important;
+  color: var(--color-white) !important;
+}
+.tabs li:not(.active):hover {
+  background: #f4e9ff !important;
+}
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
     max-width: 95%;
