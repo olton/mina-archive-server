@@ -50,8 +50,8 @@ const updateUptimeTable = data => {
             <div>${r.name ? "<span class='text-small fg-darkViolet'>"+r.name+"</span>" : ""}</div>
         `) )
         tr.append( $("<td>").addClass("text-right").html(`
-            <div>${normMina(r.stack, 'number').format(0, null, " ", ".")}</div>
-            <div class="text-muted text-small">${normMina(r.stack_next, 'number').format(0, null, " ", ".")}</div>
+            <div class="no-wrap">${normMina(r.stack, 'number').format(0, null, " ", ".")}</div>
+            <div class="text-muted text-small no-wrap">${normMina(r.stack_next, 'number').format(0, null, " ", ".")}</div>
         `) )
         tr.append( $("<td>").addClass("text-center").html(`
             <div>${r.delegators}</div>

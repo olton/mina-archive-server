@@ -31,25 +31,45 @@ div.container-fluid
 
 div.container-fluid.bg-lightSystem
     div.container
-        div.h3.mt-4.mb-0.text-light.border-bottom.bd-system.pb-2 Blockchain State
         div.pt-2.pb-2
             include ./components/epoch-small
 
 section.container-fluid
     div.container
         div.mt-6
-            div.row.text-leader.text-center
-                div.cell-lg-4.cell-md-6
-                    span.reduce-2 Total Addresses:
-                    span.ml-2#total-addresses 0
-                div.cell-lg-4.cell-md-6
-                    span.reduce-2 Total Producers:
-                    span.ml-2.fg-cyan#total-producers 0
-                div.cell-lg-4.cell-md-6
-                    span.reduce-2 Active Producers:
-                    span.ml-2.fg-green#active-producers 0
+            div.row
+                div.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-lightMauve.fg-white
+                            span.mif-users
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Total
+                                div.text-upper Addresses
+                                div.box-value#total-addresses 0
 
-            div.mt-4(style="height: 10px")
+                div.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-cyan.fg-white
+                            span.mif-organization
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Total
+                                div.text-upper Producers
+                                div.box-value#total-producers 0
+
+                div.cell-lg-4.cell-ld-6
+                    div.icon-box.border.bd-system.radius
+                        div.icon.bg-green.fg-white
+                            span.mif-cog
+                        div.content.pl-2
+                            div.p-2
+                                div.text-upper Active
+                                div.text-upper Producers
+                                div.box-value#active-producers 0
+
+
+            div.mt-1(style="height: 10px")
                 div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
 
             div.mt-4
