@@ -181,7 +181,10 @@ const runWebServer = () => {
     let httpWebserver, httpsWebserver
 
 
-    httpWebserver = http.createServer({}, app)
+    httpWebserver = http.createServer((req, res)=>{
+        res.writeHead(301,{Location: `https://${req.headers.host}${req.url}`});
+        res.end();
+    })
     if (ssl) {
         const {cert, key} = config.server.ssl
         httpsWebserver = https.createServer({
