@@ -186,7 +186,7 @@ const flushBlockSearchInterval = () => {
 }
 
 $("#blocks-search").on(Metro.events.inputchange, function(){
-    searchBlockString = this.value.trim().toLowerCase()
+    searchBlockString = clearText(this.value.trim())
 
     flushBlockSearchInterval()
 

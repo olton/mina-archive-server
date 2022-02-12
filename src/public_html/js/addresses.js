@@ -20,12 +20,13 @@ const updateLastBlockWinnersList = data => {
 }
 
 function topStackHoldersTableDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
+    if (head.name === 'address') {
         td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <div class="text-small text-muted ${row[1] ? 'fg-violet' : ''}">${row[1] || 'Unknown'}</div>
         `)
     }
-    if (idx === 1 || idx === 2) {
+    if (head.name === 'stake' || head.name === 'stake_next') {
         td.html(`
             ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
         `).addClass('text-right')
@@ -33,12 +34,13 @@ function topStackHoldersTableDrawCell(td, val, idx, head, row, table){
 }
 
 function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
+    if (head.name === 'address') {
         td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 7)}</a>
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <div class="text-small text-muted ${row[1] ? 'fg-violet' : ''}">${row[1] || 'Unknown'}</div>
         `)
     }
-    if (idx === 2) {
+    if (head.name === 'coinbase') {
         td.html(`
             ${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}
         `).addClass('text-right')
@@ -46,11 +48,153 @@ function lastBlockWinnersTableDrawCell(td, val, idx, head, row, table){
 }
 
 function scammerListDrawCell(td, val, idx, head, row, table){
-    if (idx === 0) {
+    if (head.name === 'address') {
         td.html(`
-            <a class="link ml-2" href="/address/${val}">${shorten(val, 12)}</a>
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <div class="text-small text-muted ${row[1] ? 'fg-violet' : ''}">${row[1] || 'Unknown'}</div>
         `)
     }
+}
+
+let currentPage = 1
+let recordsOnPage = 50
+let searchString = ""
+let searchThreshold = 500
+let sortBy = 'stake desc'
+
+const getRequestData = () => {
+    return {
+        count: recordsOnPage,
+        offset: recordsOnPage * (currentPage - 1),
+        sort: sortBy,
+        search: searchString ? {
+            key: searchString
+        } : null
+    }
+}
+
+function applyRowsCount(selected){
+    recordsOnPage = +selected[0]
+    refreshAddressesTable()
+}
+
+function applySort(field){
+    $("#addresses-table th").removeClass("sortable-column sort-desc sort-asc")
+    switch (field) {
+        case 'balance': {
+            $("#addresses-table th[data-name=balance]").addClass("sortable-column sort-desc")
+            sortBy = `${field} desc`
+            break
+        }
+        case 'stake': {
+            $("#addresses-table th[data-name=stake]").addClass("sortable-column sort-desc")
+            sortBy = `${field} desc`
+            break
+        }
+        case 'blocks_canonical': {
+            $("#addresses-table th[data-name=blocks]").addClass("sortable-column sort-desc")
+            sortBy = `${field} desc`
+            break
+        }
+        case 'position': {
+            $("#addresses-table th[data-name=uptime]").addClass("sortable-column sort-asc")
+            sortBy = `${field} asc`
+            break
+        }
+    }
+
+    refreshAddressesTable()
+}
+
+function refreshAddressesTable(){
+    if (globalThis.webSocket) {
+        $("#addresses-table").addClass("disabled")
+        globalThis.webSocket.send(JSON.stringify({channel: 'addresses', data: getRequestData()}))
+    }
+}
+
+$("#pagination").on("click", ".page-link", function(){
+    $("#pagination").addClass("disabled")
+    const val = $(this).data("page")
+    if (val === 'next') {
+        currentPage++
+    } else if (val === 'prev') {
+        currentPage--
+    } else {
+        currentPage = val
+    }
+    refreshAddressesTable()
+})
+
+let search_input_interval = false
+
+const flushSearchInterval = () => {
+    clearInterval(search_input_interval)
+    search_input_interval = false
+}
+
+$("#address-search").on(Metro.events.inputchange, function(){
+    searchString = clearText(this.value.trim())
+
+    console.log(searchString)
+
+    flushSearchInterval()
+
+    if (!search_input_interval) search_input_interval = setTimeout(function(){
+        flushSearchInterval()
+        currentPage = 1
+        refreshAddressesTable()
+    }, searchThreshold)
+})
+
+const updateAddressesTable = (data) => {
+    console.log(data)
+    const target = $("#addresses-table tbody").clear()
+
+    Metro.pagination({
+        target: "#pagination",
+        length: data.count,
+        rows: recordsOnPage,
+        current: currentPage
+    })
+
+    $("#found-addresses").html(num2fmt(data.count))
+
+    for(let row of data.addresses) {
+        let tr = $("<tr>").appendTo(target)
+        const rowClass = Metro.utils.between(row.position, 1, 120, true) ? "bg-success2" : ""
+        const inBlackList = !!+row.in_black_list
+        tr.addClass(rowClass).html(`
+            <td class="text-center">
+                ${inBlackList ? "<span class='text-small radius alert p-1' title='Listed in Blacklist'>BL</span>" : ""}            
+                ${row.is_producer && !inBlackList ? "<span class='text-small radius success p-1' title='Block Producer'>BP</span>" : ""}            
+            </td>
+            <td>
+                <a class="link" href="/address/${row.public_key}">${shorten(row.public_key, 12)}</a>
+                <div class="text-small fg-violet">${row.name || ''}</div>            
+                ${inBlackList ? "<div class='text-small fg-red p-1' title=''>Warning! This address listed in Blacklist</div>" : ""}
+            </td>
+            <td class="text-right">
+                <span>${normMina(row.balance)}</span>
+                <div class="text-small">${normMina(row.balance_next)}</div>            
+            </td>
+            <td class="text-right">
+                <span>${normMina(row.stake)}</span>            
+                <div class="text-small">${normMina(row.stake_next)}</div>
+            </td>
+            <td class="text-center">
+                <span>${row.blocks_canonical}</span>
+                <div class="text-small text-muted">${row.blocks_total}</div>            
+            </td>
+            <td class="text-center">
+                <span>${row.position === 1000000 ? 0 : row.position}</span>
+                <div class="text-small">${row.score}, ${row.rate}%</div>
+            </td>
+        `)
+    }
+
+    $("#addresses-table").removeClass("disabled")
+    $("#pagination").removeClass("disabled")
 }
 
 const wsMessageController = (ws, response) => {
@@ -64,14 +208,19 @@ const wsMessageController = (ws, response) => {
         if (!isOpen(ws)) return
 
         ws.send(JSON.stringify({channel: 'epoch'}));
+        ws.send(JSON.stringify({channel: 'last_block_winners', data: 20}));
+    }
+
+    const requestNonActiveData = () => {
         ws.send(JSON.stringify({channel: 'scammer_list'}));
         ws.send(JSON.stringify({channel: 'top_stack_holders', data: 20}));
-        ws.send(JSON.stringify({channel: 'last_block_winners', data: 20}));
+        ws.send(JSON.stringify({channel: 'addresses', data: getRequestData()}));
     }
 
     switch(channel) {
         case 'welcome': {
             requestLastActivity()
+            requestNonActiveData()
             break;
         }
         case 'new_block': {
@@ -88,6 +237,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'last_block_winners': {
             updateLastBlockWinnersList(data)
+            break;
+        }
+        case 'addresses': {
+            updateAddressesTable(data)
             break;
         }
     }

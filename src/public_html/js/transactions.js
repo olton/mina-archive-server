@@ -160,7 +160,7 @@ const flushTransSearchInterval = () => {
 }
 
 $("#transactions-search").on(Metro.events.inputchange, function(){
-    searchString = this.value.trim().toLowerCase()
+    searchString = clearText(this.value.trim())
 
     flushTransSearchInterval()
 

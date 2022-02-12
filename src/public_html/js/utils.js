@@ -39,6 +39,10 @@ const normMina = (nano = 0, type = "number") => {
     }
 }
 
+const num2fmt = v => Number(v).format(0, null, " ", ".")
+
+const clearText = ( str ) => (str + '').replace(/[<>="'*+?^${}()|[\]\\]/g, '').replace(/\u0000/g, '\\0')
+
 const drawBlocksTable = (data) => {
     let rows = []
 
@@ -344,7 +348,7 @@ function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
     if (head.name === 'name') {
         td.addClass("d-none")
     }
-    if (head.name === 'stack_holder') {
+    if (head.name === 'stake_holder') {
         td.html(`
             ${val === 1 ? '<span title="Stack Holder" class="text-small radius success p-1">SH</span>' : ''}
         `)

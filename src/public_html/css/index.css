@@ -13,6 +13,7 @@
   --color-accent: #000;
   --color-neutral: #adbaa9;
   --color-success: #7dc37b;
+  --color-success2: #ddffdb;
   --color-warning: #ff8330;
   --color-alert: #ea0b0b;
   --color-alert-soft: #ff6969;
@@ -54,6 +55,9 @@
 }
 .bg-success {
   background-color: var(--color-success) !important;
+}
+.bg-success2 {
+  background-color: var(--color-success2) !important;
 }
 .fg-alert {
   color: var(--color-alert) !important;

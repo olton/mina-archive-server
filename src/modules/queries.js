@@ -35,7 +35,7 @@ export const getBlocks = async ({
     `
 
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or state_hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type], limit, offset])).rows
@@ -55,7 +55,7 @@ export const getBlocksCount = async ({
     `
 
     sql = sql.replace("%BLOCK_SEARCH%", search && search.block ? `and height = ${search.block}` : "")
-    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash}%' or state_hash = '${search.hash}')` : "")
+    sql = sql.replace("%HASH_SEARCH%", search && search.hash ? `and (creator_key = '${search.hash}' or lower(creator_name) like '%${search.hash.toLowerCase()}%' or state_hash = '${search.hash}')` : "")
     sql = sql.replace("%COINBASE_SEARCH%", search && !isNaN(search.coinbase) ? `and coinbase = ${search.coinbase}` : "")
 
     return (await query(sql, [Array.isArray(type) ? type : [type]])).rows[0].length
@@ -232,7 +232,11 @@ export const getTransaction = async (hash) => {
 
 export const getScammerList = async () => {
     const sql = `
-        select * from blacklist b 
+        select b.*, a.name 
+        from blacklist b
+        left join public_keys pk on pk.value = b.public_key
+        left join address a on a.public_key_id = pk.id
+        
     `
     const rows = (await query(sql)).rows
     const result = []
@@ -240,6 +244,7 @@ export const getScammerList = async () => {
     for(let r of rows) {
         result.push([
             r.public_key,
+            r.name,
             r.reason
         ])
     }
@@ -247,10 +252,11 @@ export const getScammerList = async () => {
     return result
 }
 
-export const getTopStackHolders = async (limit = 20) => {
+export const getTopStakeHolders = async (limit = 20) => {
     const sql = `
         select *
-        from v_stakes
+        from v_stakes s
+        left join address a on a.public_key_id = s.id
         order by stake desc
         limit $1
     `
@@ -258,7 +264,7 @@ export const getTopStackHolders = async (limit = 20) => {
     const result = []
 
     for(let r of rows) {
-        result.push([r.value, r.stake, r.stake_next])
+        result.push([r.value, r.name, r.stake, r.stake_next])
     }
 
     return result
@@ -266,7 +272,7 @@ export const getTopStackHolders = async (limit = 20) => {
 
 export const getLastBlockWinners = async (limit = 20) => {
     const sql = `
-        select b.creator_key, b.height, b.coinbase
+        select b.creator_key, b.creator_name, b.height, b.coinbase
         from v_blocks b
         where b.chain_status = 'canonical'
         order by b.height desc
@@ -276,7 +282,7 @@ export const getLastBlockWinners = async (limit = 20) => {
     const result = []
 
     for(let r of rows) {
-        result.push([r.creator_key, r.height, r.coinbase])
+        result.push([r.creator_key, r.creator_name, r.height, r.coinbase])
     }
 
     return result
@@ -446,34 +452,6 @@ export const getProducers = async () => {
     return result
 }
 
-export const getZeroBlocks = async () => {
-    const sql = `
-        select *
-        from v_blocks
-        where coinbase = 0
-        and chain_status = 'canonical'
-        and height > 1
-        order by height desc
-    `
-    const rows = (await query(sql)).rows
-    const result = []
-
-    for(let r of rows) {
-        result.push([
-            r.height,
-            r.epoch,
-            r.slot,
-            r.global_slot,
-            r.creator_key,
-            r.creator_name,
-            r.timestamp,
-            r.state_hash
-        ])
-    }
-
-    return result
-}
-
 export const getTransactions = async ({
   type,
   status,
@@ -560,4 +538,42 @@ export const getTransactionsStat = async () => {
     result.pool = (await getTransactionInPool()).length
 
     return result
+}
+
+export const getAddresses = async ({
+    limit = 50,
+    offset = 0,
+    sort = "stake",
+    search = null
+} = {}) => {
+    let sql = `
+        select a.*
+        from v_address_list a 
+        where 1=1
+        %ADDRESS_KEY_NAME%
+        order by %SORT%
+        limit $1 offset $2
+    `
+
+    sql = sql.replace("%SORT%", sort)
+    sql = sql.replace("%ADDRESS_KEY_NAME%", search && search.key ? `and (a.public_key = '${search.key}' or lower(a.name) like '%${search.key.toLowerCase()}%')` : "")
+
+    console.log(sql)
+
+    return (await query(sql, [limit, offset])).rows
+}
+
+export const getAddressesCount = async ({
+   search = null
+} = {}) => {
+    let sql = `
+        select count(a.id) as length
+        from v_address_list a
+        where 1=1
+        %ADDRESS_KEY_NAME%
+    `
+
+    sql = sql.replace("%ADDRESS_KEY_NAME%", search && search.key ? `and (a.public_key = '${search.key}' or lower(a.name) like '%${search.key.toLowerCase()}%')` : "")
+
+    return (await query(sql)).rows[0].length
 }

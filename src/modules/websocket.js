@@ -4,14 +4,12 @@ import {
     getAddressUptime,
     getTransaction,
     getScammerList,
-    getTopStackHolders,
     getLastBlockWinners,
     getAddressBlocks,
     getAddressTrans,
     getAddressDelegations,
     getBlockTransactions,
     getProducers,
-    getZeroBlocks,
     getDisputeBlocks,
     getBlocks,
     getStat,
@@ -19,7 +17,13 @@ import {
     getLastBlockTime,
     getBlockInfo,
     getEpoch,
-    getAddressTransactions, getTotalBlocks, getBlocksCount, getTransactionsCount, getTransactions, getTransactionsStat
+    getAddressTransactions,
+    getTotalBlocks,
+    getBlocksCount,
+    getTransactionsCount,
+    getTransactions,
+    getTransactionsStat,
+    getTopStakeHolders, getAddresses, getAddressesCount
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -131,7 +135,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'top_stack_holders': {
-                    response(ws, channel, await getTopStackHolders(data));
+                    response(ws, channel, await getTopStakeHolders(data));
                     break;
                 }
                 case 'last_block_winners': {
@@ -172,6 +176,13 @@ export const websocket = (server) => {
                 }
                 case 'trans_stat': {
                     response(ws, channel, await getTransactionsStat())
+                    break
+                }
+                case 'addresses': {
+                    const count = await getAddressesCount({search: data.search})
+                    const addresses = await getAddresses({sort: data.sort, limit: data.count, offset: data.offset, search: data.search})
+                    response(ws, channel, {count, addresses})
+                    break
                 }
             }
         })
