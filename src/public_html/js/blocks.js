@@ -16,10 +16,14 @@ const updateEpoch = data => {
 }
 
 const updateBlocksTable = data => {
-    $("#total-blocks, #tab-blocks-count").html(Number(data.totalBlocks.total).format(0, null, " ", "."))
-    $("#pending-blocks").html(Number(data.totalBlocks.pending).format(0, null, " ", "."))
-    $("#canonical-blocks").html(Number(data.totalBlocks.canonical).format(0, null, " ", "."))
-    $("#orphaned-blocks").html(Number(data.totalBlocks.orphaned).format(0, null, " ", "."))
+    const {total = 0, canonical= 0, orphaned = 0, pending = 0} = data.totalBlocks || {}
+    const eff = Number(canonical * 100 / total).toFixed(0)
+
+    $("#total-blocks, #tab-blocks-count").html(Number(total).format(0, null, " ", "."))
+    $("#eff-blocks").html(eff + "%")
+    $("#canonical-blocks").html(Number(canonical).format(0, null, " ", "."))
+    $("#orphaned-blocks").html(Number(orphaned).format(0, null, " ", "."))
+
     $("#found-blocks").html(Number(data.count).format(0, null, " ", "."))
 
     Metro.pagination({
