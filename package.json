@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --es-module-specifier-resolution=node .",
+    "server": "node --es-module-specifier-resolution=node .",
     "ledger": "node --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
     "memo": "node --experimental-modules --es-module-specifier-resolution=node src/memo.js",
     "chain": "node --experimental-modules --es-module-specifier-resolution=node src/chain.js",
