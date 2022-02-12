@@ -109,6 +109,7 @@ function applySort(field){
 function refreshAddressesTable(){
     if (globalThis.webSocket) {
         $("#addresses-table").addClass("disabled")
+        $("#load-data-activity").show()
         globalThis.webSocket.send(JSON.stringify({channel: 'addresses', data: getRequestData()}))
     }
 }
@@ -195,6 +196,7 @@ const updateAddressesTable = (data) => {
 
     $("#addresses-table").removeClass("disabled")
     $("#pagination").removeClass("disabled")
+    $("#load-data-activity").hide()
 }
 
 const wsMessageController = (ws, response) => {
@@ -219,6 +221,7 @@ const wsMessageController = (ws, response) => {
 
     switch(channel) {
         case 'welcome': {
+            $("#load-data-activity").show()
             requestLastActivity()
             requestNonActiveData()
             break;
