@@ -32,7 +32,7 @@ const route = () => {
 
     app.use((req, res, next) => {
         if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test' && !isSecure(req)) {
-            res.redirect(301, `https://${req.headers.host}:${server_port}${req.url}`)
+            res.redirect(301, `https://${req.headers.host}}${req.url}`)
         } else {
             next()
         }
