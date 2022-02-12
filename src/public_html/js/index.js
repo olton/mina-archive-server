@@ -76,6 +76,17 @@ const updateHeight = data => {
     $("#slot").html((+slot).format(0, null, " ", "."))
     $("#global-slot").html((+global_slot).format(0, null, " ", "."))
     $("#start_block").addClass("reduce-2").html("<span class='text-muted mr-1 mif-cake'></span>"+(+epoch_start_block).format(0, null, " ", "."))
+
+    const SLOT_DURATION = 180000
+    const EPOCH_DURATION = 1285200000
+    const epochDurationProgress = (+slot * SLOT_DURATION * 100) / EPOCH_DURATION
+    const progress = Metro.getPlugin('#epoch-donut', 'donut')
+
+    progress.setColor({
+        "stroke": "rgb(245, 245, 245)"
+    })
+
+    progress.val(epochDurationProgress)
 }
 
 const updateStat = data => {
