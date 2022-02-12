@@ -64,46 +64,8 @@ div.container-fluid
 
 div.container-fluid.bg-lightSystem
     div.container
-        div.h3.mt-4.mb-0.text-light Blockchain State
         div.pt-2.pb-2
             include ./components/epoch-small
-
-
-div.container-fluid.border-bottom.bd-system(style="min-height: 70px")
-    div.container
-        div.h3.mt-4.mb-0.text-light Account Balance and Stakes
-        div.row.pt-2.pb-2
-            div.cell-xl-3.cell-md-6
-                div.text-small.text-bold.m-0.text-muted
-                    span ACCOUNT BALANCE
-
-                div.h2.text-normal.mt-0.mb-1
-                    div#balance
-                        div(data-role="activity" data-type="metro" data-style="color")
-
-            div.cell-xl-3.cell-md-6
-                div.text-small.text-bold.m-0.text-muted
-                    span MOVABLE BALANCE
-
-                div.h2.text-normal.mt-0.mb-1
-                    div#movable-balance
-                        div(data-role="activity" data-type="metro" data-style="color")
-
-            div.cell-xl-3.cell-md-6
-                div.text-small.text-bold.m-0.text-muted
-                    span CURRENT STAKE
-
-                div.h2.text-normal.mt-0.mb-1
-                    div#stack-current
-                        div(data-role="activity" data-type="metro" data-style="color")
-
-            div.cell-xl-3.cell-md-6
-                div.text-small.text-bold.m-0.text-muted
-                    span NEXT STAKE
-
-                div.h2.text-normal.mt-0.mb-1
-                    div#stack-next
-                        div(data-role="activity" data-type="metro" data-style="color")
 
 
 section.container-fluid.mt-8
@@ -121,6 +83,41 @@ section.container-fluid.mt-8
                 a(href="#delegations") Delegations
 
         div#overview.pt-5
+            div
+                div.h3.mt-4.mb-0.text-light Account Balance and Stakes
+                div.row.pt-2.pb-2
+                    div.cell-xl-3.cell-md-6
+                        div.text-small.text-bold.m-0.text-muted
+                            span ACCOUNT BALANCE
+
+                        div.h2.text-normal.mt-0.mb-1
+                            div#balance
+                                div(data-role="activity" data-type="metro" data-style="color")
+
+                    div.cell-xl-3.cell-md-6
+                        div.text-small.text-bold.m-0.text-muted
+                            span MOVABLE BALANCE
+
+                        div.h2.text-normal.mt-0.mb-1
+                            div#movable-balance
+                                div(data-role="activity" data-type="metro" data-style="color")
+
+                    div.cell-xl-3.cell-md-6
+                        div.text-small.text-bold.m-0.text-muted
+                            span CURRENT STAKE
+
+                        div.h2.text-normal.mt-0.mb-1
+                            div#stack-current
+                                div(data-role="activity" data-type="metro" data-style="color")
+
+                    div.cell-xl-3.cell-md-6
+                        div.text-small.text-bold.m-0.text-muted
+                            span NEXT STAKE
+
+                        div.h2.text-normal.mt-0.mb-1
+                            div#stack-next
+                                div(data-role="activity" data-type="metro" data-style="color")
+
 
             div.row
                 div.cell-xl-3.cell-lg-4.cell-ld-6
