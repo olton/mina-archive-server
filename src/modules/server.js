@@ -6,7 +6,7 @@ import {setValue} from "../helpers/set-value"
 import {hostname} from "os"
 import pkg from "../../package.json"
 import {processPriceInfo} from "./price"
-import {runWebServer} from "./webserver"
+import {runWebServer, runWebServerDev} from "./webserver"
 import {sendBroadcast} from "./websocket.js";
 import {processTransactionPool} from "./graphql.js";
 
@@ -72,7 +72,7 @@ export const run = (configPath) => {
     init(configPath)
     createDBConnection()
     listenNotifies()
-    runWebServer()
+    config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()
     processTransactionPool()
 }

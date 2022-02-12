@@ -16,27 +16,12 @@ import {checkPaymentStatus} from "./graphql.js";
 
 const app = express()
 
-const isSecure = (req) => {
-    if (req.headers['x-forwarded-proto']) {
-        return req.headers['x-forwarded-proto'] === 'https'
-    }
-    return req.secure
-}
-
 const route = () => {
     app.use(express.static(path.join(rootPath, 'public_html')))
     app.use(favicon(path.join(rootPath, 'public_html', 'favicon.ico')))
     app.locals.pretty = true
     app.set('views', path.resolve(rootPath, 'public_html'))
     app.set('view engine', 'pug')
-
-    app.use((req, res, next) => {
-        if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test' && !isSecure(req)) {
-            res.redirect(301, `https://${req.headers.host}}${req.url}`)
-        } else {
-            next()
-        }
-    })
 
     const clientConfig = JSON.stringify(config.client)
 
@@ -177,20 +162,46 @@ const route = () => {
     })
 }
 
+const runWebServerDev = () => {
+    const [server_host, server_port] = config.server.host.split(":")
+    let webserver
+
+    if (ssl) {
+        const {cert, key} = config.server.ssl
+        webserver = https.createServer({
+            key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
+            cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
+        }, app)
+    } else {
+        webserver = http.createServer({}, app)
+    }
+
+    route()
+
+    webserver.listen(+server_port, server_host, () => {
+        log(`Minataur running on port ${server_port} in ${ssl ? 'secure' : 'non-secure'} mode`)
+    })
+
+    websocket(webserver)
+}
+
 const runWebServer = () => {
     let httpWebserver, httpsWebserver
 
 
-    httpWebserver = http.createServer((req, res)=>{
-        res.writeHead(301,{Location: `https://${req.headers.host}${req.url}`});
-        res.end();
-    })
     if (ssl) {
         const {cert, key} = config.server.ssl
+        httpWebserver = http.createServer((req, res)=>{
+            res.writeHead(301,{Location: `https://${req.headers.host}${req.url}`});
+            res.end();
+        })
+
         httpsWebserver = https.createServer({
             key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
             cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
         }, app)
+    } else {
+        httpWebserver = http.createServer({}, app)
     }
 
     route()
@@ -209,5 +220,6 @@ const runWebServer = () => {
 }
 
 export {
+    runWebServerDev,
     runWebServer
 }
