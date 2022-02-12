@@ -16,32 +16,19 @@ import {checkPaymentStatus} from "./graphql.js";
 
 const app = express()
 
-const runWebServer = () => {
-    const [server_host, server_port] = config.server.host.split(":")
-    let webserver
-
-    if (ssl) {
-        const {cert, key} = config.server.ssl
-        webserver = https.createServer({
-            key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
-            cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
-        }, app)
-    } else {
-        webserver = http.createServer({}, app)
+const isSecure = (req) => {
+    if (req.headers['x-forwarded-proto']) {
+        return req.headers['x-forwarded-proto'] === 'https'
     }
+    return req.secure
+}
 
+const route = () => {
     app.use(express.static(path.join(rootPath, 'public_html')))
     app.use(favicon(path.join(rootPath, 'public_html', 'favicon.ico')))
     app.locals.pretty = true
     app.set('views', path.resolve(rootPath, 'public_html'))
     app.set('view engine', 'pug')
-
-    function isSecure(req) {
-        if (req.headers['x-forwarded-proto']) {
-            return req.headers['x-forwarded-proto'] === 'https'
-        }
-        return req.secure
-    }
 
     app.use((req, res, next) => {
         if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test' && !isSecure(req)) {
@@ -188,12 +175,34 @@ const runWebServer = () => {
             result
         })
     })
+}
 
-    webserver.listen(+server_port, server_host, () => {
-        log(`Minataur running on port ${server_port} in ${ssl ? 'secure' : 'non-secure'} mode`)
+const runWebServer = () => {
+    let httpWebserver, httpsWebserver
+
+
+    httpWebserver = http.createServer({}, app)
+    if (ssl) {
+        const {cert, key} = config.server.ssl
+        httpsWebserver = https.createServer({
+            key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
+            cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
+        }, app)
+    }
+
+    route()
+
+    httpWebserver.listen(80, () => {
+        log(`Minataur running on http`)
     })
 
-    websocket(webserver)
+    if (ssl) {
+        httpsWebserver.listen(443, () => {
+            log(`Minataur running on https`)
+        })
+    }
+
+    websocket(ssl ? httpsWebserver : httpWebserver)
 }
 
 export {
