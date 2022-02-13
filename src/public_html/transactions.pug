@@ -67,20 +67,12 @@ div.container-fluid
                         div.content.pl-2
                             div.p-2
                                 div.text-upper Transactions
-                                div.text-upper In Pool
+                                div.text-upper Pending
                                 div.box-value#trans-pool 0
 
 
 div.container-fluid
     div.container
-        ul.mt-4(data-role="tabs" data-expand="true")
-            li.ml-2
-                a(href="#trans-included") Included In Blockchain
-
-            li.disabled
-                a(href="#trans-in-pool") In Pool
-
-
         div#trans-included
             div.row.flex-align-start
 
@@ -93,6 +85,7 @@ div.container-fluid
                 div.cell-md-3
                     span.ml-1.text-muted.reduce-4.text-bold STATUS FILTER
                     div.mt-2-minus
+                        input(type="checkbox" checked data-cls-check="bg-orange no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="applyFilter(this, 'status:pending')")
                         input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Applied</span>" onchange="applyFilter(this, 'status:applied')")
                         input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Failed</span>" onchange="applyFilter(this, 'status:failed')")
 
@@ -135,7 +128,7 @@ div.container-fluid
                             th(data-name="hash")
                                 span Hash
                                 div.text-small Type/Date
-                            th(data-name="height")
+                            th.text-center(data-name="height")
                                 span Block
                                 div.text-small Timelapse
                             th.text-center(data-name="agent")
@@ -153,9 +146,6 @@ div.container-fluid
             div.mt-4
                 div#pagination
 
-
-
-    div.mb-10 &nbsp;
 
 include components/footer
 

@@ -3,6 +3,8 @@ import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHA
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
 import {getTransactionInPool} from "./graphql.js";
+import {datetime} from "@olton/datetime";
+import {isset} from "../helpers/isset.js";
 
 export const getDisputeBlocks = async () => {
     const sql = `
@@ -452,12 +454,25 @@ export const getProducers = async () => {
     return result
 }
 
+export const getAddressName = async (key) => {
+    const sql = `
+        select name 
+        from address a 
+        left join public_keys pk on pk.id = a.public_key_id
+        where pk.value = $1
+    `
+
+    const res = (await query(sql, [key])).rows
+    return res.length ? res[0].name : null
+}
+
 export const getTransactions = async ({
-  type,
-  status,
-  limit = 50,
-  offset = 0,
-  search = null
+    type,
+    status,
+    limit = 50,
+    offset = 0,
+    pending = true,
+    search = null
 } = {}) => {
     let sql = `
         select *
@@ -494,12 +509,38 @@ export const getTransactions = async ({
         row.scam = checkMemoForScam(row.memo)
     }
 
-    return result
+    const pool_result = []
+
+    if (pending && isset(globalThis.cache.transactionPool, false)) {
+        const pool_rows = globalThis.cache.transactionPool
+        for(let r of pool_rows) {
+            pool_result.push({
+                status: "pending",
+                type: r.kind.toLowerCase(),
+                amount: r.amount,
+                fee: r.fee,
+                hash: r.hash,
+                memo: r.memo,
+                scam: checkMemoForScam(r.memo),
+                timestamp: datetime().time(),
+                height: 0,
+                trans_owner: r.from,
+                trans_owner_name: await getAddressName(r.from),
+                trans_receiver: r.to,
+                trans_receiver_name: await getAddressName(r.to),
+                nonce: r.nonce,
+                confirmation: 0
+            })
+        }
+    }
+
+    return pool_result.concat(result)
 }
 
 export const getTransactionsCount = async ({
     type,
     status,
+    pending = true,
     search = null
 } = {}) => {
     let sql = `
@@ -528,7 +569,9 @@ export const getTransactionsCount = async ({
     )
     ` : "")
 
-    return (await query(sql, [_type, _status])).rows[0].length
+    const pool_rows = globalThis.cache.transactionPool
+
+    return (await query(sql, [_type, _status])).rows[0].length + (pending ? pool_rows.length : 0)
 }
 
 export const getTransactionsStat = async () => {

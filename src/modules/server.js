@@ -56,7 +56,8 @@ const init = configPath => {
     })
 
     globalThis.cache = new Proxy({
-        price: null
+        price: null,
+        transactionPool: []
     }, {
         set(target, p, value, receiver) {
             target[p] = value

@@ -169,8 +169,8 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'transactions': {
-                    const count = await getTransactionsCount({type: data.type, status: data.status, search: data.search})
-                    const trans = await getTransactions({type: data.type, status: data.status, limit: data.count, offset: data.offset, search: data.search})
+                    const count = await getTransactionsCount({type: data.type, status: data.status, search: data.search, pending: data.pending})
+                    const trans = await getTransactions({type: data.type, status: data.status, limit: data.count, offset: data.offset, search: data.search, pending: data.pending})
                     response(ws, channel, {transactions: trans, count})
                     break
                 }
