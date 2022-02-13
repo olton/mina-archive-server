@@ -571,7 +571,7 @@ export const getTransactionsCount = async ({
 
     const pool_rows = globalThis.cache.transactionPool
 
-    return (await query(sql, [_type, _status])).rows[0].length + (pending ? pool_rows.length : 0)
+    return +((await query(sql, [_type, _status])).rows[0].length) + +(pending ? pool_rows.length : 0)
 }
 
 export const getTransactionsStat = async () => {
