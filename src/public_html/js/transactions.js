@@ -85,6 +85,7 @@ const updateTransTable = data => {
 
     $("#pagination").removeClass("disabled")
     $("#trans-table").removeClass("disabled")
+    $("#load-data-activity").hide()
 }
 
 const getRequestData = () => {
@@ -108,7 +109,8 @@ const getRequestData = () => {
 }
 
 function refreshTransTable(){
-    $("#trans-table").addClass("disabled")
+    // $("#trans-table").addClass("disabled")
+    $("#load-data-activity").show()
     if (globalThis.webSocket) {
         globalThis.webSocket.send(JSON.stringify({channel: 'transactions', data: getRequestData()}))
     }
@@ -179,15 +181,10 @@ const wsMessageController = (ws, response) => {
         return
     }
 
-    const requestLastActivity = () => {
-        if (!isOpen(ws)) return
-
-        ws.send(JSON.stringify({channel: 'transactions', data: getRequestData()}))
-    }
-
     const requestStat = () => {
         if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'trans_stat'}))
+            refreshTransTable()
         }
 
         setTimeout(requestStat, 60000)
@@ -195,12 +192,10 @@ const wsMessageController = (ws, response) => {
 
     switch(channel) {
         case 'welcome': {
-            requestLastActivity()
             requestStat()
             break;
         }
         case 'new_block': {
-            requestLastActivity()
             break;
         }
         case 'transactions': {
