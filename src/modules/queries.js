@@ -511,7 +511,7 @@ export const getTransactions = async ({
 
     const pool_result = []
 
-    if (pending && isset(globalThis.cache.transactionPool, false)) {
+    if (pending) {
         const pool_rows = globalThis.cache.transactionPool
         for(let r of pool_rows) {
             pool_result.push({
@@ -578,7 +578,7 @@ export const getTransactionsStat = async () => {
     const sql = `select * from v_trans_stat`
     const result = (await query(sql)).rows[0]
 
-    result.pool = (await getTransactionInPool()).length
+    result.pool = globalThis.cache.transactionPool.length
 
     return result
 }
@@ -600,8 +600,6 @@ export const getAddresses = async ({
 
     sql = sql.replace("%SORT%", sort)
     sql = sql.replace("%ADDRESS_KEY_NAME%", search && search.key ? `and (a.public_key = '${search.key}' or lower(a.name) like '%${search.key.toLowerCase()}%')` : "")
-
-    console.log(sql)
 
     return (await query(sql, [limit, offset])).rows
 }

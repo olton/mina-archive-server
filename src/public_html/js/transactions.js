@@ -1,5 +1,5 @@
 let currentPage = 1
-let recordsOnPage = 50
+let recordsOnPage = 10
 let chainStatus = ['applied', 'failed']
 let chainType = ['payment', 'delegation']
 let searchString = ""
