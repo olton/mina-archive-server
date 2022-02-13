@@ -79,6 +79,7 @@ const updateHeight = data => {
 
     const SLOT_DURATION = 180000
     const EPOCH_DURATION = 1285200000
+    const GENESIS_START = "2021-03-17 02:00:00.000000+02:00"
     const epochDurationProgress = (+slot * SLOT_DURATION * 100) / EPOCH_DURATION
     const progress = Metro.getPlugin('#epoch-donut', 'donut')
 
@@ -87,6 +88,18 @@ const updateHeight = data => {
     })
 
     progress.val(epochDurationProgress)
+
+    const epochTimer = $("#epoch-timer")
+    const epochEnd = datetime(GENESIS_START).addSecond(EPOCH_DURATION/1000 * (+epoch + 1))
+    const epochEndFormatted = epochEnd.format("MM/DD/YYYY HH:mm")
+
+    $("#current-epoch-number").html(epoch)
+    $("#epoch-stop").html(epochEnd.format(config.format.datetime))
+
+    if (epochTimer.attr("data-date") !== epochEndFormatted) {
+        const countdown = Metro.getPlugin("#epoch-timer", "countdown")
+        countdown.resetWith(epochEndFormatted)
+    }
 }
 
 const updateStat = data => {

@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 06/02/2022 02:00:39
+ * Built at 13/02/2022 11:40:19
  * Licensed under MIT
  */
 /*!
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "06/02/2022 02:00:39",
+        compileTime: "13/02/2022 11:40:19",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -18099,7 +18099,11 @@ $.noConflict = function() {
             clearInterval(this.tickInterval);
 
             element.find(".part").removeClass(o.clsZero);
-            element.find(".digit").html("0");
+
+            var digit = element.find(".digit").clear();
+
+            digit.append($("<span class='digit-placeholder'>").html("0"));
+            digit.append($("<span class='digit-value'>").html("0"));
 
             this._setBreakpoint();
 
@@ -18109,6 +18113,25 @@ $.noConflict = function() {
 
             this.blinkInterval = setInterval(function(){that.blink();}, 500);
             this.tickInterval = setInterval(function(){that.tick();}, 1000);
+        },
+
+        resetWith: function(val){
+            var that = this, element = this.element, o = this.options;
+
+            if (typeof val === "string") {
+                element.attr("data-date", val)
+                o.date = val
+            } else if (typeof val === 'object') {
+                var keys = ["days", "hours", "minutes", "seconds"]
+                $.each(keys, function(i, v){
+                    if (Metro.utils.isValue(val[v])) {
+                        element.attr("data-"+v, val[v])
+                        o[v] = val[v]
+                    }
+                })
+            }
+
+            this.reset()
         },
 
         togglePlay: function(){

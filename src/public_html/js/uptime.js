@@ -20,8 +20,8 @@ const updateUptimeTable = data => {
     const nextRoundTimer = $("#next-round-timer")
 
     if (nextRoundTimer.attr("data-date") !== next) {
-        nextRoundTimer.attr("data-date", next)
-        Metro.getPlugin("#next-round-timer", "countdown").reset()
+        const cd = Metro.getPlugin("#next-round-timer", "countdown")
+        cd.resetWith(next)
     }
 
     const target = $("#leaderboard tbody").clear()
