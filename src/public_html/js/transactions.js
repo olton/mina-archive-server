@@ -29,7 +29,7 @@ const updateTransTable = data => {
         let tr = $("<tr>").appendTo(target)
         tr.html(`
             <td class="text-center">
-                <span class="${t.status === 'applied' ? 'mif-checkmark fg-green' : 'mif-bocked fg-red'}"></span>            
+                <span class="${t.status === 'applied' ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'}"></span>            
             </td>
             <td>
                 <div style="line-height: 1">
@@ -43,7 +43,8 @@ const updateTransTable = data => {
                 </div>      
                 <div class="text-small text-muted">
                     ${t.memo ? "<span class='reduce-2 bg-darkGray fg-white pl-1 pr-1 mr-1'>MEMO:</span>" + t.memo : ""}
-                </div>                               
+                </div>            
+                ${t.status === 'failed' ? '<div class="fg-red">'+t.failure_reason+'</div>' : ''}                   
             </td>
             <td>
                 <span>${t.height}</span>            
