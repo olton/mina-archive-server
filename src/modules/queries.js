@@ -474,6 +474,54 @@ export const getTransactions = async ({
     pending = true,
     search = null
 } = {}) => {
+    let pool_result = []
+
+    console.log(limit, offset)
+
+    if (pending) {
+        const pool_rows = globalThis.cache.transactionPool.slice(offset, +(offset) + +(limit))
+        for(let r of pool_rows) {
+            pool_result.push({
+                status: "pending",
+                type: r.kind.toLowerCase(),
+                amount: r.amount,
+                fee: r.fee,
+                hash: r.hash,
+                memo: r.memo,
+                scam: checkMemoForScam(r.memo),
+                timestamp: datetime().time(),
+                height: 0,
+                trans_owner: r.from,
+                trans_owner_name: await getAddressName(r.from),
+                trans_receiver: r.to,
+                trans_receiver_name: await getAddressName(r.to),
+                nonce: r.nonce,
+                confirmation: 0
+            })
+        }
+        if (search && (search.block || search.block_hash)) {
+            pool_result = []
+        } else {
+            if (search && search.hash) {
+                pool_result = pool_result.filter( v => v.hash === search.hash)
+            } else if (search && search.participant) {
+                pool_result = pool_result.filter( v => {
+                    return v.trans_owner === search.participant ||
+                        v.trans_receiver === search.participant ||
+                        v.trans_owner_name.toLowerCase().includes(search.participant) ||
+                        v.trans_receiver_name.toLowerCase().includes(search.participant)
+                })
+            }
+        }
+    }
+
+    console.log(pool_result.length)
+
+    let _limit = limit - pool_result.length
+    let _offset = offset === 0 ? 0 : offset - pool_result.length
+
+    console.log(_limit, _offset)
+
     let sql = `
         select *
         from v_trans t
@@ -502,36 +550,11 @@ export const getTransactions = async ({
     )
     ` : "")
 
-    const result = (await query(sql, [_type, _status, limit, offset])).rows
+    const result = (await query(sql, [_type, _status, _limit, _offset])).rows
 
     for(let row of result) {
         row.memo = decodeMemo(row.memo)
         row.scam = checkMemoForScam(row.memo)
-    }
-
-    const pool_result = []
-
-    if (pending) {
-        const pool_rows = globalThis.cache.transactionPool
-        for(let r of pool_rows) {
-            pool_result.push({
-                status: "pending",
-                type: r.kind.toLowerCase(),
-                amount: r.amount,
-                fee: r.fee,
-                hash: r.hash,
-                memo: r.memo,
-                scam: checkMemoForScam(r.memo),
-                timestamp: datetime().time(),
-                height: 0,
-                trans_owner: r.from,
-                trans_owner_name: await getAddressName(r.from),
-                trans_receiver: r.to,
-                trans_receiver_name: await getAddressName(r.to),
-                nonce: r.nonce,
-                confirmation: 0
-            })
-        }
     }
 
     return pool_result.concat(result)
