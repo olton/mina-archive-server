@@ -331,7 +331,8 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
             ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
-            break;
+            ws.send(JSON.stringify({channel: 'address_balance_per_epoch', data: {pk: address, len: 10}}));
+            break
         }
         case 'new_block': {
             requestData(ws)
@@ -340,52 +341,56 @@ const wsMessageController = (ws, response) => {
                 ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
                 // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             }
-            break;
+            break
         }
         case 'address': {
             updateAddressInfo(data)
             ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
-            break;
+            break
         }
         case 'epoch': {
             updateEpoch(data)
-            break;
+            break
         }
         case 'address_last_blocks': {
             updateAddressLastBlocks(data)
-            break;
+            break
         }
         case 'address_last_trans': {
             updateAddressLastTrans(data)
-            break;
+            break
         }
         case 'address_balance': {
             updateAddressBalance(data)
-            break;
+            break
         }
         case 'address_trans_pool': {
             updateAddressTransPool(data)
-            break;
+            break
         }
         case 'address_uptime': {
             updateAddressUptime(data)
-            break;
+            break
         }
         case 'address_blocks': {
             updateAddressBlocksTable(data)
-            break;
+            break
         }
         case 'address_trans': {
             updateAddressTransTable(data)
-            break;
+            break
         }
         case 'address_delegations': {
             updateAddressDelegations(data)
-            break;
+            break
         }
         case 'address_delegations_next': {
             updateAddressDelegations(data, true)
-            break;
+            break
+        }
+        case 'address_balance_per_epoch': {
+            graphBalancePerEpoch(data)
+            break
         }
     }
 }
@@ -483,4 +488,9 @@ function addressTransApplyFilter(el, flt){
     }
 
     table.draw()
+}
+
+const graphBalancePerEpoch = data => {
+    console.log(data)
+    if (!data || !data.length) return
 }

@@ -80,41 +80,45 @@ section.container-fluid
             li
                 a(href="#delegations") Delegations
 
-        div#overview.pt-5
+        div#overview
             div
                 div.h3.mt-4.mb-0.text-light Account Balance and Stakes
                 div.row.pt-2.pb-2
                     div.cell-xl-3.cell-md-6
-                        div.text-small.text-bold.m-0.text-muted
-                            span ACCOUNT BALANCE
+                        div.border.bd-system(style="height: 75px; padding: 8px 16px;")
+                            div.text-small.text-bold.m-0.text-muted
+                                span ACCOUNT BALANCE
 
-                        div.h2.text-normal.mt-0.mb-1
-                            div#balance
-                                div(data-role="activity" data-type="metro" data-style="color")
-
-                    div.cell-xl-3.cell-md-6
-                        div.text-small.text-bold.m-0.text-muted
-                            span MOVABLE BALANCE
-
-                        div.h2.text-normal.mt-0.mb-1
-                            div#movable-balance
-                                div(data-role="activity" data-type="metro" data-style="color")
+                            div.h2.text-normal.mt-0.mb-1
+                                div#balance
+                                    div(data-role="activity" data-type="metro" data-style="color")
 
                     div.cell-xl-3.cell-md-6
-                        div.text-small.text-bold.m-0.text-muted
-                            span CURRENT STAKE
+                        div.border.bd-system(style="height: 75px; padding: 8px 16px;")
+                            div.text-small.text-bold.m-0.text-muted
+                                span MOVABLE BALANCE
 
-                        div.h2.text-normal.mt-0.mb-1
-                            div#stack-current
-                                div(data-role="activity" data-type="metro" data-style="color")
+                            div.h2.text-normal.mt-0.mb-1
+                                div#movable-balance
+                                    div(data-role="activity" data-type="metro" data-style="color")
 
                     div.cell-xl-3.cell-md-6
-                        div.text-small.text-bold.m-0.text-muted
-                            span NEXT STAKE
+                        div.border.bd-system(style="height: 75px; padding: 8px 16px;")
+                            div.text-small.text-bold.m-0.text-muted
+                                span CURRENT STAKE
 
-                        div.h2.text-normal.mt-0.mb-1
-                            div#stack-next
-                                div(data-role="activity" data-type="metro" data-style="color")
+                            div.h2.text-normal.mt-0.mb-1
+                                div#stack-current
+                                    div(data-role="activity" data-type="metro" data-style="color")
+
+                    div.cell-xl-3.cell-md-6
+                        div.border.bd-system(style="height: 75px; padding: 8px 16px;")
+                            div.text-small.text-bold.m-0.text-muted
+                                span NEXT STAKE
+
+                            div.h2.text-normal.mt-0.mb-1
+                                div#stack-next
+                                    div(data-role="activity" data-type="metro" data-style="color")
 
 
             div.row

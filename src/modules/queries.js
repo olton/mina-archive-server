@@ -515,12 +515,8 @@ export const getTransactions = async ({
         }
     }
 
-    console.log(pool_result.length)
-
     let _limit = limit - pool_result.length
     let _offset = offset === 0 ? 0 : offset - pool_result.length
-
-    console.log(_limit, _offset)
 
     let sql = `
         select *
@@ -641,3 +637,4 @@ export const getAddressesCount = async ({
 
     return (await query(sql)).rows[0].length
 }
+
