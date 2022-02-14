@@ -28,7 +28,7 @@ import {
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance, getTransactionInPool} from "./graphql.js";
-import {getBalancePerEpoch} from "./analytics.js";
+import {getBalancePerEpoch, getStakePerEpoch} from "./analytics.js";
 
 const {version} = pkg
 
@@ -187,6 +187,10 @@ export const websocket = (server) => {
                 }
                 case 'address_balance_per_epoch': {
                     response(ws, channel, await getBalancePerEpoch(data.pk, data.len))
+                    break
+                }
+                case 'address_stake_per_epoch': {
+                    response(ws, channel, await getStakePerEpoch(data.pk, data.len))
                     break
                 }
             }
