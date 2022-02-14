@@ -28,7 +28,7 @@ import {
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance, getTransactionInPool} from "./graphql.js";
-import {getBalancePerEpoch, getStakePerEpoch} from "./analytics.js";
+import {getBalancePerEpoch, getBlocksPerEpoch, getStakePerEpoch} from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
 
 const {version} = pkg
@@ -196,6 +196,10 @@ export const websocket = (server) => {
                 }
                 case 'address_stake_per_epoch': {
                     response(ws, channel, await getStakePerEpoch(data.pk, data.len))
+                    break
+                }
+                case 'address_blocks_per_epoch': {
+                    response(ws, channel, await getBlocksPerEpoch(data.pk, data.len))
                     break
                 }
             }

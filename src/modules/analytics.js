@@ -26,3 +26,17 @@ export const getStakePerEpoch = async (address, len = 10) => {
 
     return (await query(sql, [address, len])).rows
 }
+
+export const getBlocksPerEpoch = async (address, len = 10) => {
+    const sql = `
+        select epoch, count(id) as sum
+        from v_blocks
+        where creator_key = $1
+          and chain_status = 'canonical'
+        group by epoch
+        order by epoch desc
+        limit $2
+    `
+
+    return (await query(sql, [address, len])).rows
+}

@@ -143,3 +143,54 @@ const graphStakePerEpoch = data => {
 
 }
 
+const graphBlocksPerEpoch = data => {
+    if (!data || !data.length) return
+
+    console.log(data)
+
+    const points = []
+    const _data = data.reverse()
+
+    let maxY = 0
+    let minY = 100000000
+    for(let r of _data) {
+        const m = +(r.sum)
+        const e = +(r.epoch)
+        points.push([e, m])
+        if (maxY < m) maxY = m
+        if (minY > m) minY = m
+    }
+
+    console.log(points)
+
+    $("#min-blocks").html(num2fmt(minY))
+    $("#max-blocks").html(num2fmt(maxY))
+
+    maxY = Math.round(maxY * 1.2)
+    minY = Math.round(minY * 0.8)
+
+    const areas = [
+        {
+            name: "Blocks per Epoch",
+            dots: {
+                size: 4
+            },
+            size: 2
+        }
+    ]
+
+    chart.areaChart("#graph-blocks-per-epoch", [points], {
+        ...areaDefaultOptions,
+        areas,
+        colors: [Metro.colors.toRGBA('#7528d2', .5)],
+        boundaries: {
+            minY,
+            maxY
+        },
+        onTooltipShow: (d) => {
+            return `<span class="text-bold">${num2fmt(d[1])} <small class="text-light">MINA</small></span>`
+        }
+    })
+
+}
+

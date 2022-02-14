@@ -333,6 +333,7 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             ws.send(JSON.stringify({channel: 'address_balance_per_epoch', data: {pk: address, len: 10}}));
             ws.send(JSON.stringify({channel: 'address_stake_per_epoch', data: {pk: address, len: 10}}));
+            ws.send(JSON.stringify({channel: 'address_blocks_per_epoch', data: {pk: address, len: 10}}));
             break
         }
         case 'new_block': {
@@ -395,6 +396,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'address_stake_per_epoch': {
             graphStakePerEpoch(data)
+            break
+        }
+        case 'address_blocks_per_epoch': {
+            graphBlocksPerEpoch(data)
             break
         }
     }
