@@ -103,7 +103,8 @@ export const getAddressBalance = async (address) => {
             liquid: 0,
             locked: 0,
             stateHash: "",
-            unknown: 0
+            unknown: 0,
+            error: e.message
         }
     }
 }

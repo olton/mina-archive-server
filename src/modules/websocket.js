@@ -29,6 +29,7 @@ import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance, getTransactionInPool} from "./graphql.js";
 import {getBalancePerEpoch, getStakePerEpoch} from "./analytics.js";
+import {getAddressBalanceExp} from "./mina-explorer.js";
 
 const {version} = pkg
 
@@ -96,8 +97,12 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_balance': {
-                    response(ws, channel, await getAddressBalance(data));
-                    break;
+                    let balance = await getAddressBalance(data)
+                    if (balance.error) {
+                        balance = await getAddressBalanceExp(data)
+                    }
+                    response(ws, channel, balance)
+                    break
                 }
                 case 'address_trans_pool': {
                     response(ws, channel, await getTransactionInPool(data));
