@@ -32,43 +32,41 @@ div.container-fluid
                     div
                         div#address-tags
 
+                    ul.breadcrumbs.mt-10.ml-4-minus
+                        li.page-item
+                            a.page-link(href="/") Home
+                        li.page-item
+                            a.page-link(href="/addresses") Addresses
+                        li.page-item
+                            a.page-link(href="#") Info
+
+
                 div.cell-lg-6
                     div.mb-4
                         include components/search-form
 
-                    div
-                        div.text-small.text-bold.mb-0.mt-10.text-muted.text-upper Uptime Tracking
+                    div#uptime-tracking(style="display: none")
+                        div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper Uptime Tracking
                         div.h4.row.text-light.mt-1-minus
                             div.cell-4
                                 span.reduce-3 Position:
-                                span.ml-1.text-normal#uptime-position
+                                span.ml-1.text-normal#uptime-position ---
                             div.cell-4
                                 span.reduce-3 Rate:
-                                span.ml-1.text-normal#uptime-rate
+                                span.ml-1.text-normal#uptime-rate --%
                             div.cell-4
                                 span.reduce-3 Score:
-                                span.ml-1.text-normal#uptime-score
+                                span.ml-1.text-normal#uptime-score ---
+
+                    div
+                        div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper BLOCKCHAIN
+                        include ./components/epoch-small-2
 
             div.remark.alert.d-none
                 div#scammer-reason
 
-div.container-fluid
-    div.container
-        ul.breadcrumbs.mt-0.ml-4-minus
-            li.page-item
-                a.page-link(href="/") Home
-            li.page-item
-                a.page-link(href="/addresses") Addresses
-            li.page-item
-                a.page-link(href="#") Info
 
-div.container-fluid.bg-lightSystem
-    div.container
-        div.pt-2.pb-2
-            include ./components/epoch-small
-
-
-section.container-fluid.mt-8
+section.container-fluid
     div.container.pb-10
         ul(data-role="tabs" data-expand-point="md" style="top: 1px")
             li.ml-2
