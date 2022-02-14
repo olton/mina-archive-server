@@ -36,7 +36,7 @@ const areaDefaultOptions = {
             }
         }
     },
-
+    border: false,
     legend: {
         vertical: true,
         position: "top-right",
@@ -65,14 +65,17 @@ const graphBalancePerEpoch = data => {
         if (m < minY) minY = m
     }
 
+    $("#min-balance").html(num2fmt(minY))
+    $("#max-balance").html(num2fmt(maxY))
+
     maxY = Math.round(maxY * 1.2)
-    minY = Math.round(minY * 0.85)
+    minY = Math.round(minY * 0.8)
 
     const areas = [
         {
             name: "Balance per Epoch",
             dots: {
-                size: 3
+                size: 4
             },
             size: 2
         }
@@ -109,14 +112,17 @@ const graphStakePerEpoch = data => {
         if (minY > m) minY = m
     }
 
+    $("#min-stake").html(num2fmt(minY))
+    $("#max-stake").html(num2fmt(maxY))
+
     maxY = Math.round(maxY * 1.2)
-    minY = Math.round(minY * 0.85)
+    minY = Math.round(minY * 0.8)
 
     const areas = [
         {
             name: "Stake per Epoch",
             dots: {
-                size: 3
+                size: 4
             },
             size: 2
         }
