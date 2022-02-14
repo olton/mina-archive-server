@@ -161,8 +161,6 @@ const graphBlocksPerEpoch = data => {
         if (minY > m) minY = m
     }
 
-    console.log(points)
-
     $("#min-blocks").html(num2fmt(minY))
     $("#max-blocks").html(num2fmt(maxY))
 

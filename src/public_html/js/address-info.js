@@ -51,6 +51,10 @@ const updateAddressInfo = (data) => {
 
     let tr, val
 
+    if (!data.is_producer) {
+        $("#address-graphs").hide()
+    }
+
     $(".scam")[data.scammer ? 'show' : 'hide']()
 
     $("#address-logo").attr("src", data.logo ? data.logo : "/images/no-image.png")
