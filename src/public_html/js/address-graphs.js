@@ -186,7 +186,7 @@ const graphBlocksPerEpoch = data => {
             maxY
         },
         onTooltipShow: (d) => {
-            return `<span class="text-bold">${num2fmt(d[1])} <small class="text-light">MINA</small></span>`
+            return `<span class="text-bold">${num2fmt(d[1])} <small class="text-light">BLOCK(s)</small></span>`
         }
     })
 
