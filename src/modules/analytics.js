@@ -2,7 +2,7 @@ import {query} from "./postgres.js";
 
 export const getBalancePerEpoch = async (address, len = 10) => {
     const sql = `
-        select balance
+        select epoch, balance
         from ledger l
         left join public_keys pk on l.public_key_id = pk.id
         where pk.value = $1

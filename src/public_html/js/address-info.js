@@ -489,8 +489,3 @@ function addressTransApplyFilter(el, flt){
 
     table.draw()
 }
-
-const graphBalancePerEpoch = data => {
-    console.log(data)
-    if (!data || !data.length) return
-}
