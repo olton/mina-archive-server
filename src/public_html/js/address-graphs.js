@@ -146,8 +146,6 @@ const graphStakePerEpoch = data => {
 const graphBlocksPerEpoch = data => {
     if (!data || !data.length) return
 
-    console.log(data)
-
     const points = []
     const _data = data.reverse()
 

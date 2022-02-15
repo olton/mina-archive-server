@@ -1,3 +1,5 @@
+let addressId = null
+
 const updateEpoch = data => {
     const {height, epoch, slot, global_slot, epoch_start_block, blocks_produced} = data
 
@@ -50,6 +52,8 @@ const updateAddressInfo = (data) => {
     const cliffTime = genStart.addSecond(data["cliff_time"] * (180000/1000))
 
     let tr, val
+
+    addressId = +(data.public_key_id)
 
     if (!data.is_producer) {
         $("#address-graphs").hide()
@@ -342,10 +346,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'new_block': {
             requestData(ws)
-            if (data.creator_key === address) {
+            console.log(addressId, +(data.creator_id))
+            if (addressId && addressId === +(data.creator_id)) {
                 ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
                 ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
-                // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             }
             break
         }
