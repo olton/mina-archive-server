@@ -41,9 +41,23 @@ div.container-fluid
                             div.text-leader.text-normal
                                 span#chain-status 0
 
+div.container-fluid
+    div.container.mb-4
+        ul.breadcrumbs.mb-0.ml-4-minus
+            li.page-item
+                a.page-link(href="/") Home
+            li.page-item
+                a.page-link(href="/blocks") Blocks
+            li.page-item
+                a.page-link(href="#") Block Detail
 
 section.container-fluid
     div.container.pb-10
+        div
+            div.h1
+                span.reduce-4 Block Coinbase:
+                span.ml-2#block-coinbase 0
+                span.ml-2.text-small.text-muted MINA
         div.row
             div.cell-xl-6.order-2.order-xl-1
                 div.pt-2
@@ -111,6 +125,26 @@ section.container-fluid
                                     div.text-upper Total
                                     div.text-upper Transactions
                                     div#trans_count.box-value 0
+
+                    div.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-cyan.fg-white
+                                span.mif-users
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper Block
+                                    div.text-upper Participants
+                                    div#participants.box-value 0
+
+                    div.cell-ld-6
+                        div.icon-box.border.bd-system.radius
+                            div.icon.bg-green.fg-white
+                                span.mif-alarm-on
+                            div.content.pl-2
+                                div.p-2
+                                    div.text-upper Block
+                                    div.text-upper Timelapse
+                                    div#timelapse.box-value 0
 
 
         div.mt-4

@@ -84,6 +84,12 @@ export const websocket = (server) => {
                     response(ws, channel, {totalBlocks, blocks, count});
                     break;
                 }
+                case 'zero_blocks': {
+                    const count = await getBlocksCount({type: data.type, search: data.search})
+                    const blocks = await getBlocks({type: data.type, limit: data.count, offset: data.offset, search: data.search})
+                    response(ws, channel, {blocks, count});
+                    break;
+                }
                 case 'block': {
                     response(ws, channel, await getBlockInfo(data));
                     break;
@@ -166,12 +172,6 @@ export const websocket = (server) => {
                 }
                 case 'block_producers': {
                     response(ws, channel, await getProducers());
-                    break;
-                }
-                case 'zero_blocks': {
-                    const count = await getBlocksCount({...data})
-                    const blocks = await getBlocks({type: data.type, limit: data.count, search: data.search})
-                    response(ws, channel, {blocks, count});
                     break;
                 }
                 case 'transactions': {

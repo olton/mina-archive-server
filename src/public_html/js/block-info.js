@@ -8,6 +8,16 @@ const updateBlockInfo = data => {
         $("<span>").addClass(data.chain_status === 'pending' ? 'bg-cyan' : data.chain_status === 'canonical' ? 'bg-green' : 'bg-red').addClass("radius reduce-4 badge inline fg-white text-upper").html(`${data.chain_status}`)
     )
 
+    const coinbase = normMina(data.coinbase)
+    let supercharge = data.supercharge
+
+    if (supercharge) {
+        tags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`SUPERCHARGE`)
+        )
+    }
+
+    $("#block-coinbase").addClass(supercharge ? 'fg-violet' : '').html(coinbase)
 
     $("#block-height").html(Number(data.height).format(0, null, " ", "."))
     $("#epoch").html(Number(data.epoch).format(0, null, " ", "."))
@@ -19,6 +29,9 @@ const updateBlockInfo = data => {
         <span>${blockDate}</span>
         <span class="reduce-4">${blockTime}</span>
 `   )
+
+    $("#participants").html(data.participants)
+    $("#timelapse").html(data.timelapse / 60000 + "<span class='text-small text-muted ml-1'>MIN</span>")
 
 
     let blockColor
@@ -53,10 +66,10 @@ const updateBlockInfo = data => {
         <a class="link" href="/address/${data.creator_key}">${shorten(data.creator_key, 10)}</a>
         <div class="text-small text-muted">${data.creator_name || ''}</div>
     `)
-    $("#coinbase-receiver").html(`
+    $("#coinbase-receiver").html(data.coinbase_receiver_key ? `
         <a class="link" href="/address/${data.coinbase_receiver_key}">${shorten(data.coinbase_receiver_key, 10)}</a>
         <div class="text-small text-muted">${data.coinbase_receiver_name || ''}</div>
-    `)
+    ` : "")
     $("#block-winner").html(`
         <a class="link" href="/address/${data.winner_key}">${shorten(data.winner_key, 10)}</a>
         <div class="text-small text-muted">${data.winner_name || ''}</div>

@@ -144,7 +144,11 @@ export const getBlockInfo = async (hash) => {
         from v_blocks b 
         where b.state_hash = $1
     `
-    return (await query(sql, [hash])).rows[0]
+    const result = (await query(sql, [hash])).rows[0]
+
+    result.supercharge = config.coinbase.supercharge.includes(result.coinbase / 10**9)
+
+    return result
 }
 
 export const getBlockTransactions = async (hash) => {

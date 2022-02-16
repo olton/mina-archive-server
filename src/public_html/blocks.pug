@@ -151,6 +151,9 @@ section.container-fluid.mt-4
                     div#pagination
 
         div#zero
+            div(style="height: 10px")
+                div#load-zero(style="display:none" data-role="activity" data-type="metro" data-style="color")
+
             div.row.flex-align-start
 
                 div.cell-md-4
@@ -160,7 +163,7 @@ section.container-fluid.mt-4
                         input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="zeroApplyFilter(this, 'canonical')")
                         input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="zeroApplyFilter(this, 'orphaned')")
 
-                div.cell-md-4
+                div.cell-md-4.text-center
                     span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
                     div.mt-1-minus
                         span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#zero-found-blocks 0
@@ -171,40 +174,74 @@ section.container-fluid.mt-4
                             span RELOAD DATA
                             span.mif-refresh
 
-            div.mt-4
-                table.table.striped.monospace.data-table.row-hover.border.bd-system#zero-blocks-table(
-                    data-role="table"
-                    data-rows=50
-                    data-rows-steps="-1, 10, 20, 50, 100"
-                    data-rownum="true"
-                    data-on-draw-cell="zeroBlocksTableDrawCell"
-                    data-horizontal-scroll="true"
-                    data-horizontal-scroll-stop="xl"
-                    data-cls-table-container="no-border"
-                    data-activity-type="bars"
-                    data-filters-operator="or"
-                    data-search-fields="height, creator_name, creator_key, state_hash"
-                    data-table-search-placeholder="Enter block height, creator key or name, or block hash "
-                )
+            div.row.mt-2
+                div.cell-md-9
+                    input#zero-blocks-search(
+                        data-role="input"
+                        data-prepend="Search: "
+                        placeholder="Enter block number, producer key or name, or block hash"
+                        data-search-button="false"
+                    )
+
+                div.cell-md-3
+                    select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksZeroApplyRowsCount")
+                        option(value="10") 10
+                        option(value="20") 20
+                        option(value="50" selected) 50
+                        option(value="100") 100
+
+            div.mt-2.scroll-table-container.border.bd-system
+                table.table.striped.data-table.monospace.row-hover#zero-blocks-table
                     thead
                         tr
-                            th(data-name="chain_status")
+                            th(data-name="state")
                                 span.mif-link
-                            th(data-name="height" data-sortable="true" data-format="int" data-size="30")
-                                span Height
-                            th(data-name="creator_key")
-                                span Block Producer
-                                div.text-small Name
-                            th.text-center(data-name="creator_name" data-show="false") Creator Name
-                            th.text-center(data-name="coinbase" data-size="30") Coinbase
+                            th(data-name="height") Height
+                            th(data-name="creator_key") Block Producer
+                            th.text-center(data-name="coinbase") Coinbase
                             th.text-center(data-name="slot") Slot
-                            th(data-name="global_slot" data-show="false") Global Slot
                             th.text-center(data-name="epoch") Epoch
                             th.text-center(data-name="trans") Trans
-                            th(data-name="trans_fee" data-show="false") Trans Fee
                             th(data-name="state_hash") Hash
-                            th(data-name="timestamp" data-show="false") Time
+                    tbody
 
+            div.mt-4
+                div#pagination-zero
+
+            //div.mt-4
+            //    table.table.striped.monospace.data-table.row-hover.border.bd-system#zero-blocks-table(
+            //        data-role="table"
+            //        data-rows=50
+            //        data-rows-steps="-1, 10, 20, 50, 100"
+            //        data-rownum="true"
+            //        data-on-draw-cell="zeroBlocksTableDrawCell"
+            //        data-horizontal-scroll="true"
+            //        data-horizontal-scroll-stop="xl"
+            //        data-cls-table-container="no-border"
+            //        data-activity-type="bars"
+            //        data-filters-operator="or"
+            //        data-search-fields="height, creator_name, creator_key, state_hash"
+            //        data-table-search-placeholder="Enter block height, creator key or name, or block hash "
+            //    )
+            //        thead
+            //            tr
+            //                th(data-name="chain_status")
+            //                    span.mif-link
+            //                th(data-name="height" data-sortable="true" data-format="int" data-size="30")
+            //                    span Height
+            //                th(data-name="creator_key")
+            //                    span Block Producer
+            //                    div.text-small Name
+            //                th.text-center(data-name="creator_name" data-show="false") Creator Name
+            //                th.text-center(data-name="coinbase" data-size="30") Coinbase
+            //                th.text-center(data-name="slot") Slot
+            //                th(data-name="global_slot" data-show="false") Global Slot
+            //                th.text-center(data-name="epoch") Epoch
+            //                th.text-center(data-name="trans") Trans
+            //                th(data-name="trans_fee" data-show="false") Trans Fee
+            //                th(data-name="state_hash") Hash
+            //                th(data-name="timestamp" data-show="false") Time
+            //
 
 
     div.mb-10 &nbsp;
@@ -215,3 +252,4 @@ include components/scripts
 
 script
     include ./js/blocks.js
+    include ./js/blocks-zero.js
