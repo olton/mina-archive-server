@@ -40,3 +40,15 @@ export const getBlocksPerEpoch = async (address, len = 10) => {
 
     return (await query(sql, [address, len])).rows
 }
+
+export const getBlocksTimelapse = async limit => {
+    const sql = `
+        select 
+            height,
+            timelapse
+        from v_blocks_timelapse
+        limit $1
+    `
+
+    return (await query(sql, [limit])).rows
+}

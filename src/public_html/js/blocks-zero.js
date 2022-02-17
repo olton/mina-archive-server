@@ -1,3 +1,4 @@
+
 let currentPageZero = 1
 let recordsOnPageZero = 50
 let searchZeroString = null
