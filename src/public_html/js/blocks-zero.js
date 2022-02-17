@@ -95,7 +95,8 @@ const updateZeroBlocksTable = data => {
                 <div class="text-muted text-small">${datetime(+row.timestamp).timeLapse()}</div>            
             </td>
             <td>
-                <a class="link" href="/address/${row.creator_key}">${shorten(row.creator_key, 12)}</a>            
+                <a class="link" href="/address/${row.creator_key}">${shorten(row.creator_key, 12)}</a>
+                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.creator_key}"></span>            
                 <div class="text-muted text-small fg-violet">${row.creator_name || ''}</div>            
             </td>
             <td class="text-center">
@@ -116,6 +117,7 @@ const updateZeroBlocksTable = data => {
             </td>
             <td>
                 <a class="link" href="/block/${row.state_hash}">${shorten(row.state_hash, 5)}</a>
+                <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${row.state_hash}"></span>
                 <div class="text-muted text-small">${datetime(+row.timestamp).format(config.format.datetime)}</div>            
             </td>
         `)
