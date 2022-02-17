@@ -47,6 +47,7 @@ const updateUptimeTable = data => {
         tr.append( $("<td>").addClass("text-center").html(`${r.position}`) )
         tr.append( $("<td>").html(`
             <a class="link" data-hint-offset="10" data-hint-hide="10000" data-role="hint" data-hint-text="${r.name || 'Unknown'}" data-hint-position="right" href="/address/${r.public_key}">${shorten(r.public_key, 12)}</a>
+            <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.public_key}"></span>
             <div>${r.name ? "<span class='text-small fg-darkViolet'>"+r.name+"</span>" : ""}</div>
         `) )
         tr.append( $("<td>").addClass("text-right").html(`
