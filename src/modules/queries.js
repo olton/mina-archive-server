@@ -230,7 +230,9 @@ export const getTransaction = async (hash) => {
     `
     let result = (await query(sql, [hash])).rows[0]
 
-    result.memo = decodeMemo(result.memo || "")
+    if (!result) return null
+
+    result.memo = result.memo ? decodeMemo(result.memo) : ""
     result.scam = checkMemoForScam(result.memo)
 
     return result

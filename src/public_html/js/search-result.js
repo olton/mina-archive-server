@@ -74,7 +74,7 @@ const parseSearchResult = (data) => {
 
     if (data.transactions.length) {
 
-        if (data.transactions.length === 1 && !data.blocks.length && !data.addresses.length && !data.payments.length) {
+        if (data.transactions.length === 1 && data.transactions[0] && !data.blocks.length && !data.addresses.length && !data.payments.length) {
             window.location.href = `/transaction/${data.transactions[0].hash}`
         }
 
@@ -84,6 +84,12 @@ const parseSearchResult = (data) => {
         )
         for(let a of data.transactions) {
             tr = $("<tr>").appendTo(target)
+            if (!a) {
+                tr.append(
+                    $("<td>").html(`This transaction in pending state`)
+                )
+                continue
+            }
             tr.append( $("<td>").css("width", "30px").html(`${index}.`) )
             tr.append( $("<td>").html(`
                 <a class="link" href="/transaction/${a.hash}">${shorten(a.hash, 12)}</a> 
