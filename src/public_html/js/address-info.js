@@ -55,10 +55,6 @@ const updateAddressInfo = (data) => {
 
     addressId = +(data.public_key_id)
 
-    if (!data.is_producer) {
-        $("#address-graphs").hide()
-    }
-
     $(".scam")[data.scammer ? 'show' : 'hide']()
 
     $("#address-logo").attr("src", data.logo ? data.logo : "/images/no-image.png")

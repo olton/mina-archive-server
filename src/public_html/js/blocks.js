@@ -43,7 +43,7 @@ const updateBlocksTable = data => {
                 <span class="mif-stop ${row.chain_status === 'pending' ? 'fg-cyan' : row.chain_status === 'canonical' ? 'fg-green' : 'fg-red'}"></span>
             </td>
             <td>
-                <span>${row.height}</span>            
+                <a class="link" href="/block/${row.state_hash}">${row.height}</a>            
                 <div class="text-muted text-small">${datetime(+row.timestamp).timeLapse()}</div>            
             </td>
             <td>

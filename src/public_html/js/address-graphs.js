@@ -50,7 +50,10 @@ const areaDefaultOptions = {
 }
 
 const graphBalancePerEpoch = data => {
-    if (!data || !data.length) return
+    if (!data || !data.length) {
+        $("#graph-balance-per-epoch").parent().hide()
+        return
+    }
 
     const points = []
     const _data = data.reverse()
@@ -97,7 +100,10 @@ const graphBalancePerEpoch = data => {
 }
 
 const graphStakePerEpoch = data => {
-    if (!data || !data.length) return
+    if (!data || !data.length) {
+        $("#graph-stake-per-epoch").parent().hide()
+        return
+    }
 
     const points = []
     const _data = data.reverse()
@@ -144,7 +150,10 @@ const graphStakePerEpoch = data => {
 }
 
 const graphBlocksPerEpoch = data => {
-    if (!data || !data.length) return
+    if (!data || !data.length) {
+        $("#graph-blocks-per-epoch").parent().hide()
+        return
+    }
 
     const points = []
     const _data = data.reverse()
