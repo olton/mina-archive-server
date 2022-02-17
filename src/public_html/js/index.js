@@ -138,6 +138,8 @@ const updateLastBlockTime = data => {
     $("#last-block-time").html(`${datetime(+data).timeLapse()}`)
 }
 
+let chainRequestMarker = 2
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -151,6 +153,9 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'price'}))
             ws.send(JSON.stringify({channel: 'stat'}))
             ws.send(JSON.stringify({channel: 'last_block_time'}))
+            ws.send(JSON.stringify({channel: 'epoch'}))
+
+            requestChain()
         }
         setTimeout(requestPeriodically, 60000)
     }
@@ -158,14 +163,15 @@ const wsMessageController = (ws, response) => {
     const requestChain = () => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'dispute'}))
-        ws.send(JSON.stringify({channel: 'lastChain'}))
-        ws.send(JSON.stringify({channel: 'epoch'}))
+        if (chainRequestMarker === 2) {
+            chainRequestMarker = 0
+            ws.send(JSON.stringify({channel: 'dispute'}))
+            ws.send(JSON.stringify({channel: 'lastChain'}))
+        }
     }
 
     switch(channel) {
         case 'welcome': {
-            requestChain()
             requestPeriodically()
             break;
         }
@@ -173,12 +179,35 @@ const wsMessageController = (ws, response) => {
             requestChain()
             break;
         }
-        case 'epoch': updateHeight(data); break;
-        case 'price': updatePrice(data); break;
-        case 'stat': updateStat(data); break;
-        case 'dispute': updateDispute(data); break;
-        case 'lastChain': updateBlocks(data); break;
-        case 'last_block_time': updateLastBlockTime(data); break;
-        case 'trans_pool_count': updateTransPoolCount(data); break;
+        case 'epoch': {
+            updateHeight(data)
+            break
+        }
+        case 'price': {
+            updatePrice(data)
+            break
+        }
+        case 'stat': {
+            updateStat(data)
+            break
+        }
+        case 'dispute': {
+            updateDispute(data)
+            chainRequestMarker++
+            break
+        }
+        case 'lastChain': {
+            updateBlocks(data)
+            chainRequestMarker++
+            break
+        }
+        case 'last_block_time': {
+            updateLastBlockTime(data)
+            break
+        }
+        case 'trans_pool_count': {
+            updateTransPoolCount(data)
+            break
+        }
     }
 }
