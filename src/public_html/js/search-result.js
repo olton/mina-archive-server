@@ -1,7 +1,5 @@
 
 const parseSearchResult = (data) => {
-    console.log(data)
-
     let tr, index = 1
     const target = $("#search-result tbody").clear()
 
@@ -11,6 +9,11 @@ const parseSearchResult = (data) => {
     )
 
     if (data.addresses.length) {
+
+        if (data.addresses.length === 1 && !data.blocks.length && !data.transactions.length && !data.payments.length) {
+            window.location.href = `/address/${data.addresses[0].public_key}`
+        }
+
         tr = $("<tr>").appendTo(target)
         tr.append(
             $("<td>").addClass('text-bold').attr("colspan", 2).html(`Addresses: ${data.addresses.length}`)
@@ -29,7 +32,6 @@ const parseSearchResult = (data) => {
                 <div class="text-small">
                     <span>Ledger Balance: </span><span class="text-bold">${normMina(a.ledger_balance)}</span>
                     <span>Current Stack: </span><span class="text-bold">${normMina(a.stake)}</span>
-                    <span>Next Stack: </span><span class="text-bold">${normMina(a.stake_next)}</span>
                 </div>
             `) )
 
@@ -38,6 +40,11 @@ const parseSearchResult = (data) => {
     }
 
     if (data.blocks.length) {
+
+        if (data.blocks.length === 1 && !data.addresses.length && !data.transactions.length && !data.payments.length) {
+            window.location.href = `/block/${data.blocks[0].state_hash}`
+        }
+
         tr = $("<tr>").appendTo(target)
         tr.append(
             $("<td>").addClass('text-bold').attr("colspan", 2).html(`Blocks: ${data.blocks.length}`)
@@ -66,6 +73,11 @@ const parseSearchResult = (data) => {
     }
 
     if (data.transactions.length) {
+
+        if (data.transactions.length === 1 && !data.blocks.length && !data.addresses.length && !data.payments.length) {
+            window.location.href = `/transaction/${data.transactions[0].hash}`
+        }
+
         tr = $("<tr>").appendTo(target)
         tr.append(
             $("<td>").addClass('text-bold').attr("colspan", 2).html(`Transactions: ${data.transactions.length}`)
