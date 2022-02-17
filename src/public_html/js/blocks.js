@@ -101,7 +101,7 @@ const wsMessageController = (ws, response) => {
         if (!isOpen(ws)) return
 
         ws.send(JSON.stringify({channel: 'epoch'}))
-        ws.send(JSON.stringify({channel: 'blocks_timelapse', data: {len: 50}}))
+        ws.send(JSON.stringify({channel: 'blocks_timelapse', data: {len: 290}}))
 
         refreshBlocksTable()
         refreshZeroTable()
@@ -273,7 +273,7 @@ const drawTimelapseGraph = data => {
 
     $("#btl-min").html(min)
     $("#btl-max").html(max)
-    $("#btl-avg").html(avg)
+    $("#btl-avg").html(avg.toFixed(2))
 
     $("#blocks-timelapse-graph").clear()
     chart.histogramChart("#blocks-timelapse-graph", [points], {
