@@ -376,8 +376,10 @@ tr.no-hover:hover {
   z-index: 2;
 }
 #uptime-graph-dates div {
-  text-align: center;
+  text-align: left;
   font-size: 9px;
+  transform: rotate(-90deg);
+  margin-top: 10px;
 }
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
