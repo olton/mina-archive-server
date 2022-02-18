@@ -37,6 +37,7 @@ const getUptimeData = async () => {
 
     try {
         while (dataExists) {
+            // console.log("Link:", link.replace("%NUM%", page))
             const request = await fetch(link.replace("%NUM%", page))
 
             if (!request.ok) {
@@ -45,7 +46,7 @@ const getUptimeData = async () => {
 
             const html = parse(await request.text()).querySelector("tbody")
 
-            if (!html.childNodes.length) {
+            if (!html.childNodes.length || (html.childNodes.length === 3 && html.innerText.includes('Under Maintenance'))) {
                 dataExists = false
             } else {
                 for (let tr of html.childNodes) {
@@ -59,10 +60,10 @@ const getUptimeData = async () => {
                 }
             }
             page++
-            if (page >= 8) dataExists = false
+            //if (page >= 8) dataExists = false
         }
 
-        // console.log(table)
+        console.log("Pages: ", page)
 
         return table
     } catch (e) {
@@ -115,7 +116,7 @@ const processCollectUptime = async () => {
 
 ;(async () => {
     try {
-        processCollectUptime()
+        await processCollectUptime()
     } catch (e) {
         log(`Uptime leaderboard update failed!`, `error`, e.stack)
     }
