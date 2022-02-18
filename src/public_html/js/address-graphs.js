@@ -216,6 +216,13 @@ const graphAddressUptime = data => {
         points.push([x, y])
     }
 
+    const target = $("#uptime-graph-dates").clear()
+    for(let r of _data) {
+        target.append(
+            $("<div>").html(datetime(r.time).format("DD MMM"))
+        )
+    }
+
     const areas = [
         {
             name: "Uptime Line",
@@ -229,8 +236,13 @@ const graphAddressUptime = data => {
 
     chart.lineChart("#uptime-graph", [points], {
         ...areaDefaultOptions,
-        height: 65,
-        padding: 5,
+        height: 100,
+        padding: {
+            top: 0,
+            left: 5,
+            right: 5,
+            bottom: 20
+        },
         lines: areas,
         legend: false,
         colors: [Metro.colors.toRGBA('#dc9da5', 1)],
@@ -243,9 +255,17 @@ const graphAddressUptime = data => {
                 line: {
                     color: "#dadada"
                 }
+            },
+            x: {
+                label: {
+                    showLabel: false
+                }
             }
         },
         type: 'curve',
+        onDrawLabelX: (v) => {
+            return datetime(+v).format("DD MMM")
+        },
         onTooltipShow: (d) => {
             return `
                 <span>Pos:</span>
