@@ -272,7 +272,7 @@ const updateAddressUptime = (data = {}) => {
     $("#uptime-rate").html(`${rate}%`)
     $("#uptime-score").html(score)
 
-    $("#uptime-tracking")[position === '---' ? 'hide' : 'show']()
+    //$("#uptime-tracking")[position === '---' ? 'hide' : 'show']()
 }
 
 const updateAddressBlocksTable = data => {
