@@ -52,3 +52,26 @@ export const getBlocksTimelapse = async limit => {
 
     return (await query(sql, [limit])).rows
 }
+
+export const getAddressUptimeLine = async (address, limit = 60, trunc = 'day') => {
+    const sql = `
+        with address_uptime as (
+            select pk.value,
+                   u.position,
+                   date_trunc($3, us.timestamp) as time
+            from uptime u
+                     left join public_keys pk on u.public_key_id = pk.id
+                     left join uptime_segments us on u.segment_id = us.id
+            where pk.value = $1
+            order by timestamp desc
+        )
+        select time, round(avg(position)) as position
+        from address_uptime
+        group by time
+        order by time desc
+        limit $2
+    `
+
+    return (await query(sql, [address, limit, trunc])).rows
+}
+

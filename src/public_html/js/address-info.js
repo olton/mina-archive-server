@@ -327,11 +327,20 @@ const wsMessageController = (ws, response) => {
         ws.send(JSON.stringify({channel: 'address_delegations_next', data: address}));
     }
 
+    const requestUptime = (ws) => {
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
+            ws.send(JSON.stringify({channel: 'address_uptime_line', data: {pk: address, limit: 60, trunc: 'day'}}));
+        }
+        setTimeout(requestUptime, 60000*10, ws)
+    }
+
     switch(channel) {
         case 'welcome': {
             requestData(ws)
             requestLastActivity(ws)
             requestDelegations(ws)
+            requestUptime(ws)
             ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
             ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
@@ -342,7 +351,6 @@ const wsMessageController = (ws, response) => {
         }
         case 'new_block': {
             requestData(ws)
-            console.log(addressId, +(data.creator_id))
             if (addressId && addressId === +(data.creator_id)) {
                 ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
                 ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
@@ -351,7 +359,6 @@ const wsMessageController = (ws, response) => {
         }
         case 'address': {
             updateAddressInfo(data)
-            ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
             break
         }
         case 'epoch': {
@@ -404,6 +411,10 @@ const wsMessageController = (ws, response) => {
         }
         case 'address_blocks_per_epoch': {
             graphBlocksPerEpoch(data)
+            break
+        }
+        case 'address_uptime_line': {
+            graphAddressUptime(data)
             break
         }
     }

@@ -12,7 +12,7 @@ div.container-fluid
         div.scam.bg-red.fg-white.ani-flash
             span SCAMMER!
 
-        div.hero.hero-padding-secondary
+        div.hero.hero-padding-secondary.pb-0
             div.row
                 div.cell-lg-6
                     div
@@ -58,17 +58,22 @@ div.container-fluid
                             div.cell-4
                                 span.reduce-3 Score:
                                 span.ml-1.text-normal#uptime-score ---
-
                     div
-                        div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper BLOCKCHAIN EPOCH STATE
-                        include ./components/epoch-small-2
+                        div.text-bold.text-muted Top of Graph Pos 1, Bottom 120
+                        div#uptime-graph
 
             div.remark.alert.d-none
                 div#scammer-reason
 
 
+section.container-fluid.bg-lightSystem
+    div.container
+        div
+            div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper BLOCKCHAIN EPOCH STATE
+            include ./components/epoch-small
+
 section.container-fluid
-    div.container.pb-10
+    div.container.pb-10.pt-4
         ul(data-role="tabs" data-expand-point="md" style="top: 1px")
             li.ml-2
                 a(href="#overview") Overview

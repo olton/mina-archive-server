@@ -199,3 +199,61 @@ const graphBlocksPerEpoch = data => {
 
 }
 
+const graphAddressUptime = data => {
+    // console.log(data)
+    if (!data || !data.length) {
+        $("#graph-blocks-per-epoch").parent().hide()
+        return
+    }
+
+    const points = []
+    const _data = data.reverse()
+
+    for(let r of _data) {
+        let x = datetime(r.time).time()
+        let y = 120 - r.position
+        if (y < 0) y = 0
+        points.push([x, y])
+    }
+
+    const areas = [
+        {
+            name: "Uptime Line",
+            dots: {
+                size: 3,
+                type: 'circle'
+            },
+            size: 2
+        }
+    ]
+
+    chart.lineChart("#uptime-graph", [points], {
+        ...areaDefaultOptions,
+        height: 65,
+        padding: 5,
+        lines: areas,
+        legend: false,
+        colors: [Metro.colors.toRGBA('#dc9da5', 1)],
+        boundaries: {
+            minY: 0,
+            maxY: 120
+        },
+        axis: {
+            y: {
+                line: {
+                    color: "#dadada"
+                }
+            }
+        },
+        type: 'curve',
+        onTooltipShow: (d) => {
+            return `
+                <span>Pos:</span>
+                <span class="text-bold">${120 - d[1]}</span>
+                <span>at</span>
+                <span class="text-bold">${datetime(d[0]).format(config.format.date)}</span>
+            `
+        }
+    })
+
+}
