@@ -262,7 +262,9 @@ const graphAddressUptime = data => {
             },
             x: {
                 label: {
-                    showLabel: false
+                    showLabel: false,
+                    skip: 0,
+                    count: 30
                 }
             }
         },
