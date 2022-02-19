@@ -187,7 +187,7 @@ const graphBlocksPerEpoch = data => {
     chart.areaChart("#graph-blocks-per-epoch", [points], {
         ...areaDefaultOptions,
         areas,
-        colors: [Metro.colors.toRGBA('#7528d2', .5)],
+        colors: [Metro.colors.toRGBA('#ec7618', .5)],
         boundaries: {
             minY,
             maxY
@@ -246,7 +246,7 @@ const graphAddressUptime = data => {
         },
         lines: areas,
         legend: false,
-        colors: [Metro.colors.toRGBA('#dc9da5', 1)],
+        colors: [Metro.colors.toRGBA('#7528d2', 1)],
         boundaries: {
             minY: 0,
             maxY: 120
