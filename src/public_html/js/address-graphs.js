@@ -212,7 +212,7 @@ const graphAddressUptime = data => {
     for(let r of _data) {
         let x = datetime(r.time).time()
         let y = 120 - r.position
-        if (y < 0) y = 0
+        // if (y < 0) y = 0
         points.push([x, y])
     }
 
