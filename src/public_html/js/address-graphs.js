@@ -217,6 +217,7 @@ const graphAddressUptime = data => {
     }
 
     const target = $("#uptime-graph-dates").clear()
+
     for(let r of _data) {
         target.append(
             $("<div>").html(datetime(r.time).format("DD MMM"))
@@ -239,7 +240,7 @@ const graphAddressUptime = data => {
         height: 100,
         padding: {
             top: 0,
-            left: 5,
+            left: 25,
             right: 5,
             bottom: 20
         },
@@ -254,6 +255,9 @@ const graphAddressUptime = data => {
             y: {
                 line: {
                     color: "#dadada"
+                },
+                label: {
+                    showLabel: false
                 }
             },
             x: {
@@ -263,6 +267,8 @@ const graphAddressUptime = data => {
             }
         },
         type: 'curve',
+        arrows: false,
+        cross: false,
         onDrawLabelX: (v) => {
             return datetime(+v).format("DD MMM")
         },
@@ -276,4 +282,11 @@ const graphAddressUptime = data => {
         }
     })
 
+    const graph = $("#uptime-graph")
+    graph.append(
+        $("<div>").addClass("max-graph-value").html(`1`)
+    )
+    graph.append(
+        $("<div>").addClass("min-graph-value").html(`120`)
+    )
 }
