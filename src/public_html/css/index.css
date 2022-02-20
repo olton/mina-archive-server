@@ -406,6 +406,9 @@ tr.no-hover:hover {
   padding-left: 1em;
   white-space: nowrap;
 }
+#uptime-graph-dates div:nth-child(odd) {
+  display: none;
+}
 :root {
   --iris-color-dark: #7700b3;
   --iris-color-light: #c1abff;
@@ -506,6 +509,11 @@ tr.no-hover:hover {
   }
   100% {
     animation-timing-function: ease-out;
+  }
+}
+@media (min-width: 768px) {
+  #uptime-graph-dates div:nth-child(odd) {
+    display: block;
   }
 }
 @media (min-width: 992px) and (max-width: 1451px) {

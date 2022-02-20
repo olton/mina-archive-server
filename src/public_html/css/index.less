@@ -425,10 +425,24 @@ tr.no-hover {
         padding-top: 2em;
         padding-left: 1em;
         white-space: nowrap;
+
+        &:nth-child(odd) {
+            display: none;
+        }
     }
 }
 
 @import "eye";
+
+@media (min-width: 768px) {
+    #uptime-graph-dates {
+        div {
+            &:nth-child(odd) {
+                display: block;
+            }
+        }
+    }
+}
 
 @media (min-width: 992px) and (max-width: 1451px) {
     .container {
