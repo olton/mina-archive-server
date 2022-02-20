@@ -23,11 +23,11 @@ import {
     getTransactionsCount,
     getTransactions,
     getTransactionsStat,
-    getTopStakeHolders, getAddresses, getAddressesCount
+    getTopStakeHolders, getAddresses, getAddressesCount, getBlocksByHeight, getAddressByName
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
-import {getAddressBalance, getTransactionInPool} from "./graphql.js";
+import {checkPaymentStatus, getAddressBalance, getTransactionInPool} from "./graphql.js";
 import {
     getAddressUptimeLine,
     getBalancePerEpoch,
@@ -214,6 +214,40 @@ export const websocket = (server) => {
                 }
                 case 'address_uptime_line': {
                     response(ws, channel, await getAddressUptimeLine(data.pk, data.limit, data.trunc))
+                    break
+                }
+                case 'search_data': {
+                    const query = data.split(",").map(v => v.trim())
+                    const result = {
+                        addresses: [],
+                        blocks: [],
+                        transactions: [],
+                        payments: []
+                    }
+                    for(let val of query) {
+                        if (val === '') continue
+
+                        if (val.substring(0, 4) === 'B62q') {
+                            result.addresses.push(await getAddressInfo(val))
+                        } else if (val.substring(0, 3) === '3NK' || val.substring(0, 3) === '3NL') {
+                            result.blocks.push(await getBlockInfo(val))
+                        } else if (val.substring(0, 3) === 'Ckp') {
+                            result.transactions.push(await getTransaction(val))
+                        } else if (!isNaN(+val)) {
+                            (await getBlocksByHeight(+val)).map( b => {
+                                result.blocks.push(b)
+                            })
+                        } else {
+                            (await getAddressByName(val)).map( b => {
+                                result.addresses.push(b)
+                            })
+                            const checkPayment = await checkPaymentStatus(val)
+                            if (checkPayment) {
+                                result.payments.push([val, checkPayment])
+                            }
+                        }
+                    }
+                    response(ws, channel, result)
                 }
             }
         })

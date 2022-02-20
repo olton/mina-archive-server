@@ -7,7 +7,10 @@ section.container-fluid.h-100
     div.container.pt-10
 
         div.d-flex.flex-align-center.flex-justify-center.flex-column
-            div.h1.mb-0.page-title.text-center We found next data by your request:
+            div
+                include ./components/eye
+
+            div.h1.mb-0.page-title.text-center#found-title We found next data by your request:
 
         div.row.mt-10.mb-10
             div.cell-md-3
@@ -15,7 +18,7 @@ section.container-fluid.h-100
                 include components/search-form
             div.cell-md-3
 
-        div
+        div.mb-10
             table.table.row-border.monospace#search-result
                 tbody
 
@@ -26,9 +29,10 @@ include components/scripts
 
 
 script
-    include ./js/search-result.js
+    include ./js/search.js
+
 script.
-    parseSearchResult( !{JSON.stringify(result)} )
+    globalThis.searchQuery = `!{query}`
 
 
 

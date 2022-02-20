@@ -405,6 +405,108 @@ tr.no-hover:hover {
   padding-top: 2em;
   padding-left: 1em;
 }
+:root {
+  --iris-color-dark: #7700b3;
+  --iris-color-light: #c1abff;
+  --iris-color-light2: #f3edff;
+}
+.clipping-eye {
+  width: 300px;
+  height: 200px;
+}
+.clipping-eye .aligner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clipping-eye .aligner-item {
+  max-width: 50%;
+}
+.clipping-eye .clip-circle {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border-top: 15px inset var(--iris-color-light);
+}
+.clipping-eye .eye {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  position: relative;
+  background: radial-gradient(circle at 50%, #fcfcfc, #efeff1 66%, var(--iris-color-light2) 100%);
+}
+.clipping-eye .iris {
+  width: 50%;
+  max-width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 10% 30%;
+  animation: eye-move 5s ease-out infinite;
+  background: radial-gradient(circle at 50% 50%, var(--iris-color-dark) 0%, var(--iris-color-light) 90%);
+}
+.clipping-eye .iris:before {
+  content: "";
+  width: 40%;
+  height: 40%;
+  border-radius: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: var(--iris-color-dark);
+  transform: translate(-50%, -50%);
+}
+.clipping-eye .iris:after {
+  content: "";
+  width: 30%;
+  height: 30%;
+  border-radius: 100%;
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  background: rgba(255, 255, 255, 0.2);
+}
+.clipping-eye .lid {
+  animation: eye-blink 2.4s infinite;
+  animation-delay: 8s;
+  top: -50px;
+  border-bottom: 15px inset var(--iris-color-dark);
+}
+@keyframes eye-move {
+  0% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-80px) translateY(24px) scale(0.95);
+  }
+  25%,
+  44% {
+    transform: none;
+  }
+  50%,
+  60% {
+    transform: translateX(60px) translateY(-10px) scale(0.95);
+  }
+  66%,
+  100% {
+    transform: none;
+  }
+}
+@keyframes eye-blink {
+  90% {
+    transform: none;
+    animation-timing-function: ease-in;
+  }
+  93% {
+    transform: translateY(15px) scaleY(0);
+  }
+  100% {
+    animation-timing-function: ease-out;
+  }
+}
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
     max-width: 95%;

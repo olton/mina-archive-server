@@ -1,18 +1,25 @@
-
 const parseSearchResult = (data) => {
     let tr, index = 1
     const target = $("#search-result tbody").clear()
+    const foundTitle = $("#found-title")
 
     tr = $("<tr>").appendTo(target)
     tr.append(
         $("<td>").attr("colspan", 2).addClass('text-leader').html(`Number of search results: ${data.addresses.length + data.blocks.length + data.transactions.length + data.payments.length}`)
     )
 
+    if (!data.addresses.length && !data.blocks.length && !data.transactions.length && !data.payments.length) {
+        foundTitle.html('We not found data for your request :(')
+        return
+    }
+
+    foundTitle.html('We found next data by your request:')
+
     if (data.addresses.length) {
 
-        if (data.addresses.length === 1 && !data.blocks.length && !data.transactions.length && !data.payments.length) {
-            window.location.href = `/address/${data.addresses[0].public_key}`
-        }
+        // if (data.addresses.length === 1 && !data.blocks.length && !data.transactions.length && !data.payments.length) {
+        //     window.location.href = `/address/${data.addresses[0].public_key}`
+        // }
 
         tr = $("<tr>").appendTo(target)
         tr.append(
@@ -41,9 +48,9 @@ const parseSearchResult = (data) => {
 
     if (data.blocks.length) {
 
-        if (data.blocks.length === 1 && !data.addresses.length && !data.transactions.length && !data.payments.length) {
-            window.location.href = `/block/${data.blocks[0].state_hash}`
-        }
+        // if (data.blocks.length === 1 && !data.addresses.length && !data.transactions.length && !data.payments.length) {
+        //     window.location.href = `/block/${data.blocks[0].state_hash}`
+        // }
 
         tr = $("<tr>").appendTo(target)
         tr.append(
@@ -74,9 +81,9 @@ const parseSearchResult = (data) => {
 
     if (data.transactions.length) {
 
-        if (data.transactions.length === 1 && data.transactions[0] && !data.blocks.length && !data.addresses.length && !data.payments.length) {
-            window.location.href = `/transaction/${data.transactions[0].hash}`
-        }
+        // if (data.transactions.length === 1 && data.transactions[0] && !data.blocks.length && !data.addresses.length && !data.payments.length) {
+        //     window.location.href = `/transaction/${data.transactions[0].hash}`
+        // }
 
         tr = $("<tr>").appendTo(target)
         tr.append(
@@ -132,6 +139,28 @@ const parseSearchResult = (data) => {
                 `)
             )
             index++
+        }
+    }
+}
+
+const wsMessageController = (ws, response) => {
+    const {channel, data} = response
+
+    if (!channel) {
+        return
+    }
+
+    switch(channel) {
+        case 'welcome': {
+            ws.send(JSON.stringify({channel: 'search_data', data: globalThis.searchQuery}))
+            break
+        }
+        case 'new_block': {
+            break;
+        }
+        case 'search_data': {
+            parseSearchResult(data)
+            break;
         }
     }
 }
