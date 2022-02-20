@@ -404,6 +404,7 @@ tr.no-hover:hover {
   line-height: 1;
   padding-top: 2em;
   padding-left: 1em;
+  white-space: nowrap;
 }
 :root {
   --iris-color-dark: #7700b3;

@@ -21,12 +21,12 @@ div.container-fluid
                     hr.thin
 
                     div.row
-                        div.cell-1
-                            div.bg-lightSystem(style="width: 40px; height: 40px;")
+                        div.cell-12
+                            div.bg-lightSystem(style="width: 40px; height: 40px; position: absolute; top: 10px; left: 10px;")
                                 img#address-logo
-                        div.cell-10
-                            div.h3.mt-0.mb-2
-                                span.reduce-2 #{addressShort}
+
+                            div.h3.mt-0.mb-2(style="margin-left: 60px")
+                                span.reduce-3-fs.reduce-2-md #{addressShort}
                                 span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=address title="Click to copy address to clipboard")
                                 div#address-name.reduce-6.text-normal
 
