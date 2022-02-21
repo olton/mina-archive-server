@@ -40,7 +40,7 @@ const updateTransTable = data => {
                     ${t.type === 'payment' && +t.scam && +t.amount > 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
                     ${t.type === 'payment' && +t.scam && +t.amount == 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SPAM</span>' : ''}
                 </div>
-                <a ${t.status === 'pending' ? 'onclick="Metro.toast.create(\'Transaction Pending! Details not available!\'); return false"' : ''} class="link" href="/transaction/${t.hash}">${shorten(t.hash, 12)}</a><span class="ml-2 text-small text-muted" title="Nonce">[${t.nonce}]</span>
+                <a class="link" href="/transaction/${t.hash}">${shorten(t.hash, 12)}</a><span class="ml-2 text-small text-muted" title="Nonce">[${t.nonce}]</span>
                 <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${t.hash}"></span>                
                 <div class="text-small text-muted">
                     <span>${datetime(+t.timestamp).format(config.format.datetime)}</span>

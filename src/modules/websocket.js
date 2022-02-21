@@ -23,11 +23,11 @@ import {
     getTransactionsCount,
     getTransactions,
     getTransactionsStat,
-    getTopStakeHolders, getAddresses, getAddressesCount, getBlocksByHeight, getAddressByName
+    getTopStakeHolders, getAddresses, getAddressesCount, getTransactionFromPool
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
-import {checkPaymentStatus, getAddressBalance, getTransactionInPool} from "./graphql.js";
+import {getAddressBalance, getTransactionInPool} from "./graphql.js";
 import {
     getAddressUptimeLine,
     getBalancePerEpoch,
@@ -36,6 +36,7 @@ import {
     getStakePerEpoch
 } from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
+import {searchData} from "./search.js";
 
 const {version} = pkg
 
@@ -121,7 +122,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'trans_pool': {
-                    response(ws, channel, await getTransactionInPool());
+                    response(ws, channel, cache.transactionPool);
                     break;
                 }
                 case 'trans_pool_count': {
@@ -145,7 +146,9 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'transaction': {
-                    response(ws, channel, await getTransaction(data));
+                    const transInBlockchain = await getTransaction(data)
+                    const transInPool = await getTransactionFromPool(data)
+                    response(ws, channel, transInBlockchain || transInPool);
                     break;
                 }
                 case 'scammer_list': {
@@ -217,37 +220,7 @@ export const websocket = (server) => {
                     break
                 }
                 case 'search_data': {
-                    const query = data.split(",").map(v => v.trim())
-                    const result = {
-                        addresses: [],
-                        blocks: [],
-                        transactions: [],
-                        payments: []
-                    }
-                    for(let val of query) {
-                        if (val === '') continue
-
-                        if (val.substring(0, 4) === 'B62q') {
-                            result.addresses.push(await getAddressInfo(val))
-                        } else if (val.substring(0, 3) === '3NK' || val.substring(0, 3) === '3NL') {
-                            result.blocks.push(await getBlockInfo(val))
-                        } else if (val.substring(0, 3) === 'Ckp') {
-                            result.transactions.push(await getTransaction(val))
-                        } else if (!isNaN(+val)) {
-                            (await getBlocksByHeight(+val)).map( b => {
-                                result.blocks.push(b)
-                            })
-                        } else {
-                            (await getAddressByName(val)).map( b => {
-                                result.addresses.push(b)
-                            })
-                            const checkPayment = await checkPaymentStatus(val)
-                            if (checkPayment) {
-                                result.payments.push([val, checkPayment])
-                            }
-                        }
-                    }
-                    response(ws, channel, result)
+                    response(ws, channel, await searchData(data))
                 }
             }
         })

@@ -238,6 +238,31 @@ export const getTransaction = async (hash) => {
     return result
 }
 
+export const getTransactionFromPool = async (hash) => {
+    let result
+    for(let r of globalThis.cache.transactionPool) {
+        if (r.hash === hash)
+            result = {
+                status: "pending",
+                type: r.kind.toLowerCase(),
+                amount: r.amount,
+                fee: r.fee,
+                hash: r.hash,
+                memo: r.memo,
+                scam: checkMemoForScam(r.memo),
+                timestamp: datetime().time(),
+                height: 0,
+                trans_owner: r.from,
+                trans_owner_name: await getAddressName(r.from),
+                trans_receiver: r.to,
+                trans_receiver_name: await getAddressName(r.to),
+                nonce: r.nonce,
+                confirmation: 0
+            }
+    }
+    return result
+}
+
 export const getScammerList = async () => {
     const sql = `
         select b.*, a.name 
@@ -481,8 +506,6 @@ export const getTransactions = async ({
     search = null
 } = {}) => {
     let pool_result = []
-
-    console.log(limit, offset)
 
     if (pending) {
         const pool_rows = globalThis.cache.transactionPool.slice(offset, +(offset) + +(limit))

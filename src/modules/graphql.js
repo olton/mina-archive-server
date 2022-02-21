@@ -111,7 +111,6 @@ export const getAddressBalance = async (address) => {
 
 export const checkPaymentStatus = async (id) => {
     let result = await fetchGraphQL(qTransactionStatus, {payment: id})
-    console.log(result)
     try {
         return result.data ? result.data.transactionStatus : false
     } catch (e) {

@@ -5,6 +5,8 @@ const updateEpoch = (data) => {
 const updateTransactionInfo = (data) => {
     $(".scam")[data.scam ? 'show' : 'hide']()
 
+    $("#trans-block-info")[data.height ? 'show' : 'hide']()
+
     const tags = $("#trans-tags").clear()
     tags.append(
         $("<span>").addClass(data.type === 'payment' ? 'bg-cyan' : 'bg-pink').addClass("radius reduce-4 badge inline fg-white text-upper").html(`${data.type}`)
@@ -54,7 +56,7 @@ const updateTransactionInfo = (data) => {
         <div class="text-small text-muted">${data.trans_receiver_name || ''}</div>
     `)
     $("#transaction-fee-payer").html(`
-        <a class="link" href="/address/${data.trans_fee_payer}">${shorten(data.trans_fee_payer, 10)}</a>
+        <a class="link ${!data.trans_fee_payer ? "d-none":""}" href="/address/${data.trans_fee_payer}">${shorten(data.trans_fee_payer, 10)}</a>
     `)
     $("#transaction-memo").html(data.memo || 'No memo')
     $("#transaction-desc").html(data.failure_reason || 'No data')

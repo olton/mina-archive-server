@@ -1,4 +1,6 @@
 const parseSearchResult = (data) => {
+    console.log(data)
+
     let tr, index = 1
     const target = $("#search-result tbody").clear()
     const foundTitle = $("#found-title")
