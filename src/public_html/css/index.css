@@ -395,6 +395,7 @@ tr.no-hover:hover {
   margin-top: -20px;
   z-index: 2;
   flex-wrap: nowrap;
+  background: #fff;
 }
 #uptime-graph-dates div {
   text-align: center;
