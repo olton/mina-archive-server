@@ -23,11 +23,11 @@ import {
     getTransactionsCount,
     getTransactions,
     getTransactionsStat,
-    getTopStakeHolders, getAddresses, getAddressesCount, getTransactionFromPool
+    getTopStakeHolders, getAddresses, getAddressesCount, getTransactionFromPool, getAddressTransactionsFromPool
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
-import {getAddressBalance, getTransactionInPool} from "./graphql.js";
+import {getAddressBalance} from "./graphql.js";
 import {
     getAddressUptimeLine,
     getBalancePerEpoch,
@@ -118,7 +118,7 @@ export const websocket = (server) => {
                     break
                 }
                 case 'address_trans_pool': {
-                    response(ws, channel, await getTransactionInPool(data));
+                    response(ws, channel, await getAddressTransactionsFromPool(data));
                     break;
                 }
                 case 'trans_pool': {

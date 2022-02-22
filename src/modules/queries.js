@@ -263,6 +263,35 @@ export const getTransactionFromPool = async (hash) => {
     return result
 }
 
+export const getAddressTransactionsFromPool = async (address) => {
+    let result = []
+    for(let r of globalThis.cache.transactionPool) {
+        if (r.from === address)
+            result.push( {
+                id: r.id,
+                status: "pending",
+                kind: r.kind.toLowerCase(),
+                type: r.kind.toLowerCase(),
+                amount: r.amount,
+                fee: r.fee,
+                hash: r.hash,
+                memo: r.memo,
+                scam: checkMemoForScam(r.memo),
+                timestamp: datetime().time(),
+                height: 0,
+                trans_owner: r.from,
+                from: r.from,
+                trans_owner_name: await getAddressName(r.from),
+                trans_receiver: r.to,
+                to: r.to,
+                trans_receiver_name: await getAddressName(r.to),
+                nonce: r.nonce,
+                confirmation: 0
+            } )
+    }
+    return result
+}
+
 export const getScammerList = async () => {
     const sql = `
         select b.*, a.name 
