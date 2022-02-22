@@ -208,11 +208,16 @@ const graphAddressUptime = data => {
 
     const points = []
     const _data = data.reverse()
+    let borderTop = 1, borderBottom = 120
+
+    for(let r of _data) {
+        if (r.position > borderBottom) borderBottom = r.position
+    }
 
     for(let r of _data) {
         let x = datetime(r.time).time()
-        let y = 120 - r.position
-        // if (y < 0) y = 0
+        let y = borderBottom - r.position
+
         points.push([x, y])
     }
 
@@ -249,7 +254,7 @@ const graphAddressUptime = data => {
         colors: [Metro.colors.toRGBA('#7528d2', 1)],
         boundaries: {
             minY: 0,
-            maxY: 120
+            maxY: borderBottom
         },
         axis: {
             y: {
@@ -277,7 +282,7 @@ const graphAddressUptime = data => {
         onTooltipShow: (d) => {
             return `
                 <span>Pos:</span>
-                <span class="text-bold">${120 - d[1]}</span>
+                <span class="text-bold">${borderBottom - d[1]}</span>
                 <span>at</span>
                 <span class="text-bold">${datetime(d[0]).format(config.format.date)}</span>
             `
@@ -286,9 +291,9 @@ const graphAddressUptime = data => {
 
     const graph = $("#uptime-graph")
     graph.append(
-        $("<div>").addClass("max-graph-value").html(`1`)
+        $("<div>").addClass("max-graph-value").html(`${borderTop}`)
     )
     graph.append(
-        $("<div>").addClass("min-graph-value").html(`120`)
+        $("<div>").addClass("min-graph-value").html(`${borderBottom}`)
     )
 }
