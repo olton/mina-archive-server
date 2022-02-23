@@ -230,15 +230,21 @@ const drawTransFeesLine = data => {
     const areas = [
         {
             name: "AVG FEE",
-            dots: true
+            dots: {
+                size: 2
+            }
         },
         {
             name: "MAX FEE",
-            dots: true
+            dots: {
+                size: 2
+            }
         },
         {
             name: "MIN FEE",
-            dots: true
+            dots: {
+                size: 2
+            }
         }
     ]
 
@@ -262,7 +268,7 @@ const drawTransFeesLine = data => {
             },
             padding: {
                 top: 15,
-                left: 15,
+                left: 50,
                 right: 15,
                 bottom: 40
             },
@@ -285,7 +291,7 @@ const drawTransFeesLine = data => {
                     label: {
                         align: "left",
                         shift: {
-                            x: 14,
+                            x: -35,
                             y: -6
                         },
                         font: {

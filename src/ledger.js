@@ -147,7 +147,7 @@ pool.on('error', (err, client) => {
 
         const ledger = JSON.parse(fs.readFileSync(ledgerFile, 'utf-8'))
 
-        await client.query('BEGIN')
+        await client.query('BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED')
         await client.query(`delete from ledger where epoch = $1`, [args.epoch])
         for (let o of ledger) {
             await saveTiming(o)
