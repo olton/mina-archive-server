@@ -23,7 +23,11 @@ import {
     getTransactionsCount,
     getTransactions,
     getTransactionsStat,
-    getTopStakeHolders, getAddresses, getAddressesCount, getTransactionFromPool, getAddressTransactionsFromPool
+    getTopStakeHolders,
+    getAddresses,
+    getAddressesCount,
+    getTransactionFromPool,
+    getAddressTransactionsFromPool
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -33,7 +37,8 @@ import {
     getBalancePerEpoch,
     getBlocksPerEpoch,
     getBlocksTimelapse,
-    getStakePerEpoch
+    getStakePerEpoch,
+    getTransactionsFeesLine
 } from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
 import {searchData} from "./search.js";
@@ -191,6 +196,10 @@ export const websocket = (server) => {
                 }
                 case 'trans_stat': {
                     response(ws, channel, await getTransactionsStat())
+                    break
+                }
+                case 'trans_fees_line': {
+                    response(ws, channel, await getTransactionsFeesLine())
                     break
                 }
                 case 'addresses': {

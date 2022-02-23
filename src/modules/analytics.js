@@ -75,3 +75,18 @@ export const getAddressUptimeLine = async (address, limit = 60, trunc = 'day') =
     return (await query(sql, [address, limit, trunc])).rows
 }
 
+export const getTransactionsFeesLine = async (limit = 30, trunc = 'day') => {
+    const sql = `
+        select
+           date_trunc($2, TO_TIMESTAMP(timestamp / 1000)) as time,
+           round(avg(fee)) as avg_fee,
+           round(max(fee)) as max_fee,
+           round(min(fee)) as min_fee
+        from v_trans t
+        group by 1
+        order by 1 desc
+        limit $1
+    `
+
+    return (await query(sql, [limit, trunc])).rows
+}

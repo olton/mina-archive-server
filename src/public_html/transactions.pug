@@ -10,12 +10,14 @@ div.container-fluid
                 div.cell-lg-6
                     div
                         div.h1.mb-0.page-title Transactions
-                        div.text-leader2.
-                            Discover transactions in Mina blockchain
+                        div.text-leader2
+                            p Discover transactions in Mina blockchain
+                            p.reduce-2(style="max-width: 80%") Minataur will show you all types of transactions, including transactions that are not yet included in the main blockchain and are in pending.
 
                 div.cell-lg-6
                     div.mb-4.pt-4
                         include components/search-form
+
 
 div.container-fluid
     div.container
@@ -25,6 +27,27 @@ div.container-fluid
             li.page-item
                 a.page-link(href="/blocks") Transactions
 
+div.container-fluid
+    div.container
+        div.row
+            div.cell-md-4
+                div.border.bd-system.p-2
+                    div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper.text-center
+                        span AVG FEE
+                        span.ml-1 (MINA)
+                    div#avg-fees-graph
+            div.cell-md-4
+                div.border.bd-system.p-2
+                    div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper.text-center
+                        span MAX FEE
+                        span.ml-1 (MINA)
+                    div#max-fees-graph
+            div.cell-md-4
+                div.border.bd-system.p-2
+                    div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper.text-center
+                        span MIN FEE
+                        span.ml-1 (MINA)
+                    div#min-fees-graph
 
 div.container-fluid
     div.container
@@ -152,4 +175,5 @@ include components/footer
 include components/scripts
 
 script
+    include ./js/config.js
     include ./js/transactions.js

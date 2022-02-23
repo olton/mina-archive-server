@@ -183,6 +183,133 @@ $("#transactions-search").on(Metro.events.inputchange, function(){
     }, searchThreshold)
 })
 
+const drawTransFeesLine = data => {
+    if (!data || !data.length) return
+
+    const _data = data.reverse()
+    const points_avg = []
+    const points_max = []
+    const points_min = []
+
+    let minY1 = 0, minY2 = 0, minY3 = 0,
+        maxY1 = 0, maxY2 = 0, maxY3 = 0
+
+    for(let r of _data){
+        const time = datetime(r.time).time()
+        const avg_fee = +r.avg_fee
+        const max_fee = +r.max_fee
+        const min_fee = +r.min_fee
+
+        points_avg.push([time, avg_fee])
+        points_max.push([time, max_fee])
+        points_min.push([time, min_fee])
+
+        // console.log(avg_fee, min_fee, max_fee)
+
+        if (maxY1 < avg_fee) maxY1 = avg_fee
+        if (maxY2 < max_fee) maxY2 = max_fee
+        if (maxY3 < min_fee) maxY3 = min_fee
+    }
+
+    const ids = ["#avg-fees-graph", "#max-fees-graph", "#min-fees-graph"]
+
+    const max = [
+        maxY1, maxY2, maxY3
+    ]
+
+    const min = [
+        minY1, minY2, minY3
+    ]
+
+    const colors = [
+        Metro.colors.toRGBA('#00AFF0', .5),
+        Metro.colors.toRGBA('#d70000', .5),
+        Metro.colors.toRGBA('#47bd0c', .5)
+    ]
+
+    const areas = [
+        {
+            name: "AVG FEE",
+            dots: true
+        },
+        {
+            name: "MAX FEE",
+            dots: true
+        },
+        {
+            name: "MIN FEE",
+            dots: true
+        }
+    ]
+
+    const points = [
+        points_avg,
+        points_max,
+        points_min,
+    ]
+
+    let index = 0
+    for(let id of ids) {
+        chart.areaChart(id, [points[index]], {
+            ...areaDefaultOptions,
+            legend: false,
+            areas: [
+                areas[index]
+            ],
+            boundaries: {
+                minY: min[index],
+                maxY: index === 2 ? max[index] * 2 : max[index]
+            },
+            padding: {
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: 40
+            },
+            height: 145,
+            colors: [colors[index]],
+            axis: {
+                x: {
+                    label: {
+                        count: 10,
+                        angle: -45,
+                        shift: {
+                            y: 10
+                        },
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    label: {
+                        align: "left",
+                        shift: {
+                            x: 14,
+                            y: -6
+                        },
+                        font: {
+                            size: 10
+                        }
+                    }
+                }
+            },
+            onTooltipShow: (d) => {
+                return `
+                    <span class="text-bold">
+                        ${(d[1]/10**9)} 
+                        <small class="text-light">MINA</small>
+                        ${(datetime(d[0]).format("MMM, DD"))}
+                    </span>
+                `
+            },
+            onDrawLabelX: (v) => datetime(+v).format("MMM, DD"),
+            onDrawLabelY: (v) => (v/10**9).toFixed(5)
+        })
+        index++
+    }
+}
+
 const wsMessageController = (ws, response) => {
     const {channel, data} = response
 
@@ -193,6 +320,7 @@ const wsMessageController = (ws, response) => {
     const requestStat = () => {
         if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'trans_stat'}))
+            ws.send(JSON.stringify({channel: 'trans_fees_line'}))
             refreshTransTable()
         }
 
@@ -216,7 +344,12 @@ const wsMessageController = (ws, response) => {
             break;
         }
         case 'trans_pool': {
-            console.log(data)
+            // console.log(data)
+            break;
+        }
+        case 'trans_fees_line': {
+            // console.log(data)
+            drawTransFeesLine(data)
             break;
         }
     }
