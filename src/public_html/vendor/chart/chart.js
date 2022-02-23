@@ -831,6 +831,32 @@
     Object.assign(Chart.prototype, MixinLegend);
     Object.assign(Chart.prototype, MixinTooltip);
 
+    function ownKeys(object, enumerableOnly) {
+      var keys = Object.keys(object);
+
+      if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        enumerableOnly && (symbols = symbols.filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        })), keys.push.apply(keys, symbols);
+      }
+
+      return keys;
+    }
+
+    function _objectSpread2(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = null != arguments[i] ? arguments[i] : {};
+        i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+
+      return target;
+    }
+
     function _defineProperty(obj, key, value) {
       if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -844,40 +870,6 @@
       }
 
       return obj;
-    }
-
-    function ownKeys(object, enumerableOnly) {
-      var keys = Object.keys(object);
-
-      if (Object.getOwnPropertySymbols) {
-        var symbols = Object.getOwnPropertySymbols(object);
-        if (enumerableOnly) symbols = symbols.filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-        });
-        keys.push.apply(keys, symbols);
-      }
-
-      return keys;
-    }
-
-    function _objectSpread2(target) {
-      for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i] != null ? arguments[i] : {};
-
-        if (i % 2) {
-          ownKeys(Object(source), true).forEach(function (key) {
-            _defineProperty(target, key, source[key]);
-          });
-        } else if (Object.getOwnPropertyDescriptors) {
-          Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-        } else {
-          ownKeys(Object(source)).forEach(function (key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-          });
-        }
-      }
-
-      return target;
     }
 
     var line = {
@@ -901,7 +893,8 @@
       skip: 0,
       showLine: true,
       showLabel: true,
-      showMin: true
+      showMin: true,
+      step: "auto"
     };
     var axis = {
       line,
@@ -1063,7 +1056,7 @@
       ctx.lineWidth = size;
       ctx.strokeStyle = color;
       ctx.fillStyle = fill;
-      coords.map((_ref) => {
+      coords.map(_ref => {
         var [x, y] = _ref;
         ctx.lineTo(x, y);
       });
@@ -1125,6 +1118,8 @@
       ctx.closePath();
     };
 
+    var ceil = (a, b) => Math.ceil(a / b) * b;
+
     var MixinAxis = {
       axisX() {
         var _ref, _line$shortLineSize;
@@ -1138,7 +1133,9 @@
             line = axis.line,
             arrow = axis.arrow;
         var font = (_ref = label && label.font) !== null && _ref !== void 0 ? _ref : o.font;
-        var labelStep = label.count ? (this.maxX - this.minX) / label.count : 0;
+        var lFactor = 10 ** (("" + this.maxX).length - 2);
+        var lMax = ceil(this.maxX, lFactor);
+        var labelStep = label.step === 'auto' ? label.count ? (this.maxX - this.minX) / label.count : 0 : label.step ? label.step : label.count ? Math.ceil(lMax / label.count) : 0;
         var labelValue,
             value,
             k,
@@ -1207,7 +1204,9 @@
             line = axis.line,
             arrow = axis.arrow;
         var font = (_ref2 = label && label.font) !== null && _ref2 !== void 0 ? _ref2 : o.font;
-        var labelStep = label.count ? (this.maxY - this.minY) / label.count : 0;
+        var lFactor = 10 ** (("" + this.maxY).length - 2);
+        var lMax = ceil(this.maxY, lFactor);
+        var labelStep = label.step === 'auto' ? label.count ? (this.maxY - this.minY) / label.count : 0 : label.step ? label.step : label.count ? Math.ceil(lMax / label.count) : 0;
         var labelValue, value, k, x, y, labelX, shortLineX;
         var shortLineSize = (_line$shortLineSize2 = line.shortLineSize) !== null && _line$shortLineSize2 !== void 0 ? _line$shortLineSize2 : 0;
         x = padding.left;
@@ -1320,7 +1319,7 @@
       ctx.setLineDash(dash);
       ctx.lineWidth = size;
       ctx.strokeStyle = color;
-      coords.map((_ref) => {
+      coords.map(_ref => {
         var [x, y] = _ref;
         ctx.lineTo(x, y);
       });
@@ -1530,9 +1529,9 @@
           }
 
           if (area.dots && o.showDots !== false) {
-            coords.map((_ref) => {
+            coords.map((_ref, index) => {
               var [x, y] = _ref;
-              drawPointFn(ctx, [x, y, opt.radius], opt);
+              if (index && index < coords.length - 1) drawPointFn(ctx, [x, y, opt.radius], opt);
             });
           }
 
@@ -2316,7 +2315,7 @@
           }
 
           if (line.dots && o.showDots !== false) {
-            coords.map((_ref) => {
+            coords.map(_ref => {
               var [x, y] = _ref;
               drawPointFn(ctx, [x, y, opt.radius], opt);
             });
@@ -2948,6 +2947,17 @@
       draw() {
         super.draw();
         this.gauge();
+      }
+
+      update(val) {
+        var {
+          min = null,
+          max = null
+        } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        this.data[0] = val;
+        if (min !== null) this.min = min;
+        if (max !== null) this.max = max;
+        this.resize();
       }
 
     }
