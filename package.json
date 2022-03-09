@@ -14,7 +14,8 @@
     "scam": "node --experimental-modules --es-module-specifier-resolution=node src/scam.js",
     "blacklist": "node --experimental-modules --es-module-specifier-resolution=node src/blacklist.js",
     "uptime": "node --experimental-modules --es-module-specifier-resolution=node src/uptime.js",
-    "providers": "node --experimental-modules --es-module-specifier-resolution=node src/providers.js"
+    "providers": "node --experimental-modules --es-module-specifier-resolution=node src/providers.js",
+    "delegations": "node --experimental-modules --es-module-specifier-resolution=node src/delegations.js"
   },
   "repository": {
     "type": "git",

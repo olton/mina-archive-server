@@ -163,16 +163,19 @@ const updateAddressesTable = (data) => {
 
     for(let row of data.addresses) {
         let tr = $("<tr>").appendTo(target)
-        const rowClass = Metro.utils.between(row.position, 1, 120, true) ? "bg-success2" : ""
+        const top120 = Metro.utils.between(row.position, 1, 120, true)
         const inBlackList = !!+row.in_black_list
-        tr.addClass(rowClass).html(`
-            <td class="text-center">
-                ${inBlackList ? "<span class='text-small radius alert p-1' title='Listed in Blacklist'>BL</span>" : ""}            
-                ${row.is_producer && !inBlackList ? "<span class='text-small radius success p-1' title='Block Producer'>BP</span>" : ""}            
-            </td>
+        const isDelegationProgramParticipant = !!+row.is_delegation_program_participant
+        tr.html(`
             <td>
-                <a class="link" href="/address/${row.public_key}">${shorten(row.public_key, 12)}</a>
-                <div class="text-small fg-violet">${row.name || ''}</div>            
+                <div class="d-flex flex-row flex-align-center">
+                    <a class="link mr-2" href="/address/${row.public_key}">${shorten(row.public_key, 12)}</a>
+                    ${inBlackList ? "<span class='radius reduce-4 badge inline bg-darkRed fg-white text-upper' title='Listed in Blacklist'>BL</span>" : ""}            
+                    ${top120 ? "<span class='radius reduce-4 badge inline bg-violet fg-white text-upper' title='Top120 by Uptime'>120</span>" : ""}            
+                    ${row.is_producer ? "<span class='radius reduce-4 badge inline bg-green fg-white text-upper' title='Block Producer'>BP</span>" : ""}            
+                    ${isDelegationProgramParticipant ? "<span class='radius reduce-4 badge inline bg-teal fg-white text-upper' title='Delegation Program Participant'>DP</span>" : ""}
+                </div>            
+                <div class="text-small fg-violet">${row.name || ''}</div>
                 ${inBlackList ? "<div class='text-small fg-red p-1' title=''>Warning! This address listed in Blacklist</div>" : ""}
             </td>
             <td class="text-right">

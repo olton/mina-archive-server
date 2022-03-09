@@ -84,7 +84,7 @@ const updateAddressInfo = (data) => {
 
     if (!data.delegate_key || data.delegate_key === address) {
         addressTags.append(
-            $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`PERSONAL`)
+            $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`OWN DELEGATE`)
         )
     }
 
@@ -97,6 +97,12 @@ const updateAddressInfo = (data) => {
     if (+data.found) {
         addressTags.append(
             $("<span>").addClass("radius reduce-4 badge inline bg-darkIndigo fg-white text-upper").html(`FOUND`)
+        )
+    }
+
+    if (+data.is_delegation_program_participant) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-teal fg-white text-upper").html(`DELEGATION PROGRAM`)
         )
     }
 
