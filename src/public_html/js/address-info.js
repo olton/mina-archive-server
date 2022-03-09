@@ -94,6 +94,12 @@ const updateAddressInfo = (data) => {
         )
     }
 
+    if (+data.found) {
+        addressTags.append(
+            $("<span>").addClass("radius reduce-4 badge inline bg-darkIndigo fg-white text-upper").html(`FOUND`)
+        )
+    }
+
     let stake = normMina(data.stake, 'array')
     $("#stack-current, #stack-value").html(`
         <span>${(+stake[0]).format(0, null, " ", ".")}</span>

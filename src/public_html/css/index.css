@@ -391,8 +391,9 @@ tr.no-hover:hover {
 #uptime-graph-dates {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: -20px;
+  justify-content: space-around;
+  margin-top: 0;
+  padding-left: 14px;
   z-index: 2;
   flex-wrap: nowrap;
   background: #fff;
@@ -400,12 +401,11 @@ tr.no-hover:hover {
 #uptime-graph-dates div {
   text-align: center;
   font-size: 9px;
-  transform: rotate(-45deg);
+  transform: rotate(-90deg);
   font-weight: 500;
   line-height: 1;
-  padding-top: 2em;
-  padding-left: 1em;
   white-space: nowrap;
+  width: 14px;
 }
 #uptime-graph-dates div:nth-child(odd) {
   display: none;
