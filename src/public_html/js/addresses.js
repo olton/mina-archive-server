@@ -149,7 +149,6 @@ $("#address-search").on(Metro.events.inputchange, function(){
 })
 
 const updateAddressesTable = (data) => {
-    console.log(data)
     const target = $("#addresses-table tbody").clear()
 
     Metro.pagination({
