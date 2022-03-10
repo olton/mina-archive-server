@@ -82,11 +82,11 @@ const updateAddressInfo = (data) => {
         )
     }
 
-    if (!data.delegate_key || data.delegate_key === address) {
-        addressTags.append(
-            $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`OWN DELEGATE`)
-        )
-    }
+    // if (!data.delegate_key || data.delegate_key === address) {
+    //     addressTags.append(
+    //         $("<span>").addClass("radius reduce-4 badge inline bg-violet fg-white text-upper").html(`OWN DELEGATE`)
+    //     )
+    // }
 
     if (data.cliff_time && cliffTime > datetime()) {
         addressTags.append(
@@ -96,7 +96,7 @@ const updateAddressInfo = (data) => {
 
     if (+data.found) {
         addressTags.append(
-            $("<span>").addClass("radius reduce-4 badge inline bg-darkIndigo fg-white text-upper").html(`FOUND`)
+            $("<span>").addClass("radius reduce-4 badge inline bg-darkIndigo fg-white text-upper").html(`DELEGATION FUND`)
         )
     }
 
