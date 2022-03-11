@@ -90,7 +90,7 @@ const drawBlocksTable = (data) => {
 
 const drawTransTable = (data, address, noDir = false) => {
     let rows = []
-
+// console.log(data)
     for(let t of data) {
         let transIncoming = t.trans_owner !== address
         let transDir = transIncoming ? "mif-arrow-down fg-lightViolet" : "mif-arrow-up fg-blue"
@@ -102,6 +102,7 @@ const drawTransTable = (data, address, noDir = false) => {
             <td class="">
                 <div style="line-height: 1">
                     <span class="${t.type === 'payment' ? transIncoming ? 'bg-lightViolet' : 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${t.type}</span>
+                    ${t.type === 'delegation' && +t.is_fund ? '<span class="ml-2-minus bg-violet fg-white pl-1 pr-1 reduce-4">FUND</span>' : ''}
                     ${t.type === 'payment' && +t.scam && +t.amount > 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
                     ${t.type === 'payment' && +t.scam && +t.amount == 0 ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SPAM</span>' : ''}
                 </div>
@@ -143,7 +144,7 @@ const drawTransTable = (data, address, noDir = false) => {
             </td>
             <td class="text-right">
                 <div>
-                    <span class="">${normMina(+t.amount)}</span>
+                    <span class="">${t.type === 'payment' ? normMina(+t.amount) : normMina(+t.trans_owner_balance)}</span>
                     <div class="text-muted text-small">${normMina(+t.fee)}</div>                        
                 </div>                
             </td>
@@ -255,113 +256,6 @@ const drawTransPoolTable = (data) => {
     }
 
     return rows
-}
-
-function addressBlocksTableDrawCell(td, val, idx, head, row, table){
-    const [chain_status, height, timestamp, state_hash, coinbase, slot, epoch, trans] = row
-    if (head.name === 'chain_status') {
-        td.clear().addClass("text-center").append(
-            $("<span>").attr("title", val).addClass("mif-stop").addClass(val === 'pending' ? 'fg-cyan' : val === 'canonical' ? 'fg-green' : 'fg-red')
-        )
-    }
-    if (head.name === 'timestamp') {
-        td.addClass("d-none")
-    }
-    if (head.name === 'height') {
-        td.html(`
-            <a class="link" href="/block/${state_hash}">${val}</a>
-            <div class="text-small text-muted">${datetime(+timestamp).timeLapse()}</div>
-        `)
-    }
-    if (head.name === 'state_hash') {
-        td.html(`
-            <a class="link" href="/block/${val}">${shorten(val, 12)}</a>
-            <div class="text-small text-muted">${datetime(+timestamp).format(config.format.datetime)}</div>
-        `)
-    }
-    if (head.name === 'coinbase') {
-        td.addClass("text-center").html(`
-            ${normMina(val)}
-            <div class="text-small text-muted">${normMina(val) === 720 ? "norm" : "super"}</div>
-        `)
-    }
-    if (head.name === 'epoch' || head.name === 'trans_count') {
-        td.addClass("text-center").html(`${val}`)
-    }
-    if (head.name === 'slot') {
-        let [global, slot] = val.split(":")
-        td.addClass("text-center").html(`
-            <span>${global}</span>
-            <div class="text-small text-muted">
-                <span>${slot}</span>
-            </div>
-        `)
-    }
-}
-
-function addressTransTableDrawCell(td, val, idx, head, row, table){
-    if (['type', 'agent_name', 'timestamp', 'state_hash', 'memo', 'fee', 'epoch', 'global_slot', 'slot', 'scam'].includes(head.name)) {
-        td.addClass("d-none")
-    }
-    if (head.name === 'dir') {
-        td.html(`<span class="${val === 'in' ? 'mif-arrow-down fg-lightViolet' : 'mif-arrow-up fg-blue'}"></span>`)
-    }
-    if (head.name === 'status') {
-        td.html(`<span class="${val === 'applied' ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'}"></span>`)
-    }
-    if (head.name === 'hash') {
-        td.html(`
-            <div class="text-small">
-                <span class="${row[0] === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-4 text-upper">${row[0]}</span>
-                ${row[0] === 'payment' && row[16] ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-4">SCAM</span>' : ''}
-            </div>
-            <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
-            <div class="text-small text-muted">${datetime(+row[3]).format(config.format.datetime)}</div>
-        `)
-    }
-    if (head.name === 'agent') {
-        td.html(`
-            <a class="link" href="/address/${val}">${shorten(val, 7)}</a>
-            <div class="text-small text-muted">${row[12]}</div>
-        `)
-    }
-    if (head.name === 'height') {
-        td.addClass('text-center').html(`
-            <a class="link" href="/block/${row[11]}">${val}</a>
-            <div class="text-small text-muted" title="Epoch/Slot in">
-                <span class="text-bold">${row[13]}/${row[15]}</span>            
-            </div>
-        `)
-    }
-    if (head.name === 'amount') {
-        td.addClass("text-right").html(`
-            ${normMina(val)}
-            <div class="text-muted text-small">${normMina(row[9])}</div>
-        `)
-    }
-    if (head.name === 'nonce' || head.name === 'confirmation') {
-        td.addClass("text-center").html(`${val}`)
-    }
-}
-
-function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
-    if (head.name === 'name') {
-        td.addClass("d-none")
-    }
-    if (head.name === 'stake_holder') {
-        td.html(`
-            ${val === 1 ? '<span title="Stack Holder" class="text-small radius success p-1">SH</span>' : ''}
-        `)
-    }
-    if (head.name === 'ledger_balance') {
-        td.addClass("text-right").html(`${normMina(val)}`)
-    }
-    if (head.name === 'public_key') {
-        td.html(`
-            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
-            <div class="text-small">${row[2] || ""}</div>
-        `)
-    }
 }
 
 function searchInBlockchain(val) {

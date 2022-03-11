@@ -367,7 +367,7 @@ section.container-fluid.mt-4
                 )
                     thead
                         tr
-                            th.d-none(data-name="type")
+                            th(data-name="type" data-show="false")
                                 span #T
 
                             th(data-name="dir" data-size='30')
@@ -376,7 +376,7 @@ section.container-fluid.mt-4
                             th(data-name="status" data-size="30")
                                 span #S
 
-                            th.d-none(data-name="timestamp")
+                            th(data-name="timestamp" data-show="false")
                                 span Date
 
                             th(data-name="hash")
@@ -396,31 +396,38 @@ section.container-fluid.mt-4
                                 span Amount
                                 div.text-small Fee
 
-                            th.d-none.text-right(data-name="fee")
+                            th(data-name="fee" data-show="false")
                                 span Fee
 
                             th.text-center(data-name="confirmation")
                                 span Confirm
 
-                            th.d-none(data-name="state_hash")
+                            th(data-name="state_hash" data-show="false")
                                 span Block
                                 div.text-small Hash
 
-                            th.d-none(data-name="memo")
+                            th(data-name="memo" data-show="false")
                                 span Memo
 
-                            th.d-none(data-name="epoch")
+                            th(data-name="epoch" data-show="false")
                                 span Epoch
 
-                            th.d-none(data-name="global_slot")
+                            th(data-name="global_slot" data-show="false")
                                 span Global
                                 div.text-small Slot
 
-                            th.d-none(data-name="slot")
+                            th(data-name="slot" data-show="false")
                                 span Slot
 
-                            th.d-none(data-name="scam")
+                            th(data-name="scam" data-show="false")
                                 span Scam
+
+                            th(data-name="is_fund" data-show="false")
+                                span Fund
+
+                            th(data-name="trans_owner_balance" data-show="false")
+                                span Owner
+                                div.text-small Balance
 
         div#delegations
             div.mt-4
@@ -473,7 +480,7 @@ section.container-fluid.mt-4
                             data-table-search-placeholder=""
                         )
                             thead
-                                th(data-name="stack_holder" data-size="20")
+                                th(data-name="stake_holder" data-size="20")
                                     span #SH
                                 th(data-name="public_key")
                                     span Address

@@ -2,9 +2,7 @@ import {query} from  "./postgres"
 import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts"
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
-import {getTransactionInPool} from "./graphql.js";
 import {datetime} from "@olton/datetime";
-import {isset} from "../helpers/isset.js";
 
 export const getDisputeBlocks = async () => {
     const sql = `
@@ -72,7 +70,10 @@ export const getAddressTransactions = async (pk, {
     }
 
     const sql = `
-        select * from v_trans 
+        select t.*, 
+               coalesce(a.found, 0) as is_fund 
+        from v_trans t 
+        left join address a on a.public_key_id = t.trans_owner_id
         where (trans_owner = $1 or trans_receiver = $1)
         order by timestamp desc, nonce desc
         limit $2 offset $3
@@ -410,8 +411,11 @@ export const getAddressTrans = async (address) => {
             t.memo,
             t.epoch,
             t.global_slot,
-            t.slot
+            t.slot,
+            coalesce(a.found, 0) as is_fund,
+            t.trans_owner_balance   
         from v_trans t
+        left join address a on a.public_key_id = t.trans_owner_id
         where (t.trans_owner = $1 or t.trans_receiver = $1)
         order by timestamp desc, nonce desc
 
@@ -440,7 +444,9 @@ export const getAddressTrans = async (address) => {
             r.epoch,
             r.global_slot,
             r.slot,
-            r.scam
+            r.scam,
+            r.is_fund,
+            r.trans_owner_balance
         ])
     }
 

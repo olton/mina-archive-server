@@ -320,7 +320,9 @@ const wsMessageController = (ws, response) => {
         if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
             ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
+            ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
         }
+
         setTimeout(requestLastActivity, 60000, ws)
     }
 
@@ -347,18 +349,25 @@ const wsMessageController = (ws, response) => {
         setTimeout(requestUptime, 60000*10, ws)
     }
 
+    const requestGraphs = (ws) => {
+        if (isOpen(ws)) {
+            ws.send(JSON.stringify({channel: 'address_balance_per_epoch', data: {pk: address, len: 10}}));
+            ws.send(JSON.stringify({channel: 'address_stake_per_epoch', data: {pk: address, len: 10}}));
+            ws.send(JSON.stringify({channel: 'address_blocks_per_epoch', data: {pk: address, len: 10}}));
+        }
+
+        setTimeout(requestUptime, 60000, ws)
+    }
+
     switch(channel) {
         case 'welcome': {
             requestData(ws)
             requestLastActivity(ws)
             requestDelegations(ws)
             requestUptime(ws)
+            requestGraphs(ws)
             ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
-            ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             ws.send(JSON.stringify({channel: 'address_trans', data: address}));
-            ws.send(JSON.stringify({channel: 'address_balance_per_epoch', data: {pk: address, len: 10}}));
-            ws.send(JSON.stringify({channel: 'address_stake_per_epoch', data: {pk: address, len: 10}}));
-            ws.send(JSON.stringify({channel: 'address_blocks_per_epoch', data: {pk: address, len: 10}}));
             break
         }
         case 'new_block': {
@@ -525,4 +534,115 @@ function addressTransApplyFilter(el, flt){
     }
 
     table.draw()
+}
+
+function addressTransTableDrawCell(td, val, idx, head, row, table){
+    const [type, dir, status, time, hash, agent, block, nonce, amount, fee, confirmation, block_hash, memo, epoch, global_slot, slot, scam, is_fund, trans_owner_balance] = row
+
+    if (['type', 'agent_name', 'timestamp', 'state_hash', 'memo', 'fee', 'epoch', 'global_slot', 'slot', 'scam'].includes(head.name)) {
+        td.addClass("d-none")
+    }
+    if (head.name === 'dir') {
+        td.html(`<span class="${val === 'in' ? 'mif-arrow-down fg-lightViolet' : 'mif-arrow-up fg-blue'}"></span>`)
+    }
+    if (head.name === 'status') {
+        td.html(`<span class="${val === 'applied' ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'}"></span>`)
+    }
+    if (head.name === 'hash') {
+        td.html(`
+            <div class="text-small">
+                <span class="${type === 'payment' ? 'bg-blue' : 'bg-pink'} fg-white pl-1 pr-1 reduce-2 text-upper">${type}</span>
+                ${type === 'delegation' && +is_fund ? '<span class="ml-2-minus bg-violet fg-white pl-1 pr-1 reduce-2">FUND</span>' : ''}
+                ${type === 'payment' && scam ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-2">SCAM</span>' : ''}
+                ${type === 'payment' && !+amount ? '<span class="ml-2-minus bg-red fg-white pl-1 pr-1 reduce-2">SPAM</span>' : ''}
+            </div>
+            <a class="link" href="/transaction/${val}">${shorten(val, 7)}</a>
+            <div class="text-small text-muted">${datetime(+row[3]).format(config.format.datetime)}</div>
+        `)
+    }
+    if (head.name === 'agent') {
+        td.html(`
+            <a class="link" href="/address/${val}">${shorten(val, 7)}</a>
+            <div class="text-small text-muted">${row[12]}</div>
+        `)
+    }
+    if (head.name === 'height') {
+        td.addClass('text-center').html(`
+            <a class="link" href="/block/${row[11]}">${val}</a>
+            <div class="text-small text-muted" title="Epoch/Slot in">
+                <span class="text-bold">${row[13]}/${row[15]}</span>            
+            </div>
+        `)
+    }
+    if (head.name === 'amount') {
+        td.addClass("text-right").html(`
+            ${normMina(type === 'payment' ? val : trans_owner_balance)}
+            <div class="text-muted text-small">${normMina(fee)}</div>
+        `)
+    }
+    if (head.name === 'nonce' || head.name === 'confirmation') {
+        td.addClass("text-center").html(`${val}`)
+    }
+}
+
+function addressBlocksTableDrawCell(td, val, idx, head, row, table){
+    const [chain_status, height, timestamp, state_hash, coinbase, slot, epoch, trans] = row
+    if (head.name === 'chain_status') {
+        td.clear().addClass("text-center").append(
+            $("<span>").attr("title", val).addClass("mif-stop").addClass(val === 'pending' ? 'fg-cyan' : val === 'canonical' ? 'fg-green' : 'fg-red')
+        )
+    }
+    if (head.name === 'timestamp') {
+        td.addClass("d-none")
+    }
+    if (head.name === 'height') {
+        td.html(`
+            <a class="link" href="/block/${state_hash}">${val}</a>
+            <div class="text-small text-muted">${datetime(+timestamp).timeLapse()}</div>
+        `)
+    }
+    if (head.name === 'state_hash') {
+        td.html(`
+            <a class="link" href="/block/${val}">${shorten(val, 12)}</a>
+            <div class="text-small text-muted">${datetime(+timestamp).format(config.format.datetime)}</div>
+        `)
+    }
+    if (head.name === 'coinbase') {
+        td.addClass("text-center").html(`
+            ${normMina(val)}
+            <div class="text-small text-muted">${normMina(val) === 720 ? "norm" : "super"}</div>
+        `)
+    }
+    if (head.name === 'epoch' || head.name === 'trans_count') {
+        td.addClass("text-center").html(`${val}`)
+    }
+    if (head.name === 'slot') {
+        let [global, slot] = val.split(":")
+        td.addClass("text-center").html(`
+            <span>${global}</span>
+            <div class="text-small text-muted">
+                <span>${slot}</span>
+            </div>
+        `)
+    }
+}
+
+function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
+    if (head.name === 'name') {
+        td.addClass("d-none")
+    }
+    if (head.name === 'stake_holder') {
+        td.html(`
+            ${val === 1 ? '<span title="Stack Holder" class="text-small radius success p-1">SH</span>' : ''}
+        `)
+    }
+    if (head.name === 'ledger_balance') {
+        td.addClass("text-right").html(`${normMina(val)}`)
+    }
+    if (head.name === 'public_key') {
+        td.html(`
+            <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
+            <div class="text-small">${row[2] || ""}</div>
+        `)
+    }
 }
