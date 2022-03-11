@@ -1,38 +1,41 @@
-include mixins/blocks-table
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-include components/head
-include components/appbar
+    include components/page-head
 
-section.container-fluid.h-100
-    div.container.pt-10
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-        div.d-flex.flex-align-center.flex-justify-center.flex-column
-            div
-                include ./components/eye
+        section.container-fluid.h-100
+            div.container.pt-10
 
-            div.h1.mb-0.page-title.text-center#found-title We found next data by your request:
+                div.d-flex.flex-align-center.flex-justify-center.flex-column
+                    div
+                        include ./components/eye
 
-        div.row.mt-10.mb-10
-            div.cell-md-3
-            div.cell-md-6
-                include components/search-form
-            div.cell-md-3
+                    div.h1.mb-0.page-title.text-center#found-title We found next data by your request:
 
-        div.mb-10
-            table.table.row-border.monospace#search-result
-                tbody
+                div.row.mt-10.mb-10
+                    div.cell-md-3
+                    div.cell-md-6
+                        include components/search-form
+                    div.cell-md-3
 
-
-include components/footer
-
-include components/scripts
+                div.mb-10
+                    table.table.row-border.monospace#search-result
+                        tbody
 
 
-script
-    include ./js/search.js
+        include components/footer
 
-script.
-    globalThis.searchQuery = `!{query}`
+        include components/scripts
+
+
+        script
+            include ./js/search.js
+
+        script.
+            globalThis.searchQuery = `!{query}`
 
 
 

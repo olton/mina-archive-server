@@ -1,36 +1,41 @@
 include mixins/blocks-table
 
-include components/head
-include components/appbar
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-div.container-fluid
-    div.container
-        include components/live
-        include components/hero
+    include components/page-head
 
-section.container-fluid
-    div.container
-        div.row
-            div.h1
-                span.reduce-2.text-muted Last Block Timelapse:
-                span#last-block-time.ml-2 --:--
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-section.container-fluid
-    div.container
-        div.radius.mt-4(data-role="panel" data-title-caption="Last block dispute <span id='dispute-block-length'>0</span> participant(s)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
-            div.scroll-table-container
-                +blocks-table("dispute-blocks-table")
+        div.container-fluid
+            div.container
+                include components/live
+                include components/hero
 
-        div.radius.mt-4(data-role="panel" data-title-caption="Canonical chain (last <span id='canonical-block-length'>0</span> blocks)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
-            div.scroll-table-container
-                +blocks-table("canonical-blocks-table")
+        section.container-fluid
+            div.container
+                div.row
+                    div.h1
+                        span.reduce-2.text-muted Last Block Timelapse:
+                        span#last-block-time.ml-2 --:--
 
-    div.mb-10 &nbsp;
+        section.container-fluid
+            div.container
+                div.radius.mt-4(data-role="panel" data-title-caption="Last block dispute <span id='dispute-block-length'>0</span> participant(s)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                    div.scroll-table-container
+                        +blocks-table("dispute-blocks-table")
 
-include components/footer
+                div.radius.mt-4(data-role="panel" data-title-caption="Canonical chain (last <span id='canonical-block-length'>0</span> blocks)" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light")
+                    div.scroll-table-container
+                        +blocks-table("canonical-blocks-table")
 
-include components/scripts
+            div.mb-10 &nbsp;
 
-script
-    include ./js/index.js
+        include components/footer
+
+        include components/scripts
+
+        script
+            include ./js/index.js
 

@@ -1,79 +1,84 @@
-include components/head
-include components/appbar
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-div.container-fluid
-    div.container
-        include components/live
+    include components/page-head
 
-        div.hero.hero-padding-secondary
-            div.row
-                div.cell-lg-6
-                    div.h1.page-title Uptime  Leaderboard
-                    div.text-leader2.
-                        To get Mina Foundation delegation you must stay in TOP120 by uptime.
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-                div.cell-lg-6
-                    div.mt-2
-                        include components/search-form
+        div.container-fluid
+            div.container
+                include components/live
 
+                div.hero.hero-padding-secondary
+                    div.row
+                        div.cell-lg-6
+                            div.h1.page-title Uptime  Leaderboard
+                            div.text-leader2.
+                                To get Mina Foundation delegation you must stay in TOP120 by uptime.
 
-            div.row.bg-lightSystem.mt-4
-                div.cell-lg-6.order-fs-2.order-lg-1.text-center
-                    div.next-round-container.p-3-fs.p-8-md
-                        div.text-small.text-bold.text-muted
-                            span TOP
-                                span 120
-                                span.ml-1 LEADERS AT
-
-                        div.h1.mt-0.mb-1(style="font-size: 48px; min-height: 48px")#segment
-                            div(data-role="activity" data-type="metro" data-style="color")
-
-                        div.text-light.text-center.mt-1-minus(style="font-size: 14.4px") EXTRACTED TIME POINT
-                        div.reduce-4.text-bold.text-center MINA UPTIME TRACKER
-
-                div.cell-lg-6.order-fs-1.order-lg-2.text-center
-                    div.next-round-container.p-3-fs.p-8-md
-                        - var stopdate = nextRound
-                        div.text-small.text-bold.text-muted
-                            span NEXT ROUND:
-                            span.ml-2#next-round #{nextRoundAt}
-                        div#next-round-timer(data-role="countdown" data-start="true" data-date=stopdate data-cls-part="text-light" style="font-size: 48px;")
-                        div.reduce-4.text-bold.text-center TIME LEFT TO SNAPSHOT
+                        div.cell-lg-6
+                            div.mt-2
+                                include components/search-form
 
 
-section.container-fluid
-    div.container
-        div.scroll-table-container
-            table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2#leaderboard
-                thead
-                    tr
-                        th(style="width: 30px;")
-                            span Position
-                        th
-                            span Address
-                        th.text-right
-                            span Current Stake
-                            div.text-small For Next Epoch
-                        th.text-center(data-size="30")
-                            span Deleg
-                            div.text-small Next Epoch
-                        th.text-center(data-size="100")
-                            span Score
-                        th.text-center
-                            span Rate
-                        th(style="width: 30px;" title="Block Producer")
-                            span BP
-                tbody
-                    tr
-                        td.text-center(colspan="5")
-                            div.d-flex.flex-align-center.flex-justify-center
-                                div(data-role="activity" data-type="bars" data-style="color")
+                    div.row.bg-lightSystem.mt-4
+                        div.cell-lg-6.order-fs-2.order-lg-1.text-center
+                            div.next-round-container.p-3-fs.p-8-md
+                                div.text-small.text-bold.text-muted
+                                    span TOP
+                                        span 120
+                                        span.ml-1 LEADERS AT
+
+                                div.h1.mt-0.mb-1(style="font-size: 48px; min-height: 48px")#segment
+                                    div(data-role="activity" data-type="metro" data-style="color")
+
+                                div.text-light.text-center.mt-1-minus(style="font-size: 14.4px") EXTRACTED TIME POINT
+                                div.reduce-4.text-bold.text-center MINA UPTIME TRACKER
+
+                        div.cell-lg-6.order-fs-1.order-lg-2.text-center
+                            div.next-round-container.p-3-fs.p-8-md
+                                - var stopdate = nextRound
+                                div.text-small.text-bold.text-muted
+                                    span NEXT ROUND:
+                                    span.ml-2#next-round #{nextRoundAt}
+                                div#next-round-timer(data-role="countdown" data-start="true" data-date=stopdate data-cls-part="text-light" style="font-size: 48px;")
+                                div.reduce-4.text-bold.text-center TIME LEFT TO SNAPSHOT
 
 
-include components/footer
+        section.container-fluid
+            div.container
+                div.scroll-table-container
+                    table.table.data-table.row-border.striped.monospace.row-hover.mt-2.mb-2#leaderboard
+                        thead
+                            tr
+                                th(style="width: 30px;")
+                                    span Position
+                                th
+                                    span Address
+                                th.text-right
+                                    span Current Stake
+                                    div.text-small For Next Epoch
+                                th.text-center(data-size="30")
+                                    span Deleg
+                                    div.text-small Next Epoch
+                                th.text-center(data-size="100")
+                                    span Score
+                                th.text-center
+                                    span Rate
+                                th(style="width: 30px;" title="Block Producer")
+                                    span BP
+                        tbody
+                            tr
+                                td.text-center(colspan="5")
+                                    div.d-flex.flex-align-center.flex-justify-center
+                                        div(data-role="activity" data-type="bars" data-style="color")
 
-include components/scripts
 
-script
-    include ./js/uptime.js
+        include components/footer
+
+        include components/scripts
+
+        script
+            include ./js/uptime.js
 

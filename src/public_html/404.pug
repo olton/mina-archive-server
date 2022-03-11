@@ -1,26 +1,29 @@
-include mixins/blocks-table
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-include components/head
-include components/appbar
+    include components/page-head
 
-section.container-fluid.h-100
-    div.container.pt-10
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-        div.d-flex.flex-align-center.flex-justify-center.flex-column
-            div.display4.mt-10 404
-            div.h1.mb-0.page-title.text-center Information Not Found
-            div.text-leader.text-center
-                div Information not found in Mina Blockchain by your request!
-                div Please, enter other request for search.
+        section.container-fluid.h-100
+            div.container.pt-10
 
-        div.row.mt-10.mb-10
-            div.cell-md-3
-            div.cell-md-6
-                include components/search-form
-            div.cell-md-3
+                div.d-flex.flex-align-center.flex-justify-center.flex-column
+                    div.display4.mt-10 404
+                    div.h1.mb-0.page-title.text-center Information Not Found
+                    div.text-leader.text-center
+                        div Information not found in Mina Blockchain by your request!
+                        div Please, enter other request for search.
 
-include components/footer
+                div.row.mt-10.mb-10
+                    div.cell-md-3
+                    div.cell-md-6
+                        include components/search-form
+                    div.cell-md-3
 
-include components/scripts
+        include components/footer
+
+        include components/scripts
 
 

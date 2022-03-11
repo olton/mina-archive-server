@@ -1,190 +1,193 @@
-include mixins/blocks-table
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-include components/head
-include components/appbar
+    include components/page-head
 
-div.container-fluid
-    div.container
-        include components/live
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-        div.hero.hero-padding-secondary
-            div.row
-                div.cell-lg-6
-                    div
-                        div.h1.mb-0.page-title Addresses
-                        div.text-leader2.
-                            Discover addresses in Mina blockchain
+        div.container-fluid
+            div.container
+                include components/live
 
-                    hr.thin
+                div.hero.hero-padding-secondary
+                    div.row
+                        div.cell-lg-6
+                            div
+                                div.h1.mb-0.page-title Addresses
+                                div.text-leader2.
+                                    Discover addresses in Mina blockchain
 
-                    div.h3.mt-2.mb-2
-                        span
+                            hr.thin
 
-                div.cell-lg-6
-                    div.mb-4
-                        include components/search-form
+                            div.h3.mt-2.mb-2
+                                span
 
-
-section.container-fluid
-    div.container
-        ul(data-role="tabs" data-expand="true")
-            li
-                a(href="#address-list") Addresses
-            li
-                a(href="#stake-leaders") Top 20 by Stake
-            li
-                a(href="#last-block-winners") Last 20 Block Winners
-            li
-                a(href="#scammer-list") Scammers List
-
-        div#address-list
-            div.row.flex-align-start
-
-                div.cell-md-4
-                    span.ml-1.text-muted.reduce-4.text-bold SORT BY
-                    div.mt-2-minus
-                        input(name="address-sort" type="radio" checked data-role="radio" data-caption="<span>Stake</span>" onchange="applySort('stake')")
-                        input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Balance</span>" onchange="applySort('balance')")
-                        input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Blocks</span>" onchange="applySort('blocks_canonical')")
-                        input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('position')")
-
-                div.cell-md-4.text-center
-                    span.ml-1.text-muted.reduce-4.text-bold ADDRESSES FOUND
-                    div.mt-1-minus
-                        span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-addresses 0
-
-                div.cell-md-4
-                    div.text-left-fs.text-right-md
-                        button.mt-6.button.success.small(onclick="refreshAddressesTable()")
-                            span RELOAD DATA
-                            span.mif-refresh
-
-            div(style="height: 10px")
-                div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
-
-            div.row.mt-2
-                div.cell-md-9
-                    input#address-search(
-                        data-role="input"
-                        data-prepend="Search: "
-                        placeholder="Enter address key or name"
-                        data-search-button="false"
-                    )
-
-                div.cell-md-3
-                    select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="applyRowsCount")
-                        option(value="10") 10
-                        option(value="20") 20
-                        option(value="50" selected) 50
-                        option(value="100") 100
-
-            div.mt-2.scroll-table-container.border.bd-system
-                table.table.striped.data-table.monospace.row-hover#addresses-table
-                    thead
-                        tr
-                            th(data-name="address")
-                                span Address
-                                div.text-small Name
-                            th.text-right(data-name="balance")
-                                span Ledger Balance
-                                div.text-small Next
-                            th.text-right.sortable-column.sort-desc(data-name="stake")
-                                span Stake Hold
-                                div.text-small Next
-                            th.text-center(data-name="blocks")
-                                span Blocks
-                                div.text-small Produced
-                            th.text-center(data-name="uptime")
-                                span Uptime
-                                div.text-small Score
-
-                    tbody
-
-            div.mt-4
-                div#pagination
-
-        div#stake-leaders
-            div.scroll-table-container
-                table.table.striped.monospace.data-table.row-hover.cell-border#top-stacks-table(
-                    data-role="table"
-                    data-rows=20
-                    data-rownum="true"
-                    data-on-draw-cell="topStackHoldersTableDrawCell"
-                    data-horizontal-scroll="true"
-                    data-horizontal-scroll-stop="xl"
-                    data-cls-table-container="no-border"
-                    data-activity-type="bars"
-                    data-static="true"
-                )
-                    thead
-                        tr
-                            th(data-name="address")
-                                span Address
-                                div.text-small Name
-                            th(data-name="name" data-show="false") Name
-                            th.text-right(data-name="stake")
-                                span Current
-                                div.text-small Stake
-                            th.text-right(data-name="stake_next")
-                                span Next
-                                div.text-small Stake
+                        div.cell-lg-6
+                            div.mb-4
+                                include components/search-form
 
 
-        div#last-block-winners
-            div.scroll-table-container
-                table.table.striped.monospace.data-table.row-hover.cell-border#last-winners-table(
-                    data-role="table"
-                    data-rows=20
-                    data-rownum="true"
-                    data-on-draw-cell="lastBlockWinnersTableDrawCell"
-                    data-horizontal-scroll="true"
-                    data-horizontal-scroll-stop="xl"
-                    data-cls-table-container="no-border"
-                    data-activity-type="bars"
-                    data-static="true"
-                )
-                    thead
-                        tr
-                            th(data-name="address")
-                                span Address
-                                div.text-small Name
-                            th(data-name="name" data-show="false")
-                            th(data-name="block_height")
-                                span Block
-                                div.text-small Height
-                            th.text-right(data-name="coinbase")
-                                span Coinbase
-                                div.text-small Reward
+        section.container-fluid
+            div.container
+                ul(data-role="tabs" data-expand="true")
+                    li
+                        a(href="#address-list") Addresses
+                    li
+                        a(href="#stake-leaders") Top 20 by Stake
+                    li
+                        a(href="#last-block-winners") Last 20 Block Winners
+                    li
+                        a(href="#scammer-list") Scammers List
+
+                div#address-list
+                    div.row.flex-align-start
+
+                        div.cell-md-4
+                            span.ml-1.text-muted.reduce-4.text-bold SORT BY
+                            div.mt-2-minus
+                                input(name="address-sort" type="radio" checked data-role="radio" data-caption="<span>Stake</span>" onchange="applySort('stake')")
+                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Balance</span>" onchange="applySort('balance')")
+                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Blocks</span>" onchange="applySort('blocks_canonical')")
+                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('position')")
+
+                        div.cell-md-4.text-center
+                            span.ml-1.text-muted.reduce-4.text-bold ADDRESSES FOUND
+                            div.mt-1-minus
+                                span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-addresses 0
+
+                        div.cell-md-4
+                            div.text-left-fs.text-right-md
+                                button.mt-6.button.success.small(onclick="refreshAddressesTable()")
+                                    span RELOAD DATA
+                                    span.mif-refresh
+
+                    div(style="height: 10px")
+                        div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+
+                    div.row.mt-2
+                        div.cell-md-9
+                            input#address-search(
+                                data-role="input"
+                                data-prepend="Search: "
+                                placeholder="Enter address key or name"
+                                data-search-button="false"
+                            )
+
+                        div.cell-md-3
+                            select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="applyRowsCount")
+                                option(value="10") 10
+                                option(value="20") 20
+                                option(value="50" selected) 50
+                                option(value="100") 100
+
+                    div.mt-2.scroll-table-container.border.bd-system
+                        table.table.striped.data-table.monospace.row-hover#addresses-table
+                            thead
+                                tr
+                                    th(data-name="address")
+                                        span Address
+                                        div.text-small Name
+                                    th.text-right(data-name="balance")
+                                        span Ledger Balance
+                                        div.text-small Next
+                                    th.text-right.sortable-column.sort-desc(data-name="stake")
+                                        span Stake Hold
+                                        div.text-small Next
+                                    th.text-center(data-name="blocks")
+                                        span Blocks
+                                        div.text-small Produced
+                                    th.text-center(data-name="uptime")
+                                        span Uptime
+                                        div.text-small Score
+
+                            tbody
+
+                    div.mt-4
+                        div#pagination
+
+                div#stake-leaders
+                    div.scroll-table-container
+                        table.table.striped.monospace.data-table.row-hover.cell-border#top-stacks-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rownum="true"
+                            data-on-draw-cell="topStackHoldersTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                            data-static="true"
+                        )
+                            thead
+                                tr
+                                    th(data-name="address")
+                                        span Address
+                                        div.text-small Name
+                                    th(data-name="name" data-show="false") Name
+                                    th.text-right(data-name="stake")
+                                        span Current
+                                        div.text-small Stake
+                                    th.text-right(data-name="stake_next")
+                                        span Next
+                                        div.text-small Stake
 
 
-        div#scammer-list
-            div.mt-4
-                div.scroll-table-container
-                    table.table.striped.monospace.data-table.row-hover.cell-border.border.bd-system#scammer-list-table(
-                        data-role="table"
-                        data-rows=50
-                        data-rows-steps="-1, 10, 20, 50, 100"
-                        data-rownum="true"
-                        data-on-draw-cell="scammerListDrawCell"
-                        data-horizontal-scroll="true"
-                        data-horizontal-scroll-stop="xl"
-                        data-cls-table-container="no-border"
-                        data-activity-type="bars"
-                    )
-                        thead
-                            tr
-                                th(data-name="address")
-                                    span Address
-                                    div.text-small Name
-                                th(data-name="name" data-show="false") Name
-                                th(data-name="reason") Reason
+                div#last-block-winners
+                    div.scroll-table-container
+                        table.table.striped.monospace.data-table.row-hover.cell-border#last-winners-table(
+                            data-role="table"
+                            data-rows=20
+                            data-rownum="true"
+                            data-on-draw-cell="lastBlockWinnersTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                            data-static="true"
+                        )
+                            thead
+                                tr
+                                    th(data-name="address")
+                                        span Address
+                                        div.text-small Name
+                                    th(data-name="name" data-show="false")
+                                    th(data-name="block_height")
+                                        span Block
+                                        div.text-small Height
+                                    th.text-right(data-name="coinbase")
+                                        span Coinbase
+                                        div.text-small Reward
 
-    div.mb-10 &nbsp;
 
-include components/footer
+                div#scammer-list
+                    div.mt-4
+                        div.scroll-table-container
+                            table.table.striped.monospace.data-table.row-hover.cell-border.border.bd-system#scammer-list-table(
+                                data-role="table"
+                                data-rows=50
+                                data-rows-steps="-1, 10, 20, 50, 100"
+                                data-rownum="true"
+                                data-on-draw-cell="scammerListDrawCell"
+                                data-horizontal-scroll="true"
+                                data-horizontal-scroll-stop="xl"
+                                data-cls-table-container="no-border"
+                                data-activity-type="bars"
+                            )
+                                thead
+                                    tr
+                                        th(data-name="address")
+                                            span Address
+                                            div.text-small Name
+                                        th(data-name="name" data-show="false") Name
+                                        th(data-name="reason") Reason
 
-include components/scripts
+            div.mb-10 &nbsp;
 
-script
-    include ./js/addresses.js
+        include components/footer
+
+        include components/scripts
+
+        script
+            include ./js/addresses.js
 

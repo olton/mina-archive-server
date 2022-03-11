@@ -1,129 +1,134 @@
-include components/head
-include components/appbar
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-div.container-fluid
-    div.container
+    include components/page-head
 
-        div.hero.hero-padding-secondary.pt-5.pb-0
-            div.row
-                div.cell-lg-6
-                    div
-                        div.h1.mb-0.page-title Block Producers
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-                    hr.thin
+        div.container-fluid
+            div.container
 
-                    div.text-leader.mt-2.mb-2
-                        div.
-                            In the table below you can see active producers, who have non-zero delegations and minimal stake with 66K mina.
+                div.hero.hero-padding-secondary.pt-5.pb-0
+                    div.row
+                        div.cell-lg-6
+                            div
+                                div.h1.mb-0.page-title Block Producers
 
+                            hr.thin
 
-                div.cell-lg-6
-                    div.mb-4.pt-10
-                        include components/search-form
-
-div.container-fluid
-    div.container
-        ul.breadcrumbs.mb-0.ml-4-minus
-            li.page-item
-                a.page-link(href="/") Home
-            li.page-item
-                a.page-link(href="/producers") Producers
-
-div.container-fluid.bg-lightSystem
-    div.container
-        div.pt-2.pb-2
-            include ./components/epoch-small
-
-section.container-fluid
-    div.container
-        div.mt-6
-            div.row
-                div.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-lightMauve.fg-white
-                            span.mif-users
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Total
-                                div.text-upper Addresses
-                                div.box-value#total-addresses 0
-
-                div.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-cyan.fg-white
-                            span.mif-organization
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Total
-                                div.text-upper Producers
-                                div.box-value#total-producers 0
-
-                div.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-green.fg-white
-                            span.mif-cog
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Active
-                                div.text-upper Producers
-                                div.box-value#active-producers 0
+                            div.text-leader.mt-2.mb-2
+                                div.
+                                    In the table below you can see active producers, who have non-zero delegations and minimal stake with 66K mina.
 
 
-            div.mt-1(style="height: 10px")
-                div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+                        div.cell-lg-6
+                            div.mb-4.pt-10
+                                include components/search-form
 
-            div.mt-4
-                table.table.striped.monospace.data-table.row-hover.cell-border.border.bd-system#producers-table(
-                    data-role="table"
-                    data-rows=50
-                    data-rows-steps="-1, 10, 20, 50, 100"
-                    data-rownum="true"
-                    data-on-draw-cell="producersTableDrawCell"
-                    data-horizontal-scroll="true"
-                    data-horizontal-scroll-stop="xl"
-                    data-cls-table-container="no-border"
-                    data-activity-type="bars"
-                    data-filters-operator="or"
-                    data-search-fields=""
-                    data-table-search-placeholder=""
-                )
-                    thead
-                        tr
-                            th(data-name="id" data-show="false") ID
-                            th(data-name="public_key")
-                                span Address
-                                div.text-small Name
-                            th(data-name="name" data-show="false") Name
-                            th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
-                                span Blocks
-                                div.text-small Total
-                            th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
-                                span Blocks
-                                div.text-small Canonical
-                            th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
-                                span(title="Coefficient of Performance") COP
-                                div.text-small %
-                            th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
-                                span Stake
-                                div.text-small Current
-                            th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
-                                span Stake
-                                div.text-small Next
-                            th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
-                                span Stakes
-                                div.text-small Count
-                            th(data-name="delegators_next" data-show="false") Delegators Next
-                            th(data-name="pos" data-show="false") Part of Stake
-                            th(data-name="pos_next" data-show="false") Part of Stake Next
-                            th(data-name="scammer" data-show="false") Scammer
+        div.container-fluid
+            div.container
+                ul.breadcrumbs.mb-0.ml-4-minus
+                    li.page-item
+                        a.page-link(href="/") Home
+                    li.page-item
+                        a.page-link(href="/producers") Producers
+
+        div.container-fluid.bg-lightSystem
+            div.container
+                div.pt-2.pb-2
+                    include ./components/epoch-small
+
+        section.container-fluid
+            div.container
+                div.mt-6
+                    div.row
+                        div.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-lightMauve.fg-white
+                                    span.mif-users
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Total
+                                        div.text-upper Addresses
+                                        div.box-value#total-addresses 0
+
+                        div.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-cyan.fg-white
+                                    span.mif-organization
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Total
+                                        div.text-upper Producers
+                                        div.box-value#total-producers 0
+
+                        div.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-green.fg-white
+                                    span.mif-cog
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Active
+                                        div.text-upper Producers
+                                        div.box-value#active-producers 0
 
 
-    div.mb-10 &nbsp;
+                    div.mt-1(style="height: 10px")
+                        div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
 
-include components/footer
+                    div.mt-4
+                        table.table.striped.monospace.data-table.row-hover.cell-border.border.bd-system#producers-table(
+                            data-role="table"
+                            data-rows=50
+                            data-rows-steps="-1, 10, 20, 50, 100"
+                            data-rownum="true"
+                            data-on-draw-cell="producersTableDrawCell"
+                            data-horizontal-scroll="true"
+                            data-horizontal-scroll-stop="xl"
+                            data-cls-table-container="no-border"
+                            data-activity-type="bars"
+                            data-filters-operator="or"
+                            data-search-fields=""
+                            data-table-search-placeholder=""
+                        )
+                            thead
+                                tr
+                                    th(data-name="id" data-show="false") ID
+                                    th(data-name="public_key")
+                                        span Address
+                                        div.text-small Name
+                                    th(data-name="name" data-show="false") Name
+                                    th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
+                                        span Blocks
+                                        div.text-small Total
+                                    th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
+                                        span Blocks
+                                        div.text-small Canonical
+                                    th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
+                                        span(title="Coefficient of Performance") COP
+                                        div.text-small %
+                                    th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
+                                        span Stake
+                                        div.text-small Current
+                                    th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
+                                        span Stake
+                                        div.text-small Next
+                                    th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
+                                        span Stakes
+                                        div.text-small Count
+                                    th(data-name="delegators_next" data-show="false") Delegators Next
+                                    th(data-name="pos" data-show="false") Part of Stake
+                                    th(data-name="pos_next" data-show="false") Part of Stake Next
+                                    th(data-name="scammer" data-show="false") Scammer
 
-include components/scripts
 
-script
-    include ./js/producers.js
+            div.mb-10 &nbsp;
+
+        include components/footer
+
+        include components/scripts
+
+        script
+            include ./js/producers.js
 

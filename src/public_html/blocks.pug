@@ -1,236 +1,241 @@
-include components/head
-include components/appbar
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-div.container-fluid
-    div.container
-        include ./components/live
+    include components/page-head
 
-        div.hero.hero-padding-secondary.pt-5.pb-0
-            div.row
-                div.cell-lg-6
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
+
+        div.container-fluid
+            div.container
+                include ./components/live
+
+                div.hero.hero-padding-secondary.pt-5.pb-0
+                    div.row
+                        div.cell-lg-6
+                            div
+                                div.h1.mb-0.page-title Produced Blocks
+                                div.text-leader2
+                                    p Discover blocks in Mina blockchain.
+                                    p.reduce-2(style="max-width: 80%") Minataur will show you all types of blocks, including those with zero reward and blocks that are not yet included in the main blockchain and are in dispute.
+
+                        div.cell-lg-6
+                            div.mb-4.pt-4
+                                include components/search-form
+                            div
+                                div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper
+                                    span Blocks Timelapse:
+                                    span.ml-2 MIN
+                                    span.ml-2.fg-green#btl-min 0
+                                    span.ml-2 MAX
+                                    span.ml-2.fg-red#btl-max 0
+                                    span.ml-2 AVG
+                                    span.ml-2.fg-cyan#btl-avg 0
+                                    span.ml-2.reduce-3 MINUTES
+
+                                div.mt-1#blocks-timelapse-graph
+                                div.reduce-3.text-muted.mt-1-minus.text-center Intervals are calculated in minutes and show the last
+                                    span.ml-1.fg-dark#btl-count 0
+                                    span.ml-1 canonical blocks
+
+        div.container-fluid
+            div.container
+                ul.breadcrumbs.mb-0.ml-4-minus
+                    li.page-item
+                        a.page-link(href="/") Home
+                    li.page-item
+                        a.page-link(href="/blocks") Blocks
+
+        div.container-fluid.bg-lightSystem
+            div.container
+                div.pt-2.pb-2
+                    include ./components/epoch-small
+
+        div.container-fluid.mt-4
+            div.container
+                div
+                    div.row
+                        div.cell-xl-3.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-grayMouse.fg-white
+                                    span.mif-apps
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Total
+                                        div.text-upper Blocks
+                                        div.box-value#total-blocks 0
+
+                        div.cell-xl-3.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-green.fg-white
+                                    span.mif-apps
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Canonical
+                                        div.text-upper Blocks
+                                        div.box-value.fg-green#canonical-blocks 0
+
+                        div.cell-xl-3.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-red.fg-white
+                                    span.mif-apps
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Orphaned
+                                        div.text-upper Blocks
+                                        div.box-value.fg-red#orphaned-blocks 0
+
+                        div.cell-xl-3.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
+                                div.icon.bg-cyan.fg-white
+                                    span.mif-apps
+                                div.content.pl-2
+                                    div.p-2
+                                        div.text-upper Performance
+                                        div.text-upper coefficient
+                                        div.box-value.fg-cyan#eff-blocks 0
+
+        section.container-fluid.mt-4
+            div.container
+                ul(data-role="tabs" data-expand="true")
+                    li.ml-2
+                        a(href="#blockchain")
+                            span Blockchain (
+                                span.ml-1.mr-1#tab-blocks-count 0
+                                span )
+
+                    li
+                        a(href="#zero")
+                            span Zero Blocks (
+                                span.ml-1.mr-1#tab-zero-count 0
+                                span )
+
+                div#blockchain
+
+                    div(style="height: 10px")
+                        div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
+
                     div
-                        div.h1.mb-0.page-title Produced Blocks
-                        div.text-leader2
-                            p Discover blocks in Mina blockchain.
-                            p.reduce-2(style="max-width: 80%") Minataur will show you all types of blocks, including those with zero reward and blocks that are not yet included in the main blockchain and are in dispute.
+                        div.row.flex-align-start
 
-                div.cell-lg-6
-                    div.mb-4.pt-4
-                        include components/search-form
-                    div
-                        div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper
-                            span Blocks Timelapse:
-                            span.ml-2 MIN
-                            span.ml-2.fg-green#btl-min 0
-                            span.ml-2 MAX
-                            span.ml-2.fg-red#btl-max 0
-                            span.ml-2 AVG
-                            span.ml-2.fg-cyan#btl-avg 0
-                            span.ml-2.reduce-3 MINUTES
+                            div.cell-md-4
+                                span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
+                                div.mt-2-minus
+                                    input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="blocksApplyFilter(this, 'pending')")
+                                    input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
+                                    input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="blocksApplyFilter(this, 'orphaned')")
 
-                        div.mt-1#blocks-timelapse-graph
-                        div.reduce-3.text-muted.mt-1-minus.text-center Intervals are calculated in minutes and show the last
-                            span.ml-1.fg-dark#btl-count 0
-                            span.ml-1 canonical blocks
+                            div.cell-md-4.text-center
+                                span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
+                                div.mt-1-minus
+                                    span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
 
-div.container-fluid
-    div.container
-        ul.breadcrumbs.mb-0.ml-4-minus
-            li.page-item
-                a.page-link(href="/") Home
-            li.page-item
-                a.page-link(href="/blocks") Blocks
-
-div.container-fluid.bg-lightSystem
-    div.container
-        div.pt-2.pb-2
-            include ./components/epoch-small
-
-div.container-fluid.mt-4
-    div.container
-        div
-            div.row
-                div.cell-xl-3.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-grayMouse.fg-white
-                            span.mif-apps
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Total
-                                div.text-upper Blocks
-                                div.box-value#total-blocks 0
-
-                div.cell-xl-3.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-green.fg-white
-                            span.mif-apps
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Canonical
-                                div.text-upper Blocks
-                                div.box-value.fg-green#canonical-blocks 0
-
-                div.cell-xl-3.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-red.fg-white
-                            span.mif-apps
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Orphaned
-                                div.text-upper Blocks
-                                div.box-value.fg-red#orphaned-blocks 0
-
-                div.cell-xl-3.cell-lg-4.cell-ld-6
-                    div.icon-box.border.bd-system.radius
-                        div.icon.bg-cyan.fg-white
-                            span.mif-apps
-                        div.content.pl-2
-                            div.p-2
-                                div.text-upper Performance
-                                div.text-upper coefficient
-                                div.box-value.fg-cyan#eff-blocks 0
-
-section.container-fluid.mt-4
-    div.container
-        ul(data-role="tabs" data-expand="true")
-            li.ml-2
-                a(href="#blockchain")
-                    span Blockchain (
-                        span.ml-1.mr-1#tab-blocks-count 0
-                        span )
-
-            li
-                a(href="#zero")
-                    span Zero Blocks (
-                        span.ml-1.mr-1#tab-zero-count 0
-                        span )
-
-        div#blockchain
-
-            div(style="height: 10px")
-                div#load-data-activity(style="display:none" data-role="activity" data-type="metro" data-style="color")
-
-            div
-                div.row.flex-align-start
-
-                    div.cell-md-4
-                        span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
-                        div.mt-2-minus
-                            input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="blocksApplyFilter(this, 'pending')")
-                            input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="blocksApplyFilter(this, 'canonical')")
-                            input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="blocksApplyFilter(this, 'orphaned')")
-
-                    div.cell-md-4.text-center
-                        span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
-                        div.mt-1-minus
-                            span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#found-blocks 0
-
-                    div.cell-md-4
-                        div.text-left-fs.text-right-md
-                            button.mt-2.button.success(onclick="refreshBlocksTable()")
-                                span RELOAD DATA
-                                span.mif-refresh
+                            div.cell-md-4
+                                div.text-left-fs.text-right-md
+                                    button.mt-2.button.success(onclick="refreshBlocksTable()")
+                                        span RELOAD DATA
+                                        span.mif-refresh
 
 
-                div.row.mt-2
-                    div.cell-md-9
-                        input#blocks-search(
-                            data-role="input"
-                            data-prepend="Search: "
-                            placeholder="Enter block number, producer key or name, or block hash"
-                            data-search-button="false"
-                        )
+                        div.row.mt-2
+                            div.cell-md-9
+                                input#blocks-search(
+                                    data-role="input"
+                                    data-prepend="Search: "
+                                    placeholder="Enter block number, producer key or name, or block hash"
+                                    data-search-button="false"
+                                )
 
-                    div.cell-md-3
-                        select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksApplyRowsCount")
-                            option(value="10") 10
-                            option(value="20") 20
-                            option(value="50" selected) 50
-                            option(value="100") 100
+                            div.cell-md-3
+                                select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksApplyRowsCount")
+                                    option(value="10") 10
+                                    option(value="20") 20
+                                    option(value="50" selected) 50
+                                    option(value="100") 100
 
-                div.mt-2.scroll-table-container.border.bd-system
-                    table.table.striped.data-table.monospace.row-hover#blocks-table
-                        thead
-                            tr
-                                th(data-name="state")
-                                    span.mif-link
-                                th(data-name="height") Height
-                                th(data-name="creator_key") Block Producer
-                                th.text-center(data-name="coinbase") Coinbase
-                                th.text-center(data-name="slot") Slot
-                                th.text-center(data-name="epoch") Epoch
-                                th.text-center(data-name="trans") Trans
-                                th(data-name="state_hash") Hash
-                        tbody
+                        div.mt-2.scroll-table-container.border.bd-system
+                            table.table.striped.data-table.monospace.row-hover#blocks-table
+                                thead
+                                    tr
+                                        th(data-name="state")
+                                            span.mif-link
+                                        th(data-name="height") Height
+                                        th(data-name="creator_key") Block Producer
+                                        th.text-center(data-name="coinbase") Coinbase
+                                        th.text-center(data-name="slot") Slot
+                                        th.text-center(data-name="epoch") Epoch
+                                        th.text-center(data-name="trans") Trans
+                                        th(data-name="state_hash") Hash
+                                tbody
 
-                div.mt-4
-                    div#pagination
+                        div.mt-4
+                            div#pagination
 
-        div#zero
-            div(style="height: 10px")
-                div#load-zero(style="display:none" data-role="activity" data-type="metro" data-style="color")
+                div#zero
+                    div(style="height: 10px")
+                        div#load-zero(style="display:none" data-role="activity" data-type="metro" data-style="color")
 
-            div.row.flex-align-start
+                    div.row.flex-align-start
 
-                div.cell-md-4
-                    span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
-                    div.mt-2-minus
-                        input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="zeroApplyFilter(this, 'pending')")
-                        input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="zeroApplyFilter(this, 'canonical')")
-                        input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="zeroApplyFilter(this, 'orphaned')")
+                        div.cell-md-4
+                            span.ml-1.text-muted.reduce-4.text-bold BLOCK CHAIN STATE FILTER
+                            div.mt-2-minus
+                                input(type="checkbox" checked data-cls-check="bg-cyan no-border" data-role="checkbox" data-caption="<span>Pending</span>" onchange="zeroApplyFilter(this, 'pending')")
+                                input(type="checkbox" checked data-cls-check="bg-green no-border" data-role="checkbox" data-caption="<span>Canonical</span>" onchange="zeroApplyFilter(this, 'canonical')")
+                                input(type="checkbox" checked data-cls-check="bg-red no-border" data-role="checkbox" data-caption="<span>Orphaned</span>" onchange="zeroApplyFilter(this, 'orphaned')")
 
-                div.cell-md-4.text-center
-                    span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
-                    div.mt-1-minus
-                        span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#zero-found-blocks 0
+                        div.cell-md-4.text-center
+                            span.ml-1.text-muted.reduce-4.text-bold BLOCKS FOUND
+                            div.mt-1-minus
+                                span.ml-1.text-bold(style="font-size: 24px; line-height: 1")#zero-found-blocks 0
 
-                div.cell-md-4
-                    div.text-left-fs.text-right-md
-                        button.mt-2.button.success(onclick="refreshZeroTable()")
-                            span RELOAD DATA
-                            span.mif-refresh
+                        div.cell-md-4
+                            div.text-left-fs.text-right-md
+                                button.mt-2.button.success(onclick="refreshZeroTable()")
+                                    span RELOAD DATA
+                                    span.mif-refresh
 
-            div.row.mt-2
-                div.cell-md-9
-                    input#zero-blocks-search(
-                        data-role="input"
-                        data-prepend="Search: "
-                        placeholder="Enter block number, producer key or name, or block hash"
-                        data-search-button="false"
-                    )
+                    div.row.mt-2
+                        div.cell-md-9
+                            input#zero-blocks-search(
+                                data-role="input"
+                                data-prepend="Search: "
+                                placeholder="Enter block number, producer key or name, or block hash"
+                                data-search-button="false"
+                            )
 
-                div.cell-md-3
-                    select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksZeroApplyRowsCount")
-                        option(value="10") 10
-                        option(value="20") 20
-                        option(value="50" selected) 50
-                        option(value="100") 100
+                        div.cell-md-3
+                            select(data-role="select" data-filter="false" data-prepend="Show rows: " data-on-change="blocksZeroApplyRowsCount")
+                                option(value="10") 10
+                                option(value="20") 20
+                                option(value="50" selected) 50
+                                option(value="100") 100
 
-            div.mt-2.scroll-table-container.border.bd-system
-                table.table.striped.data-table.monospace.row-hover#zero-blocks-table
-                    thead
-                        tr
-                            th(data-name="state")
-                                span.mif-link
-                            th(data-name="height") Height
-                            th(data-name="creator_key") Block Producer
-                            th.text-center(data-name="coinbase") Coinbase
-                            th.text-center(data-name="slot") Slot
-                            th.text-center(data-name="epoch") Epoch
-                            th.text-center(data-name="trans") Trans
-                            th(data-name="state_hash") Hash
-                    tbody
+                    div.mt-2.scroll-table-container.border.bd-system
+                        table.table.striped.data-table.monospace.row-hover#zero-blocks-table
+                            thead
+                                tr
+                                    th(data-name="state")
+                                        span.mif-link
+                                    th(data-name="height") Height
+                                    th(data-name="creator_key") Block Producer
+                                    th.text-center(data-name="coinbase") Coinbase
+                                    th.text-center(data-name="slot") Slot
+                                    th.text-center(data-name="epoch") Epoch
+                                    th.text-center(data-name="trans") Trans
+                                    th(data-name="state_hash") Hash
+                            tbody
 
-            div.mt-4
-                div#pagination-zero
+                    div.mt-4
+                        div#pagination-zero
 
-    div.mb-10 &nbsp;
+            div.mb-10 &nbsp;
 
-include components/footer
+        include components/footer
 
-include components/scripts
+        include components/scripts
 
-script
-    include ./js/config.js
-    include ./js/blocks.js
-    include ./js/blocks-zero.js
+        script
+            include ./js/config.js
+            include ./js/blocks.js
+            include ./js/blocks-zero.js

@@ -1,221 +1,226 @@
 include mixins/trans-table
 
-include components/head
-include components/appbar
+doctype html
+html.light-theme.scrollbar-type-1.sb-darkViolet
 
-div.container-fluid
-    div.container
-        include components/live
+    include components/page-head
 
-        div.hero.hero-padding-secondary
-            div.row
-                div.cell-lg-6
-                    div
-                        div.h1.mb-0.page-title Block Overview
+    body.m4-cloak.d-flex.flex-column
+        include components/appbar
 
-                    hr.thin
+        div.container-fluid
+            div.container
+                include components/live
 
-                    div.h3.mt-2.mb-2
-                        span#block-hash #{hashShort}
-                        span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=hash title="Click to copy hash to clipboard")
+                div.hero.hero-padding-secondary
+                    div.row
+                        div.cell-lg-6
+                            div
+                                div.h1.mb-0.page-title Block Overview
 
-                    div
-                        div#block-tags
+                            hr.thin
 
-                div.cell-lg-6
-                    include components/search-form
+                            div.h3.mt-2.mb-2
+                                span#block-hash #{hashShort}
+                                span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=hash title="Click to copy hash to clipboard")
 
-                    div.row.mt-2
-                        div.cell-4
-                            div.text-small.text-bold.m-0.text-muted.text-upper BLOCK HEIGHT
-                            div.text-leader.text-normal
-                                span#block-height 0
+                            div
+                                div#block-tags
 
-                        div.cell-4
-                            div.text-small.text-bold.m-0.text-muted.text-upper BLOCK DATE
-                            div.text-leader.text-normal
-                                span#block-date 0
+                        div.cell-lg-6
+                            include components/search-form
 
-                        div.cell-4
-                            div.text-small.text-bold.m-0.text-muted.text-upper CHAIN STATUS
-                            div.text-leader.text-normal
-                                span#chain-status 0
+                            div.row.mt-2
+                                div.cell-4
+                                    div.text-small.text-bold.m-0.text-muted.text-upper BLOCK HEIGHT
+                                    div.text-leader.text-normal
+                                        span#block-height 0
 
-div.container-fluid
-    div.container.mb-4
-        ul.breadcrumbs.mb-0.ml-4-minus
-            li.page-item
-                a.page-link(href="/") Home
-            li.page-item
-                a.page-link(href="/blocks") Blocks
-            li.page-item
-                a.page-link(href="#") Block Detail
+                                div.cell-4
+                                    div.text-small.text-bold.m-0.text-muted.text-upper BLOCK DATE
+                                    div.text-leader.text-normal
+                                        span#block-date 0
 
-section.container-fluid
-    div.container.pb-10
-        div
-            div.h1
-                span.reduce-4 Block Coinbase:
-                span.ml-2#block-coinbase 0
-                span.ml-2.text-small.text-muted MINA
-        div.row
-            div.cell-xl-6.order-2.order-xl-1
-                div.pt-2
-                    div.radius(data-role="panel" data-title-caption="Block Participants" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-cog mif-3x'></span>")
-                        table#producer-info.table.row-border.mt-2.mb-2
-                            tbody
+                                div.cell-4
+                                    div.text-small.text-bold.m-0.text-muted.text-upper CHAIN STATUS
+                                    div.text-leader.text-normal
+                                        span#chain-status 0
 
-                                tr
-                                    td
-                                        div.text-small.text-muted.text-bold BLOCK PRODUCER
-                                        span#block-producer
-                                        span.text-small.text-muted
+        div.container-fluid
+            div.container.mb-4
+                ul.breadcrumbs.mb-0.ml-4-minus
+                    li.page-item
+                        a.page-link(href="/") Home
+                    li.page-item
+                        a.page-link(href="/blocks") Blocks
+                    li.page-item
+                        a.page-link(href="#") Block Detail
 
-                                tr
-                                    td
-                                        div.text-small.text-muted.text-bold COINBASE RECEIVER
-                                        span#coinbase-receiver
-                                        span.text-small.text-muted
-                                tr
-                                    td
-                                        div.text-small.text-muted.text-bold BLOCK WINNER
-                                        span#block-winner
-                                        span.text-small.text-muted
-
-
-            div.cell-xl-6.order-1.order-xl-2
+        section.container-fluid
+            div.container.pb-10
+                div
+                    div.h1
+                        span.reduce-4 Block Coinbase:
+                        span.ml-2#block-coinbase 0
+                        span.ml-2.text-small.text-muted MINA
                 div.row
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-orange.fg-white
-                                span.mif-alarm
-                            div.content.pl-2
-                                div.p-2
-                                    div.text-upper Blockchain
-                                    div.text-upper Epoch
-                                    div#epoch.box-value 0
+                    div.cell-xl-6.order-2.order-xl-1
+                        div.pt-2
+                            div.radius(data-role="panel" data-title-caption="Block Participants" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-cog mif-3x'></span>")
+                                table#producer-info.table.row-border.mt-2.mb-2
+                                    tbody
 
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-darkGray.fg-white
-                                span.mif-versions
-                            div.content.pl-2
-                                div.p-2
-                                    div.text-upper Production
-                                    div.text-upper Slot
-                                    div#slot.box-value 0
+                                        tr
+                                            td
+                                                div.text-small.text-muted.text-bold BLOCK PRODUCER
+                                                span#block-producer
+                                                span.text-small.text-muted
 
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-teal.fg-white
-                                span.mif-versions
-                            div.content.pl-2
-                                div.p-2
-                                    div.text-upper Global
-                                    div.text-upper Slot
-                                    div#global-slot.box-value 0
-
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-lightBrown.fg-white
-                                span.mif-stack
-                            div.content.pl-2
-                                div.p-2
-                                    div#trans-fee(title="Transactions Fee") 0
-                                    div.text-upper Total
-                                    div.text-upper Transactions
-                                    div#trans_count.box-value 0
-
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-cyan.fg-white
-                                span.mif-users
-                            div.content.pl-2
-                                div.p-2
-                                    div.text-upper Block
-                                    div.text-upper Participants
-                                    div#participants.box-value 0
-
-                    div.cell-ld-6
-                        div.icon-box.border.bd-system.radius
-                            div.icon.bg-green.fg-white
-                                span.mif-alarm-on
-                            div.content.pl-2
-                                div.p-2
-                                    div.text-upper Block
-                                    div.text-upper Timelapse
-                                    div#timelapse.box-value 0
+                                        tr
+                                            td
+                                                div.text-small.text-muted.text-bold COINBASE RECEIVER
+                                                span#coinbase-receiver
+                                                span.text-small.text-muted
+                                        tr
+                                            td
+                                                div.text-small.text-muted.text-bold BLOCK WINNER
+                                                span#block-winner
+                                                span.text-small.text-muted
 
 
-        div.mt-4
-            div.radius.mt-4(data-role="panel" data-title-caption="Block Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                    div.cell-xl-6.order-1.order-xl-2
+                        div.row
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-orange.fg-white
+                                        span.mif-alarm
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Blockchain
+                                            div.text-upper Epoch
+                                            div#epoch.box-value 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-darkGray.fg-white
+                                        span.mif-versions
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Production
+                                            div.text-upper Slot
+                                            div#slot.box-value 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-teal.fg-white
+                                        span.mif-versions
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Global
+                                            div.text-upper Slot
+                                            div#global-slot.box-value 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-lightBrown.fg-white
+                                        span.mif-stack
+                                    div.content.pl-2
+                                        div.p-2
+                                            div#trans-fee(title="Transactions Fee") 0
+                                            div.text-upper Total
+                                            div.text-upper Transactions
+                                            div#trans_count.box-value 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-cyan.fg-white
+                                        span.mif-users
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Block
+                                            div.text-upper Participants
+                                            div#participants.box-value 0
+
+                            div.cell-ld-6
+                                div.icon-box.border.bd-system.radius
+                                    div.icon.bg-green.fg-white
+                                        span.mif-alarm-on
+                                    div.content.pl-2
+                                        div.p-2
+                                            div.text-upper Block
+                                            div.text-upper Timelapse
+                                            div#timelapse.box-value 0
+
+
                 div.mt-4
-                    table.table.striped.monospace.data-table.row-hover#block-trans-table(
-                        data-role="table"
-                        data-rows=50
-                        data-rownum="true"
-                        data-on-draw-cell="blockTransDrawCell"
-                        data-horizontal-scroll="true"
-                        data-horizontal-scroll-stop="xl"
-                        data-cls-table-container="no-border"
-                        data-activity-type="bars"
-                        data-filters-operator="or"
-                        data-search-fields=""
-                        data-table-search-placeholder=""
-                    )
-                        thead
-                            tr
-                                th.text-center(data-size="30" data-name="status")
-                                    span #TR
-                                    div.text-small Status
+                    div.radius.mt-4(data-role="panel" data-title-caption="Block Transactions" data-cls-content="p-0" data-cls-title-caption="text-left enlarge-8 text-light" data-title-icon="<span class='mif-layers mif-3x'></span>")
+                        div.mt-4
+                            table.table.striped.monospace.data-table.row-hover#block-trans-table(
+                                data-role="table"
+                                data-rows=50
+                                data-rownum="true"
+                                data-on-draw-cell="blockTransDrawCell"
+                                data-horizontal-scroll="true"
+                                data-horizontal-scroll-stop="xl"
+                                data-cls-table-container="no-border"
+                                data-activity-type="bars"
+                                data-filters-operator="or"
+                                data-search-fields=""
+                                data-table-search-placeholder=""
+                            )
+                                thead
+                                    tr
+                                        th.text-center(data-size="30" data-name="status")
+                                            span #TR
+                                            div.text-small Status
 
-                                th.d-none(data-name="type")
-                                    span Type
-                                    div.text-small Memo/Type/Date
+                                        th.d-none(data-name="type")
+                                            span Type
+                                            div.text-small Memo/Type/Date
 
-                                th(data-name="hash")
-                                    span Hash
-                                    div.text-small Memo/Type/Date
+                                        th(data-name="hash")
+                                            span Hash
+                                            div.text-small Memo/Type/Date
 
-                                th.d-none(data-name="timestamp")
-                                    span Date
-                                    div.text-small Time
+                                        th.d-none(data-name="timestamp")
+                                            span Date
+                                            div.text-small Time
 
-                                th.text-center(data-name="nonce")
-                                    span Nonce
+                                        th.text-center(data-name="nonce")
+                                            span Nonce
 
-                                th.text-center(data-name="trans_owner")
-                                    span Sent
-                                    div.text-small from/to
+                                        th.text-center(data-name="trans_owner")
+                                            span Sent
+                                            div.text-small from/to
 
-                                th.d-none(data-name="trans_receiver")
-                                    span Receiver
+                                        th.d-none(data-name="trans_receiver")
+                                            span Receiver
 
-                                th.text-right(data-name="amount")
-                                    span Amount
-                                    div.text-small Fee
+                                        th.text-right(data-name="amount")
+                                            span Amount
+                                            div.text-small Fee
 
-                                th.d-none(data-name="fee")
-                                    span Amount
-                                    div.text-small Fee
+                                        th.d-none(data-name="fee")
+                                            span Amount
+                                            div.text-small Fee
 
-                                th.text-center(data-name="confirmation")
-                                    span Confirm
-                                    div.text-small Blocks
+                                        th.text-center(data-name="confirmation")
+                                            span Confirm
+                                            div.text-small Blocks
 
-                                th.d-none(data-name="memo")
-                                    span Memo
+                                        th.d-none(data-name="memo")
+                                            span Memo
 
-                                th.d-none(data-name="scam")
-                                    span Scam
+                                        th.d-none(data-name="scam")
+                                            span Scam
 
 
-include components/footer
-include components/scripts
+        include components/footer
+        include components/scripts
 
-script.
-    globalThis.blockHash = `!{hash}`
+        script.
+            globalThis.blockHash = `!{hash}`
 
-script
-    include ./js/block-info.js
+        script
+            include ./js/block-info.js
 
