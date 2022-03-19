@@ -646,3 +646,33 @@ function addressDelegationsTableDrawCell(td, val, idx, head, row, table){
         `)
     }
 }
+
+const pageHash = window.location.hash
+
+function tabOpen(tab, target){
+    const ws = globalThis.webSocket
+    if (pageHash !== target && target === '#overview') {
+        if (ws && isOpen(ws)) {
+            setTimeout(()=>{
+                ws.send(JSON.stringify({channel: 'address_balance_per_epoch', data: {pk: address, len: 10}}));
+                ws.send(JSON.stringify({channel: 'address_stake_per_epoch', data: {pk: address, len: 10}}));
+                ws.send(JSON.stringify({channel: 'address_blocks_per_epoch', data: {pk: address, len: 10}}));
+            }, 300)
+        }
+    }
+}
+
+$(() => {
+    $(window).on("hashchange", () => {
+        if (location.hash) {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 1);
+        }
+    })
+
+    const tabs = Metro.getPlugin("#main-tabs", "tabs")
+    if (tabs && pageHash) {
+        tabs.openByTarget(pageHash)
+    }
+})

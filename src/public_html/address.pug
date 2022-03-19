@@ -82,7 +82,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
         section.container-fluid.mt-4
             div.container.pb-10
-                ul(data-role="tabs" data-expand-point="md" style="top: 1px")
+                ul#main-tabs(data-role="tabs" data-expand-point="md" style="top: 1px" data-update-uri="true" data-on-tab-open="tabOpen")
                     li.ml-2
                         a(href="#overview") Overview
                     li
@@ -99,6 +99,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                         div.row
                             div.cell-xl-4
                                 div.border.bd-system.p-2
+                                    div(style="z-index: -1; position: absolute" data-role="activity" data-type="ring" data-style='color')
                                     div#graph-balance-per-epoch
                                     div.text-center
                                         span.text-muted.text-small MIN:
@@ -109,6 +110,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
                             div.cell-xl-4
                                 div.border.bd-system.p-2
+                                    div(style="z-index: -1; position: absolute" data-role="activity" data-type="ring" data-style='color')
                                     div#graph-stake-per-epoch
                                     div.text-center
                                         span.text-muted.text-small MIN:
@@ -119,6 +121,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
                             div.cell-xl-4
                                 div.border.bd-system.p-2
+                                    div(style="z-index: -1; position: absolute" data-role="activity" data-type="ring" data-style='color')
                                     div#graph-blocks-per-epoch
                                     div.text-center
                                         span.text-muted.text-small MIN:

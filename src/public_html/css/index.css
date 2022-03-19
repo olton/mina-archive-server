@@ -410,6 +410,12 @@ tr.no-hover:hover {
 #uptime-graph-dates div:nth-child(odd) {
   display: none;
 }
+#graph-balance-per-epoch,
+#graph-stake-per-epoch,
+#graph-blocks-per-epoch {
+  height: 206px;
+  z-index: 2;
+}
 :root {
   --iris-color-dark: #7700b3;
   --iris-color-light: #c1abff;

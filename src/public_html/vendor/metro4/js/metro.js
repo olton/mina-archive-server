@@ -1,7 +1,7 @@
 /*
  * Metro 4 Components Library v4.5.1  (https://metroui.org.ua)
  * Copyright 2012-2022 Sergey Pimenov
- * Built at 13/02/2022 11:40:19
+ * Built at 19/03/2022 17:52:51
  * Licensed under MIT
  */
 /*!
@@ -5225,7 +5225,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                // console.log(name, val);
+                // 
             }
         });
     },
@@ -7239,7 +7239,7 @@ $.noConflict = function() {
     var Metro = {
 
         version: "4.5.1",
-        compileTime: "13/02/2022 11:40:19",
+        compileTime: "19/03/2022 17:52:51",
         buildNumber: "@@build",
         isTouchable: isTouch,
         fullScreenEnabled: document.fullscreenEnabled,
@@ -7508,7 +7508,7 @@ $.noConflict = function() {
                         }
 
                     } else  {
-                        //console.log(mutation);
+                        //
                     }
                 });
             };
@@ -35509,6 +35509,7 @@ $.noConflict = function() {
         expandPoint: null,
         tabsPosition: "top",
         tabsType: "default",
+        updateUri: false,
 
         clsTabs: "",
         clsTabsList: "",
@@ -35516,6 +35517,8 @@ $.noConflict = function() {
         clsTabsListItemActive: "",
 
         onTab: Metro.noop,
+        onTabOpen: Metro.noop,
+        onTabClose: Metro.noop,
         onBeforeTab: Metro.noop_true,
         onTabsCreate: Metro.noop
     };
@@ -35539,11 +35542,12 @@ $.noConflict = function() {
         },
 
         _create: function(){
-            var element = this.element;
+            var element = this.element, o = this.options;
             var tab = element.find(".active").length > 0 ? $(element.find(".active")[0]) : undefined;
 
             this._createStructure();
             this._createEvents();
+
             this._open(tab);
 
             this._fireEvent("tabs-create", {
@@ -35640,6 +35644,11 @@ $.noConflict = function() {
                 var href = link.attr("href").trim();
                 var tab = link.parent("li");
 
+                that._fireEvent("tab", {
+                    tab: tab[0],
+                    target: tab.children("a").attr("href")
+                });
+
                 if (tab.hasClass("active")) {
                     e.preventDefault();
                 }
@@ -35659,6 +35668,30 @@ $.noConflict = function() {
                     e.preventDefault();
                 }
             });
+
+            $(window).on("hashchange", function(e){
+                var hash, tab;
+
+                if (o.updateUri) {
+                    hash = window.location.hash;
+                    tab = that._findTabByTarget(hash)
+                    that._open($(tab))
+                }
+            });
+        },
+
+        _findTabByTarget: function(target){
+            var element = this.element;
+            var tabs = element.find("li")
+            var tab = undefined
+
+            tabs.each(function(i, el){
+                if (!tab && $(el).children("a").attr("href") === target) {
+                    tab = el
+                }
+            })
+
+            return tab
         },
 
         _collectTargets: function(){
@@ -35679,7 +35712,7 @@ $.noConflict = function() {
             var element = this.element, o = this.options;
             var tabs = element.find("li");
             var expandTitle = element.siblings(".expand-title");
-
+            var activeTab = element.find("li.active");
 
             if (tabs.length === 0) {
                 return;
@@ -35710,6 +35743,9 @@ $.noConflict = function() {
             });
 
             if (target !== "#" && target[0] === "#") {
+                if (o.updateUri) {
+                    window.location.hash = target
+                }
                 $(target).show();
             }
 
@@ -35717,9 +35753,17 @@ $.noConflict = function() {
 
             tab.addClass(o.clsTabsListItemActive);
 
-            this._fireEvent("tab", {
-                tab: tab[0]
-            });
+            if (!activeTab.is(tab)) {
+                this._fireEvent("tab-open", {
+                    tab: tab[0],
+                    target: tab.children("a").attr("href")
+                });
+
+                this._fireEvent("tab-close", {
+                    tab: activeTab[0],
+                    target: activeTab.children("a").attr("href")
+                });
+            }
         },
 
         next: function(){
@@ -35739,6 +35783,13 @@ $.noConflict = function() {
             next = active_tab.prev("li");
             if (next.length > 0) {
                 this._open(next);
+            }
+        },
+
+        openByTarget: function(target){
+            var tab = this._findTabByTarget(target);
+            if (tab) {
+                this._open($(tab));
             }
         },
 
