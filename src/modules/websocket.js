@@ -27,7 +27,7 @@ import {
     getAddresses,
     getAddressesCount,
     getTransactionFromPool,
-    getAddressTransactionsFromPool, getLastBlock
+    getAddressTransactionsFromPool
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -48,7 +48,10 @@ const {version} = pkg
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
 
-    wss.on('connection', (ws) => {
+    wss.on('connection', (ws, req) => {
+
+        const ip = req.socket.remoteAddress
+
         ws.send(JSON.stringify({
             channel: "welcome",
             data: `Welcome to Minataur v${version}`
@@ -58,7 +61,7 @@ export const websocket = (server) => {
             const {channel, data} = JSON.parse(msg)
             switch (channel) {
                 case 'epoch': {
-                    response(ws, channel, await getEpoch())
+                    response(ws, channel, globalThis.cache.epoch)
                     break
                 }
                 case 'last_block_time': {
@@ -66,7 +69,7 @@ export const websocket = (server) => {
                     break
                 }
                 case 'stat': {
-                    response(ws, channel, await getStat())
+                    response(ws, channel, globalThis.cache.stat)
                     break
                 }
                 case 'dispute': {
@@ -226,6 +229,10 @@ export const websocket = (server) => {
                 }
                 case 'last_block': {
                     response(ws, channel, globalThis.cache.lastBlock)
+                    break
+                }
+                case 'height': {
+                    response(ws, channel, globalThis.cache.height)
                     break
                 }
             }

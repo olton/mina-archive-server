@@ -738,3 +738,9 @@ export const getLastBlock = async (short = true) => {
 
     return (await query(sql)).rows[0]
 }
+
+export const getBlockchainHeight = async () => {
+    const sql = `select height from blocks where chain_status = 'canonical' order by height desc limit 1`
+
+    return (await query(sql)).rows[0].height
+}

@@ -1,4 +1,4 @@
-import {createDBConnection, query, listenNotifies, saveLastBLock} from "./postgres"
+import {createDBConnection, listenNotifies, saveBlockchainHeight, saveEpoch, saveLastBlock, saveStat} from "./postgres"
 import {log} from "../helpers/logging.js"
 import {createConfig, readConfig} from "../helpers/arguments"
 import fs from "fs"
@@ -73,7 +73,10 @@ export const run = (configPath) => {
 
     init(configPath)
     createDBConnection()
-    saveLastBLock()
+    saveLastBlock()
+    saveBlockchainHeight()
+    saveEpoch()
+    saveStat()
     listenNotifies()
     config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()

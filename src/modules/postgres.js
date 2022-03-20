@@ -1,7 +1,7 @@
 import pg from 'pg'
 import {log, debug} from "../helpers/logging.js"
 import {timestamp} from "../helpers/timestamp"
-import {getLastBlock} from "./queries.js";
+import {getBlockchainHeight, getEpoch, getLastBlock, getStat} from "./queries.js";
 
 const { Pool } = pg
 
@@ -49,8 +49,20 @@ export const flushPendingBlocks = async () => {
     log(`Pending blocks flushed!`)
 }
 
-export const saveLastBLock = async () => {
+export const saveLastBlock = async () => {
     globalThis.cache.lastBlock = await getLastBlock(false)
+}
+
+export const saveBlockchainHeight = async () => {
+    globalThis.cache.height = await getBlockchainHeight()
+}
+
+export const saveEpoch = async () => {
+    globalThis.cache.epoch = await getEpoch()
+}
+
+export const saveStat = async () => {
+    globalThis.cache.stat = await getStat()
 }
 
 export const listenNotifies = async () => {
@@ -63,7 +75,10 @@ export const listenNotifies = async () => {
         }
         if (data.channel === 'new_block') {
             globalThis.broadcast.new_block = JSON.parse(data.payload)
-            await saveLastBLock()
+            await saveLastBlock()
+            await saveBlockchainHeight()
+            await saveEpoch()
+            await saveStat()
         }
         await flushPendingBlocks()
     })
