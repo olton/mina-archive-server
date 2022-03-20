@@ -746,6 +746,10 @@ export const getBlockchainHeight = async () => {
 }
 
 export const storeIp = async (ip) => {
+    if (ip.substr(0, 7) === "::ffff:") {
+        ip = ip.substr(7)
+    }
+
     const sql = `
         insert into ip (ip) values($1)
         on conflict (ip, date) 
