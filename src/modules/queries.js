@@ -744,3 +744,13 @@ export const getBlockchainHeight = async () => {
 
     return (await query(sql)).rows[0].height
 }
+
+export const storeIp = async (ip) => {
+    const sql = `
+        insert into ip (ip) values($1)
+        on conflict (ip, date) 
+        do update
+            set hits = ip.hits + 1
+    `
+    return (await query(sql, [ip])).rows
+}

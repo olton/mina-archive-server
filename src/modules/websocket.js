@@ -12,11 +12,9 @@ import {
     getProducers,
     getDisputeBlocks,
     getBlocks,
-    getStat,
     getAddressInfo,
     getLastBlockTime,
     getBlockInfo,
-    getEpoch,
     getAddressTransactions,
     getTotalBlocks,
     getBlocksCount,
@@ -27,7 +25,7 @@ import {
     getAddresses,
     getAddressesCount,
     getTransactionFromPool,
-    getAddressTransactionsFromPool
+    getAddressTransactionsFromPool, storeIp
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -42,6 +40,7 @@ import {
 } from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
 import {searchData} from "./search.js";
+import {query} from "./postgres.js";
 
 const {version} = pkg
 
@@ -51,6 +50,7 @@ export const websocket = (server) => {
     wss.on('connection', (ws, req) => {
 
         const ip = req.socket.remoteAddress
+        storeIp(ip)
 
         ws.send(JSON.stringify({
             channel: "welcome",
