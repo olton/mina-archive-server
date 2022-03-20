@@ -27,7 +27,7 @@ import {
     getAddresses,
     getAddressesCount,
     getTransactionFromPool,
-    getAddressTransactionsFromPool
+    getAddressTransactionsFromPool, getLastBlock
 } from "./queries.js";
 import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
@@ -134,14 +134,6 @@ export const websocket = (server) => {
                     response(ws, channel, cache.transactionPool ? cache.transactionPool.length : 0);
                     break;
                 }
-                case 'new_block': {
-                    console.log("New block log ---------------------------------------")
-                    break;
-                }
-                case 'update_uptime': {
-                    console.log("Update uptime log ---------------------------------------")
-                    break;
-                }
                 case 'uptime': {
                     response(ws, channel, await getLeaderboard());
                     break;
@@ -230,6 +222,11 @@ export const websocket = (server) => {
                 }
                 case 'search_data': {
                     response(ws, channel, await searchData(data))
+                    break
+                }
+                case 'last_block': {
+                    response(ws, channel, globalThis.cache.lastBlock)
+                    break
                 }
             }
         })
@@ -237,7 +234,7 @@ export const websocket = (server) => {
 }
 
 export const response = (ws, channel, data) => {
-    if (config.debug) {
+    if (config.debug.channel) {
         log("WS Channel", 'debug', {channel})
     }
 

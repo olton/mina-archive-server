@@ -1,6 +1,7 @@
 import pg from 'pg'
 import {log, debug} from "../helpers/logging.js"
 import {timestamp} from "../helpers/timestamp"
+import {getLastBlock} from "./queries.js";
 
 const { Pool } = pg
 
@@ -48,6 +49,10 @@ export const flushPendingBlocks = async () => {
     log(`Pending blocks flushed!`)
 }
 
+export const saveLastBLock = async () => {
+    globalThis.cache.lastBlock = await getLastBlock(false)
+}
+
 export const listenNotifies = async () => {
     const client = await globalThis.postgres.connect()
 
@@ -56,7 +61,10 @@ export const listenNotifies = async () => {
         if (config.debug.pg_notify) {
             log(`${data.channel} notification:`, 'info', data.payload)
         }
-        if (data.channel === 'new_block') globalThis.broadcast.new_block = JSON.parse(data.payload)
+        if (data.channel === 'new_block') {
+            globalThis.broadcast.new_block = JSON.parse(data.payload)
+            await saveLastBLock()
+        }
         await flushPendingBlocks()
     })
 }

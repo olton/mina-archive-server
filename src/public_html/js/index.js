@@ -153,7 +153,6 @@ const wsMessageController = (ws, response) => {
             ws.send(JSON.stringify({channel: 'price'}))
             ws.send(JSON.stringify({channel: 'stat'}))
             ws.send(JSON.stringify({channel: 'last_block_time'}))
-            ws.send(JSON.stringify({channel: 'epoch'}))
 
             requestChain()
         }
@@ -162,6 +161,8 @@ const wsMessageController = (ws, response) => {
 
     const requestChain = () => {
         if (!isOpen(ws)) return
+
+        ws.send(JSON.stringify({channel: 'epoch'}))
 
         if (chainRequestMarker === 2) {
             chainRequestMarker = 0
@@ -173,6 +174,7 @@ const wsMessageController = (ws, response) => {
     switch(channel) {
         case 'welcome': {
             requestPeriodically()
+            requestChain()
             break;
         }
         case 'new_block': {

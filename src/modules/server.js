@@ -1,4 +1,4 @@
-import {createDBConnection, query, listenNotifies} from "./postgres"
+import {createDBConnection, query, listenNotifies, saveLastBLock} from "./postgres"
 import {log} from "../helpers/logging.js"
 import {createConfig, readConfig} from "../helpers/arguments"
 import fs from "fs"
@@ -57,7 +57,8 @@ const init = configPath => {
 
     globalThis.cache = new Proxy({
         price: null,
-        transactionPool: []
+        transactionPool: [],
+        lastBlock: null
     }, {
         set(target, p, value, receiver) {
             target[p] = value
@@ -72,6 +73,7 @@ export const run = (configPath) => {
 
     init(configPath)
     createDBConnection()
+    saveLastBLock()
     listenNotifies()
     config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()

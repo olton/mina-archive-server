@@ -702,3 +702,39 @@ export const getAddressesCount = async ({
     return (await query(sql)).rows[0].length
 }
 
+export const getLastBlock = async (short = true) => {
+    const sql = short ?
+        `
+        select
+            b.height,
+            b.creator_id,
+            pk.value as creator_key,
+            a.name,
+            b.timestamp,
+            COALESCE((SELECT sum(ic.fee) AS sum
+             FROM internal_commands ic
+                      LEFT JOIN blocks_internal_commands bic ON bic.internal_command_id = ic.id
+             WHERE bic.block_id = b.id
+               AND ic.type = 'coinbase'::internal_command_type),
+            0::numeric) as coinbase
+        from blocks b
+        left join public_keys pk on b.creator_id = pk.id
+        left join address a on b.creator_id = a.public_key_id
+        where b.chain_status = 'canonical'
+        order by height desc limit 1
+        `
+        :
+        `
+        select id, parent_id, height, epoch, slot, global_slot, creator_key,
+               creator_id, creator_name, winner_key, winner_id, timestamp,
+               coinbase_receiver_id, coinbase_receiver_name, coinbase_receiver_key,
+               coinbase, trans_fee, snark_fee, trans_count, snark_count, tr_applied, tr_failed,
+               state_hash, participants, timelapse
+        from v_blocks
+        where chain_status = 'canonical'
+        order by height desc
+        limit 1
+    `
+
+    return (await query(sql)).rows[0]
+}
