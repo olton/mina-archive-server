@@ -1,6 +1,6 @@
 {
   "name": "@olton/minataur",
-  "version": "0.1.0",
+  "version": "1.1.1",
   "description": "The Fastest block explorer for Mina Blockchain",
   "main": "src/index.js",
   "type": "module",
