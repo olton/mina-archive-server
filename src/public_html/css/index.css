@@ -518,11 +518,6 @@ tr.no-hover:hover {
     animation-timing-function: ease-out;
   }
 }
-@media (min-width: 768px) {
-  #uptime-graph-dates div:nth-child(odd) {
-    display: block;
-  }
-}
 @media (min-width: 992px) and (max-width: 1451px) {
   .container {
     max-width: 95%;
