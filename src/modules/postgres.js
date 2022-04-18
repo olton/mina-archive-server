@@ -119,7 +119,7 @@ export const batch = async (a = []) => {
         client.query("COMMIT")
         const duration = Date.now() - start
         if (config.debug.pg_query) {
-            debug('Executed query', { q, duration: duration + 'ms', rows: res.rowCount })
+            debug('Executed batch', { duration: duration + 'ms' })
         }
         result = true
     } catch (e) {

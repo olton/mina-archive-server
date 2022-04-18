@@ -1,7 +1,5 @@
 import pg from 'pg'
 import {log} from "./helpers/logging.js"
-import {TextDecoder} from 'util'
-import {decode} from "@faustbrian/node-base58"
 import fs from "fs";
 import path from "path";
 import {fileURLToPath} from "url";
