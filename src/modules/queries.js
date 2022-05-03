@@ -187,7 +187,7 @@ export const getBlockTransactions = async (hash) => {
 }
 
 export const getLeaderboard = async ({
-    limit = 120,
+    limit = 240,
     offset = 0,
 } = {}) => {
     let res, segmentId, segmentTimestamp
