@@ -63,7 +63,7 @@ const updateUptimeTable = data => {
         tr.append( $("<td>").addClass("text-center").html(`${prodLabel}`) )
 
         counter++
-        if (counter > 120) break;
+        if (counter > 240) break;
     }
 }
 
