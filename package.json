@@ -1,13 +1,13 @@
 {
   "name": "@olton/minataur",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "The Fastest block explorer for Mina Blockchain",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --es-module-specifier-resolution=node .",
+    "start": "node .",
+    "dev": "nodemon .",
     "load-foundation-addresses": "node --es-module-specifier-resolution=node src/foundation.js",
-    "server": "node --es-module-specifier-resolution=node .",
     "ledger": "node --experimental-modules --es-module-specifier-resolution=node src/ledger.js",
     "memo": "node --experimental-modules --es-module-specifier-resolution=node src/memo.js",
     "chain": "node --experimental-modules --es-module-specifier-resolution=node src/chain.js",

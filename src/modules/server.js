@@ -1,30 +1,31 @@
-import {createDBConnection, listenNotifies, saveBlockchainHeight, saveEpoch, saveLastBlock, saveStat} from "./postgres"
+import {createDBConnection, listenNotifies, saveBlockchainHeight, saveEpoch, saveLastBlock, saveStat} from "./postgres.js"
 import {log} from "../helpers/logging.js"
-import {createConfig, readConfig} from "../helpers/arguments"
+import {createConfig, readConfig} from "../helpers/arguments.js"
 import fs from "fs"
-import {setValue} from "../helpers/set-value"
+import {setValue} from "../helpers/set-value.js"
 import {hostname} from "os"
-import pkg from "../../package.json"
-import {processPriceInfo} from "./price"
-import {runWebServer, runWebServerDev} from "./webserver"
+import {processPriceInfo} from "./price.js"
+import {runWebServer, runWebServerDev} from "./webserver.js"
 import {sendBroadcast} from "./websocket.js";
 import {processTransactionPool} from "./graphql.js";
+import path from "path";
 
-const {version} = pkg
-
-const init = configPath => {
+const init = () => {
+    const configFile = path.resolve(configPath, "config.json")
+    const packageFile = path.resolve(rootPath, "package.json")
     const args = process.argv.slice(2)
 
-    if (args.includes("--init")) createConfig(configPath)
+    if (args.includes("--init")) createConfig(configFile)
 
-    if (!fs.existsSync(configPath)) {
+    if (!fs.existsSync(configFile)) {
         log("Config file not exist! Use command 'node index --init' to create it!")
         process.exit(0)
     }
 
-    globalThis.config = readConfig(configPath)
+    globalThis.config = readConfig(configFile)
+    globalThis.package = readConfig(packageFile)
     globalThis.ssl = config.server.ssl && (config.server.ssl.cert && config.server.ssl.key)
-    globalThis.version = version
+    globalThis.version = globalThis.package.version
 
     const {archive, server, client} = config
 
@@ -65,13 +66,13 @@ const init = configPath => {
             return true
         }
     })
+
+    log(`Welcome to Minataur v${version}!`)
 }
 
 
-export const run = (configPath) => {
-    log(`Welcome to Minataur v${version}!`)
-
-    init(configPath)
+export const run = () => {
+    init()
     createDBConnection()
     saveLastBlock()
     saveBlockchainHeight()

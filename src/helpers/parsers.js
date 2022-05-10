@@ -1,4 +1,4 @@
-import {isNum} from "./numbers"
+import {isNum} from "./numbers.js"
 
 const parseTime = (t) => {
     if (isNum(t)) return Math.abs(+t)

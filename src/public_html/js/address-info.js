@@ -278,13 +278,12 @@ const updateAddressTransPool = data => {
 }
 
 const updateAddressUptime = (data = {}) => {
-    const {position = "---", rate = "--", score = "---"} = data
+    const {position = "---", rate = "--", score = "---", range = {min: 0, max: 0}} = data
 
     $("#uptime-position").html(position)
     $("#uptime-rate").html(`${rate}%`)
     $("#uptime-score").html(score)
-
-    //$("#uptime-tracking")[position === '---' ? 'hide' : 'show']()
+    $("#uptime-range").html(`${range.min}..${range.max}`)
 }
 
 const updateAddressBlocksTable = data => {

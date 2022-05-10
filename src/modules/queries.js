@@ -1,5 +1,5 @@
-import {query} from  "./postgres"
-import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts"
+import {query} from  "./postgres.js"
+import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHAIN_STATUS_ALL} from "./consts.js"
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
 import {datetime} from "@olton/datetime";
@@ -213,13 +213,29 @@ export const getUptimeNext = async () => {
 }
 
 export const getAddressUptime = async (address) => {
+    let result
+
     const sql = `
         select * 
-        from v_uptime
+        from v_uptime_short
         where public_key = $1
         limit 1
     `
-    return (await query(sql, [address])).rows[0]
+    result = (await query(sql, [address])).rows
+    if (!result.length) {
+        return []
+    }
+
+    const data = result[0]
+
+    const range = (await query(`select min(position) as min_pos, max(position) as max_pos from v_uptime where rate = $1`, [data.rate])).rows[0]
+
+    data.range = {
+        min: range.min_pos,
+        max: range.max_pos
+    }
+
+    return data
 }
 
 export const getTransaction = async (hash) => {
@@ -756,5 +772,5 @@ export const storeIp = async (ip) => {
         do update
             set hits = ip.hits + 1
     `
-    return (await query(sql, [ip])).rows
+    return (await query(sql, [ip]))
 }

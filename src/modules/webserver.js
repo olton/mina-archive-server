@@ -3,24 +3,20 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import express from "express";
-import {
-    getUptimeNext,
-    getBlocksByHeight, getTransaction, getAddressByName, getAddressInfo, getBlockInfo
-} from "./queries";
-import {shorten} from "../helpers/short-address";
+import { getUptimeNext} from "./queries.js";
+import {shorten} from "../helpers/short-address.js";
 import {log} from "../helpers/logging.js";
 import {websocket} from "./websocket.js"
 import {datetime, Datetime} from "@olton/datetime"
 import favicon from "serve-favicon"
-import {checkPaymentStatus} from "./graphql.js";
 
 const app = express()
 
 const route = () => {
-    app.use(express.static(path.join(rootPath, 'public_html')))
-    app.use(favicon(path.join(rootPath, 'public_html', 'favicon.ico')))
+    app.use(express.static(path.join(appPath, 'public_html')))
+    app.use(favicon(path.join(appPath, 'public_html', 'favicon.ico')))
     app.locals.pretty = true
-    app.set('views', path.resolve(rootPath, 'public_html'))
+    app.set('views', path.resolve(appPath, 'public_html'))
     app.set('view engine', 'pug')
 
     const clientConfig = JSON.stringify(config.client)

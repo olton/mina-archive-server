@@ -151,7 +151,6 @@ const graphBlocksPerEpoch = data => {
 }
 
 const graphAddressUptime = data => {
-    // console.log(data)
     if (!data || !data.length) {
         $("#graph-blocks-per-epoch").parent().hide()
         return
@@ -159,10 +158,10 @@ const graphAddressUptime = data => {
 
     const points = []
     const _data = data.reverse()
-    let borderTop = 1, borderBottom = 120
+    let borderTop = 1, borderBottom = 240
 
     for(let r of _data) {
-        if (r.position > borderBottom) borderBottom = r.position
+        if (+r.position > +borderBottom) borderBottom = +r.position + 20
     }
 
     for(let r of _data) {
@@ -184,7 +183,7 @@ const graphAddressUptime = data => {
         {
             name: "Uptime Line",
             dots: {
-                size: 3,
+                size: 2,
                 type: 'circle'
             },
             size: 2

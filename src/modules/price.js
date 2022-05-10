@@ -1,6 +1,5 @@
 import fetch from "node-fetch"
-import {parseTime} from "../helpers/parsers"
-import {query} from "./postgres.js";
+import {parseTime} from "../helpers/parsers.js"
 import {log} from "../helpers/logging.js";
 
 const getPriceInfo = async (currency = 'usd') => {

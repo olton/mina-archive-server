@@ -27,7 +27,6 @@ import {
     getTransactionFromPool,
     getAddressTransactionsFromPool, storeIp
 } from "./queries.js";
-import pkg from "../../package.json";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance} from "./graphql.js";
 import {
@@ -40,9 +39,6 @@ import {
 } from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
 import {searchData} from "./search.js";
-import {query} from "./postgres.js";
-
-const {version} = pkg
 
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
@@ -143,6 +139,12 @@ export const websocket = (server) => {
                 }
                 case 'address_uptime': {
                     response(ws, channel, await getAddressUptime(data));
+                    break;
+                }
+                case 'address_uptime_full': {
+                    const uptime = await getAddressUptime(data)
+                    const line = await getAddressUptimeLine(data)
+                    response(ws, channel, {uptime, line});
                     break;
                 }
                 case 'transaction': {

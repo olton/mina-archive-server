@@ -1,8 +1,8 @@
-import {isset} from "./isset"
-import {isNum} from "./numbers"
+import {isset} from "./isset.js"
+import {isNum} from "./numbers.js"
 import fs from "fs"
 import {log} from "./logging.js"
-import {getDefaultConfig} from "./config"
+import {getDefaultConfig} from "./config.js"
 
 const createConfig = (path) => {
     const args = process.argv.slice(2)

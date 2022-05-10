@@ -1,6 +1,6 @@
 import pg from 'pg'
 import {log, debug} from "../helpers/logging.js"
-import {timestamp} from "../helpers/timestamp"
+import {timestamp} from "../helpers/timestamp.js"
 import {getBlockchainHeight, getEpoch, getLastBlock, getStat} from "./queries.js";
 
 const { Pool } = pg
