@@ -25,7 +25,7 @@ import {
     getAddresses,
     getAddressesCount,
     getTransactionFromPool,
-    getAddressTransactionsFromPool, storeIp
+    getAddressTransactionsFromPool, storeIp, getAddressStakes, getAddressRewards
 } from "./queries.js";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance} from "./graphql.js";
@@ -179,6 +179,14 @@ export const websocket = (server) => {
                 }
                 case 'address_delegations_next': {
                     response(ws, channel, await getAddressDelegations(data, true));
+                    break;
+                }
+                case 'address_stakes': {
+                    response(ws, channel, await getAddressStakes(data));
+                    break;
+                }
+                case 'address_rewards': {
+                    response(ws, channel, await getAddressRewards(data.address, data.epoch, data.cb_super));
                     break;
                 }
                 case 'block_producers': {

@@ -774,3 +774,56 @@ export const storeIp = async (ip) => {
     `
     return (await query(sql, [ip]))
 }
+
+export const getAddressStakes = async (address) => {
+    const sql = `
+        select *
+        from v_stakes
+        where value = $1
+    `
+
+    return (await query(sql, [address])).rows
+}
+
+export const getAddressRewards = async (address, epoch, cb_super = 1440000000000) => {
+    if (!epoch) {
+        epoch = (await getEpoch())["epoch"]
+    }
+    const sql = `
+        select
+            count(*) as blocks_count,
+            sum(coinbase) as total_rewards,
+            (
+                select count(*)
+                from v_blocks
+                where epoch = $2
+                  and chain_status = 'canonical'
+                  and coinbase = 0
+                  and creator_key = $1
+            ) as zero_blocks,
+            (
+                select count(*)
+                from v_blocks
+                where epoch = $2
+                  and chain_status = 'canonical'
+                  and coinbase = $3
+                  and creator_key = $1
+            ) as super_count,
+            coalesce((
+                select sum(coinbase)
+                from v_blocks
+                where epoch = $2
+                  and chain_status = 'canonical'
+                  and coinbase = $3
+                  and creator_key = $1
+            ), 0)  as super_rewards
+        from v_blocks b
+        where
+            b.epoch = 28
+        and b.chain_status = 'canonical'
+        and b.creator_key = $1
+        limit 1
+    `
+
+    return (await query(sql, [address, epoch, cb_super])).rows
+}
