@@ -37,4 +37,10 @@ const connect = () => {
     }
 }
 
+const request = (channel, data, ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
+        ws.send(JSON.stringify({channel, data}));
+    }
+}
+
 connect()

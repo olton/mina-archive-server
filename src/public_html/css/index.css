@@ -270,7 +270,8 @@ footer a:hover {
 #block-time,
 #snarks-fee,
 #trans-fee,
-#start_block {
+#start_block,
+#current-rewards {
   position: absolute;
   top: 5px;
   right: 10px;
@@ -278,7 +279,8 @@ footer a:hover {
   color: var(--color-alert);
   z-index: 1;
 }
-#blocks-cpy {
+#blocks-cpy,
+#current-rewards {
   color: var(--color-info);
 }
 #start_block {

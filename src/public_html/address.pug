@@ -197,6 +197,21 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
                         div.cell-xl-3.cell-lg-4.cell-ld-6
                             div.icon-box.border.bd-system.radius
+                                div.icon.bg-green.fg-white
+                                    span.mif-apps
+                                div.content.pl-2
+                                    div.p-2
+                                        div#current-rewards(title="Rewards in this epoch") 0
+                                        div.text-upper BLOCKS
+                                        div.text-upper PRODUCED
+                                        div.d-flex.flex-row.box-value
+                                            div#block_produced 0
+                                            div.ml-auto.reduce-4.text-bold.fg-violet
+                                                span.reduce-3 ATTEMPTS
+                                                span.ml-2#attempts 0
+
+                        div.cell-xl-3.cell-lg-4.cell-ld-6
+                            div.icon-box.border.bd-system.radius
                                 div.icon.bg-lightBrown.fg-white
                                     span.mif-stack
                                 div.content.pl-2
@@ -205,16 +220,6 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                         div.text-upper Total
                                         div.text-upper Transactions
                                         div#trans_count.box-value 0
-
-                        div.cell-xl-3.cell-lg-4.cell-ld-6
-                            div.icon-box.border.bd-system.radius
-                                div.icon.bg-green.fg-white
-                                    span.mif-cog
-                                div.content.pl-2
-                                    div.p-2
-                                        div.text-upper Snark
-                                        div.text-upper Jobs
-                                        div#snark_jobs.box-value 0
 
 
                     div.mt-10#trans-pool-wrapper

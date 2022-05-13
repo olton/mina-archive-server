@@ -238,6 +238,14 @@ const updateAddressLastBlocks = data => {
     }
 }
 
+const updateAddressBlocksInEpoch = data => {
+    if (!data) return
+
+    $("#block_produced").text(data.blocks)
+    $("#attempts").text(data.attempts)
+    $("#current-rewards").text(Number(data.coinbase/10**9).format(0, null, " ", "."))
+}
+
 const updateAddressLastTrans = data => {
     if (!data || !Array.isArray(data)) return
 
@@ -317,9 +325,12 @@ const wsMessageController = (ws, response) => {
 
     const requestLastActivity = (ws) => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
-            ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
-            ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
+            request('address_trans_pool', address)
+            request('address_last_trans', {pk: address, count: 20})
+            request('address_last_blocks', {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20})
+            // ws.send(JSON.stringify({channel: 'address_trans_pool', data: address}));
+            // ws.send(JSON.stringify({channel: 'address_last_trans', data: {pk: address, count: 20}}));
+            // ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
         }
 
         setTimeout(requestLastActivity, 60000, ws)
@@ -328,22 +339,29 @@ const wsMessageController = (ws, response) => {
     const requestData = (ws) => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'epoch'}));
-        ws.send(JSON.stringify({channel: 'address', data: address}));
-        ws.send(JSON.stringify({channel: 'address_balance', data: address}));
+        request('epoch')
+        request('address', address)
+        request('address_balance', address)
+        // ws.send(JSON.stringify({channel: 'epoch'}));
+        // ws.send(JSON.stringify({channel: 'address', data: address}));
+        // ws.send(JSON.stringify({channel: 'address_balance', data: address}));
     }
 
     const requestDelegations = (ws) => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'address_delegations', data: address}));
-        ws.send(JSON.stringify({channel: 'address_delegations_next', data: address}));
+        request('address_delegations', address)
+        request('address_delegations_next', address)
+        // ws.send(JSON.stringify({channel: 'address_delegations', data: address}));
+        // ws.send(JSON.stringify({channel: 'address_delegations_next', data: address}));
     }
 
     const requestUptime = (ws) => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
-            ws.send(JSON.stringify({channel: 'address_uptime_line', data: {pk: address, limit: 60, trunc: 'day'}}));
+            request('address_uptime', address)
+            request('address_uptime_line', {pk: address, limit: 60, trunc: 'day'})
+            // ws.send(JSON.stringify({channel: 'address_uptime', data: address}));
+            // ws.send(JSON.stringify({channel: 'address_uptime_line', data: {pk: address, limit: 60, trunc: 'day'}}));
         }
         setTimeout(requestUptime, 60000*10, ws)
     }
@@ -365,15 +383,21 @@ const wsMessageController = (ws, response) => {
             requestDelegations(ws)
             requestUptime(ws)
             requestGraphs(ws)
-            ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
-            ws.send(JSON.stringify({channel: 'address_trans', data: address}));
+            request('address_blocks', {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000})
+            request('address_trans', address)
+            request('address_blocks_current_epoch', address)
+            // ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
+            // ws.send(JSON.stringify({channel: 'address_trans', data: address}));
             break
         }
         case 'new_block': {
             requestData(ws)
             if (addressId && addressId === +(data.creator_id)) {
-                ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
-                ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
+                request('address_blocks', {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000})
+                request('address_last_blocks', {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20})
+                request('address_blocks_current_epoch', address)
+                // ws.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
+                // ws.send(JSON.stringify({channel: 'address_last_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 20}}));
             }
             break
         }
@@ -437,23 +461,31 @@ const wsMessageController = (ws, response) => {
             graphAddressUptime(data)
             break
         }
+        case 'address_blocks_current_epoch': {
+            updateAddressBlocksInEpoch(data)
+            break
+        }
     }
 }
 
 function refreshAddressTransactionsTable(){
     if (globalThis.webSocket)
-        globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
+        request('address_trans', address)
+        // globalThis.webSocket.send(JSON.stringify({channel: 'address_trans', data: address}))
 }
 
 function refreshAddressBlocksTable(){
     if (globalThis.webSocket)
-        globalThis.webSocket.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
+        request('address_blocks', {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000})
+        // globalThis.webSocket.send(JSON.stringify({channel: 'address_blocks', data: {pk: address, type: ['canonical', 'orphaned', 'pending'], count: 1000000000}}));
 }
 
 function refreshAddressDelegations(){
     if (globalThis.webSocket) {
-        globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations', data: address}))
-        globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations_next', data: address}))
+        request('address_delegations', address)
+        request('address_delegations_next', address)
+        // globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations', data: address}))
+        // globalThis.webSocket.send(JSON.stringify({channel: 'address_delegations_next', data: address}))
     }
 }
 
