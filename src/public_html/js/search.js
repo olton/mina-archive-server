@@ -154,7 +154,7 @@ const wsMessageController = (ws, response) => {
 
     switch(channel) {
         case 'welcome': {
-            ws.send(JSON.stringify({channel: 'search_data', data: globalThis.searchQuery}))
+            request('search_data', globalThis.searchQuery)
             break
         }
         case 'new_block': {

@@ -210,15 +210,14 @@ const wsMessageController = (ws, response) => {
 
     const requestLastActivity = () => {
         if (!isOpen(ws)) return
-
-        ws.send(JSON.stringify({channel: 'epoch'}));
-        ws.send(JSON.stringify({channel: 'last_block_winners', data: 20}));
+        request('epoch')
+        request('last_block_winners', 20)
     }
 
     const requestNonActiveData = () => {
-        ws.send(JSON.stringify({channel: 'scammer_list'}));
-        ws.send(JSON.stringify({channel: 'top_stack_holders', data: 20}));
-        ws.send(JSON.stringify({channel: 'addresses', data: getRequestData()}));
+        request('scammer_list')
+        request('top_stack_holders', 20)
+        request('addresses', getRequestData())
     }
 
     switch(channel) {

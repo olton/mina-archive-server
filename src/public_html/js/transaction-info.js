@@ -71,8 +71,8 @@ const wsMessageController = (ws, response) => {
 
     const requestData = () => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'epoch'}));
-            ws.send(JSON.stringify({channel: 'transaction', data: transactionHash}));
+            request('epoch')
+            request('transaction', transactionHash)
         }
         setTimeout(requestData, 60000)
     }
