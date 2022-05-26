@@ -206,32 +206,6 @@ export const websocket = (server) => {
                     response(ws, channel, await getAddressTransactions(data.pk, {limit: data.count, offset: data.offset}));
                     break;
                 }
-                case 'address_uptime': {
-                    response(ws, channel, await getAddressUptime(data));
-                    break;
-                }
-                case 'address_uptime_full': {
-                    const uptime = await getAddressUptime(data)
-                    const line = await getAddressUptimeLine(data)
-                    response(ws, channel, {uptime, line});
-                    break;
-                }
-                case 'address_uptime_new': {
-                    const uptime_snark = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SNARKWORK)
-                    const uptime_sidecar = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SIDECAR)
-                    const uptime_avg = await getAddressUptimePositionAvg(data)
-                    const uptime_line_sidecar = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SIDECAR)
-                    const uptime_line_snark = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SNARKWORK)
-
-                    response(ws, channel, {
-                        uptime_sidecar,
-                        uptime_snark,
-                        uptime_avg,
-                        uptime_line_sidecar,
-                        uptime_line_snark
-                    });
-                    break;
-                }
                 case 'address_blocks': {
                     response(ws, channel, await getAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
                     break;
@@ -275,6 +249,32 @@ export const websocket = (server) => {
                 case 'address_uptime_line': {
                     response(ws, channel, await getAddressUptimeLine(data.pk, data.limit, data.trunc))
                     break
+                }
+                case 'address_uptime': {
+                    response(ws, channel, await getAddressUptime(data));
+                    break;
+                }
+                case 'address_uptime_full': {
+                    const uptime = await getAddressUptime(data)
+                    const line = await getAddressUptimeLine(data)
+                    response(ws, channel, {uptime, line});
+                    break;
+                }
+                case 'address_uptime_new': {
+                    const uptime_snark = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SNARKWORK)
+                    const uptime_sidecar = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SIDECAR)
+                    const uptime_avg = await getAddressUptimePositionAvg(data)
+                    const uptime_line_sidecar = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SIDECAR)
+                    const uptime_line_snark = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SNARKWORK)
+
+                    response(ws, channel, {
+                        uptime_sidecar,
+                        uptime_snark,
+                        uptime_avg,
+                        uptime_line_sidecar,
+                        uptime_line_snark
+                    });
+                    break;
                 }
                 /* =========================== End of Address Data ================================== */
             }
