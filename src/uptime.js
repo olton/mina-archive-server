@@ -28,6 +28,26 @@ pool.on('error', (err, client) => {
     // process.exit(-1)
 })
 
+const getUptimeData2 = async () => {
+    const link = `https://uptime.minaprotocol.com/getPageData.php`
+    let dataExists = true, position = 1, table = []
+    try {
+        const result = await fetch(link)
+        if (!result.ok) {
+            throw new Error(await result.text())
+        }
+        const data = await result.json()
+        for(let r of data.row) {
+            table.push([position, r.block_producer_key, r.score, r.score_percent])
+            position++
+        }
+        return table
+    } catch (e) {
+        log(`No data or bad request for uptime!`, 'error', e.stack)
+        return []
+    }
+}
+
 const getUptimeData = async () => {
     const link = `https://uptime.minaprotocol.com/getPageData.php?pageNumber=%NUM%`
 
@@ -73,7 +93,11 @@ const getUptimeData = async () => {
 }
 
 const processCollectUptime = async () => {
-    const data = await getUptimeData()
+    const data = await getUptimeData2()
+
+    // console.log(data[0])
+    // return
+
     const timestamp = datetime().format("MM/DD/YYYY HH:mm")
     let res, segment
     const client = await pool.connect()
@@ -102,9 +126,12 @@ const processCollectUptime = async () => {
              values ($1, $2, $3, $4, $5)`,
                 [key_id, position, score, rate, segment]
             )
+
+            log(`Address processed ${address}...OK`)
         }
 
         client.query("COMMIT")
+
     } catch (e) {
         client.query("ROLLBACK")
         log(`Can't load uptime data!`, `error`, e.stack)
