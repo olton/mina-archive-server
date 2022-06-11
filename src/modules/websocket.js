@@ -44,7 +44,7 @@ import {
 } from "./analytics.js";
 import {getAddressBalanceExp} from "./mina-explorer.js";
 import {searchData} from "./search.js";
-import {UPTIME_REQUEST_TYPE_SIDECAR, UPTIME_REQUEST_TYPE_SNARKWORK} from "./uptime-api.js";
+import {UPTIME_SIDECAR, UPTIME_SNARKWORK} from "./uptime-api.js";
 
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
@@ -261,11 +261,11 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_uptime_new': {
-                    const uptime_snark = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SNARKWORK)
-                    const uptime_sidecar = await getAddressUptimePosition(data, UPTIME_REQUEST_TYPE_SIDECAR)
+                    const uptime_snark = await getAddressUptimePosition(data, UPTIME_SNARKWORK)
+                    const uptime_sidecar = await getAddressUptimePosition(data, UPTIME_SIDECAR)
                     const uptime_avg = await getAddressUptimePositionAvg(data)
-                    const uptime_line_sidecar = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SIDECAR)
-                    const uptime_line_snark = await getAddressUptimePositionLine(data, UPTIME_REQUEST_TYPE_SNARKWORK)
+                    const uptime_line_sidecar = await getAddressUptimePositionLine(data, UPTIME_SIDECAR)
+                    const uptime_line_snark = await getAddressUptimePositionLine(data, UPTIME_SNARKWORK)
 
                     response(ws, channel, {
                         uptime_sidecar,

@@ -24,6 +24,7 @@ const route = () => {
     app.get('/', async (req, res) => {
         res.render('index', {
             title: 'Minataur - The Fastest block explorer for Mina Blockchain',
+            appBarTitle: 'MINA LIVE EXPLORER',
             version,
             clientConfig
         })
@@ -33,6 +34,7 @@ const route = () => {
         const nextRound = await getUptimeNext()
         res.render('uptime', {
             title: 'Minataur - Uptime Leaderboard',
+            appBarTitle: 'UPTIME LEADERBOARD',
             version,
             clientConfig,
             nextRound: nextRound,
@@ -46,6 +48,7 @@ const route = () => {
 
         res.render('address', {
             title: `Address Overview for ${address}`,
+            appBarTitle: 'ADDRESS INFO',
             address,
             addressShort,
             clientConfig
@@ -58,6 +61,7 @@ const route = () => {
 
         res.render('block', {
             title: `Block Overview for ${hash}`,
+            appBarTitle: 'BLOCK INFO',
             hash,
             hashShort,
             clientConfig
@@ -70,6 +74,7 @@ const route = () => {
 
         res.render('transaction', {
             title: `Transaction Overview for ${hash}`,
+            appBarTitle: 'TRANSACTION INFO',
             hash,
             hashShort,
             clientConfig
@@ -79,6 +84,7 @@ const route = () => {
     app.get('/transactions', async (req, res) => {
         res.render('transactions', {
             title: `Transactions in Mina Blockchain`,
+            appBarTitle: 'TRANSACTIONS',
             clientConfig
         })
     })
@@ -86,6 +92,7 @@ const route = () => {
     app.get('/addresses', async (req, res) => {
         res.render('addresses', {
             title: `Addresses in Mina Blockchain`,
+            appBarTitle: 'ADDRESSES',
             clientConfig
         })
     })
@@ -93,6 +100,7 @@ const route = () => {
     app.get('/blocks', async (req, res) => {
         res.render('blocks', {
             title: `Blocks in Mina Blockchain`,
+            appBarTitle: 'BLOCKS',
             clientConfig
         })
     })
@@ -100,6 +108,7 @@ const route = () => {
     app.get('/producers', async (req, res) => {
         res.render('producers', {
             title: `Block Producers in Mina Blockchain`,
+            appBarTitle: 'BLOCK PRODUCERS',
             clientConfig
         })
     })
@@ -107,6 +116,7 @@ const route = () => {
     app.get('/zero', async (req, res) => {
         res.render('zero', {
             title: `Zero Blocks in Mina Blockchain`,
+            appBarTitle: 'ZERO BLOCKS',
             clientConfig
         })
     })
@@ -114,6 +124,7 @@ const route = () => {
     app.get('/not-found', async (req, res) => {
         res.render('404', {
             title: `Information not found in Mina Blockchain by your request`,
+            appBarTitle: 'NOT FOUND',
             clientConfig
         })
     })
@@ -128,6 +139,7 @@ const route = () => {
 
         res.render('search', {
             title: `Search Result in Mina Blockchain by your request`,
+            appBarTitle: 'SEARCH RESULT',
             clientConfig,
             query: queryString.join(", ")
         })

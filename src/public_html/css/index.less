@@ -426,10 +426,7 @@ tr.no-hover {
         line-height: 1;
         white-space: nowrap;
         width: 14px;
-
-        &:nth-child(odd) {
-            display: none;
-        }
+        display: none;
     }
 }
 
@@ -440,12 +437,10 @@ tr.no-hover {
 
 @import "eye";
 
-@media (min-width: 768px) {
+@media (min-width: 520px) {
     #uptime-graph-dates {
-        div {
-            &:nth-child(odd) {
-                //display: block;
-            }
+        div:nth-child(even) {
+            display: block;
         }
     }
 }

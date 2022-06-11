@@ -3,7 +3,7 @@ import {CHAIN_STATUS_PENDING, CHAIN_STATUS_CANONICAL, CHAIN_STATUS_ORPHANED, CHA
 import {checkMemoForScam} from "../helpers/scam.js";
 import {decodeMemo} from "../helpers/memo.js";
 import {datetime} from "@olton/datetime";
-import {UPTIME_REQUEST_TYPE_SNARKWORK} from "./uptime-api.js";
+import {UPTIME_SNARKWORK} from "./uptime-api.js";
 
 export const getDisputeBlocks = async () => {
     const sql = `
@@ -860,10 +860,10 @@ export const getAddressBlocksInEpoch = async (address, epoch = -1) => {
     }
 }
 
-export const getAddressUptimePosition = async (address, type = UPTIME_REQUEST_TYPE_SNARKWORK) => {
+export const getAddressUptimePosition = async (address, type = UPTIME_SNARKWORK) => {
     const sql = `
         select * 
-        from ${type === UPTIME_REQUEST_TYPE_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'}
+        from ${type === UPTIME_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'}
         where public_key = $1
         order by timestamp desc 
         limit 1
@@ -873,12 +873,12 @@ export const getAddressUptimePosition = async (address, type = UPTIME_REQUEST_TY
     return result.rows.length ? result.rows[0] : null
 }
 
-export const getAddressUptimePositionLine = async (address, type = UPTIME_REQUEST_TYPE_SNARKWORK, interval = 'day', limit = 60) => {
+export const getAddressUptimePositionLine = async (address, type = UPTIME_SNARKWORK, interval = 'day', limit = 60) => {
     const sql = `
         select
             round(avg(u.position)) as position,
             date_trunc('${interval}', u.timestamp) as timestamp
-        from uptime_snark u
+        from ${type === UPTIME_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'} u
         where public_key = $1
         group by date_trunc('day', u.timestamp)
         order by date_trunc('day', u.timestamp) desc
@@ -889,7 +889,7 @@ export const getAddressUptimePositionLine = async (address, type = UPTIME_REQUES
     return result.rows.length ? result.rows : null
 }
 
-export const getAddressUptimePositionAvg = async (address, interval = 60) => {
+export const getAddressUptimePositionAvg = async (address, type = UPTIME_SNARKWORK, interval = 60) => {
     const sql = `
         select public_key, 
                avg(position) as avg_position,
@@ -898,7 +898,7 @@ export const getAddressUptimePositionAvg = async (address, interval = 60) => {
                avg(score)    as avg_score,
                min(score)    as min_score,
                max(score)    as max_score
-        from ${type === UPTIME_REQUEST_TYPE_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'}
+        from ${type === UPTIME_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'}
         where public_key = $1
           and timestamp > (now() - $2::interval)
         order by timestamp desc 

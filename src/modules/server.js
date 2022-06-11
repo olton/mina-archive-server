@@ -9,7 +9,6 @@ import {runWebServer, runWebServerDev} from "./webserver.js"
 import {sendBroadcast} from "./websocket.js";
 import {processTransactionPool} from "./graphql.js";
 import path from "path";
-import {processUptime} from "./uptime-api.js";
 
 const init = () => {
     const configFile = path.resolve(configPath, "config.json")
@@ -83,5 +82,4 @@ export const run = () => {
     config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()
     processTransactionPool()
-    // processUptime()
 }

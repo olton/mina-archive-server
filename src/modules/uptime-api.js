@@ -1,21 +1,22 @@
 import fetch from "node-fetch"
 import {log} from "../helpers/logging.js"
 import {datetime} from "@olton/datetime"
-import {parseTime} from "../helpers/parsers.js";
-import {query} from "./postgres.js";
 
-export const UPTIME_ENDPOINT_ADDRESS = `http://3.237.77.215:5001`
-export const UPTIME_REQUEST_DEFAULT = `/uptimeScore/`
-export const UPTIME_REQUEST_TYPE_SNARKWORK = `snarkwork`
-export const UPTIME_REQUEST_TYPE_SIDECAR = `sidecar`
+export const UPTIME_ENDPOINT = `http://3.237.77.215:5001/uptimescore/`
+export const UPTIME_SNARKWORK = `snarkwork`
+export const UPTIME_SIDECAR = `sidecar`
+export const UPTIME_DEFAULT = undefined
+export const UPTIME_SCORE_MAX = 1_000_000
 
 const fetchUptimeApi = async (query, timestamp) => {
     try {
-        let url = UPTIME_ENDPOINT_ADDRESS+query
+        let url = UPTIME_ENDPOINT+query
 
         if (timestamp) {
             url += (url.endsWith('/') ? '' : '/')+encodeURIComponent(datetime(timestamp).format("YYYY-MM-DDTHH:mm:ss")+"Z")
         }
+
+        console.log(url)
 
         const result = await fetch(
             url,
@@ -37,101 +38,92 @@ const fetchUptimeApi = async (query, timestamp) => {
 
 const Result = (result) => typeof result === 'string' ? {ok: false, error: result} : {ok: true, result}
 
-export const getUptimeBy = async (type = UPTIME_REQUEST_TYPE_SNARKWORK) => {
-    return Result(await fetchUptimeApi(`${UPTIME_REQUEST_DEFAULT}${type}`))
+export const uptimeScore = async (type) => {
+    return Result(await fetchUptimeApi(`${type ? type : ''}`))
 }
 
-export const getUptimeByAt = async (type = UPTIME_REQUEST_TYPE_SNARKWORK, timestamp) => {
-    return Result(await fetchUptimeApi(`${UPTIME_REQUEST_DEFAULT}${type}`, timestamp))
+export const uptimeAddress = async (address, type) => {
+    return Result(await fetchUptimeApi(`${address}${type ? '/'+type : ''}`))
 }
 
-const getAddressScore = (score, address) => {
+export const uptimeAddressAt = async (address, timestamp, type = UPTIME_SNARKWORK) => {
+    return Result(await fetchUptimeApi(`${address}${type ? '/'+type : ''}`, timestamp))
+}
+
+const isAddress = a => a.startsWith(`B62q`)
+
+const collect = (data, filter = false) => {
+    let result = []
     let position = 1
-    for (let r of score) {
-        if (r.block_producer_key === address) {
-            return {
-                position,
-                ...r
+    for (let r of data) {
+        if (!filter) {
+            result.push({
+                ...r,
+                position
+            })
+        } else {
+            let record = {
+                ...r,
+                position
+            }
+            if (typeof filter === 'function' && filter.apply(null, [record])) {
+                result.push(record)
             }
         }
         position++
     }
-    return false
+    return result
 }
 
-export const getAddressUptime = async (address, type = UPTIME_REQUEST_TYPE_SNARKWORK) => {
-    const score = await getUptimeBy(type)
-    if (!score.ok) {
-        log(score.result, "error")
+export const uptime = async (type) => {
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
     }
-    return score.ok ? getAddressScore(score.result, address) : null
+    return collect(request.result)
 }
 
-export const getAddressUptimeAt = async (address, type = UPTIME_REQUEST_TYPE_SNARKWORK, timestamp) => {
-    const score = await getUptimeByAt(type, timestamp)
-    if (!score.ok) {
-        log(score.result, "error")
+export const uptimePositionRange = async (type, from = 0, to) => {
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
     }
-    return score.ok ? getAddressScore(score.result, address) : null
+    return collect(request.result, r => r.position >= from && r.position <= (to || request.result.length))
 }
 
-export const getUptimeAt = async (type = UPTIME_REQUEST_TYPE_SNARKWORK, timestamp) => {
-    const score = await getUptimeByAt(type, timestamp)
-    if (!score.ok) {
-        log(score.result, "error")
+export const uptimeScoreRange = async (type, from = UPTIME_SCORE_MAX, to = 0) => {
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
     }
-    return score.ok ? score.result : null
+    return collect(request.result, r => +r.score <= from && +r.score >= to)
 }
 
-export const getUptime = async (type = UPTIME_REQUEST_TYPE_SNARKWORK) => {
-    return await getUptimeAt(type)
-}
-
-const sidecar_update_interval = parseTime("10m")
-const snark_update_interval = parseTime("20m")
-
-export const processUpdateSidecarUptime = async () => {
-    try {
-        const timestamp = datetime()
-        const result = await getUptime(UPTIME_REQUEST_TYPE_SIDECAR)
-        let position = 1
-        if (result) {
-            const sql = `insert into uptime_sidecar(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
-
-            for(let r of result) {
-                await query(sql, [r.block_producer_key, timestamp, position, r.score, r.score_percent])
-                position++
-            }
-        }
-        log(`Uptime snapshot by sidecar complete. ${position} addresses stored to DB.`)
-    } catch (e) {
-        log(e.message, "error", e.stack)
-    } finally {
-        setTimeout(processUpdateSidecarUptime, sidecar_update_interval)
+export const uptimeScoreTop = async (type, length = 120) => {
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
     }
+    return collect(request.result, r => r.position <= length)
 }
 
-export const processUpdateSnarkUptime = async () => {
-    try {
-        const timestamp = datetime()
-        const result = await getUptime(UPTIME_REQUEST_TYPE_SNARKWORK)
-        let position = 1
-        if (result) {
-            const sql = `insert into uptime_snark(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
-            for(let r of result) {
-                await query(sql, [r.block_producer_key, timestamp, position, r.score, r.score_percent])
-                position++
-            }
-        }
-        log(`Uptime snapshot by snark complete. ${position} addresses stored to DB.`)
-    } catch (e) {
-        log(e.message, "error", e.stack)
-    } finally {
-        setTimeout(processUpdateSnarkUptime, snark_update_interval)
+export const uptimeScoreFor = async (address = "", type) => {
+    if (!address || !isAddress(address)) return null
+
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
     }
+    const result = collect(request.result, r => r.block_producer_key === address.trim())
+    return result.length ? result[0] : null
 }
 
-export const processUptime = async () => {
-    setImmediate(processUpdateSidecarUptime)
-    setImmediate(processUpdateSnarkUptime)
+export const uptimeScoreGroup = async (group = [], type) => {
+    if (group.length === 0) return []
+
+    const request = await uptimeScore(type)
+    if (!request.ok) {
+        throw new Error(request.error)
+    }
+    return collect(request.result, r => group.includes(r.block_producer_key))
 }
