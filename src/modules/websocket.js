@@ -231,7 +231,7 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_rewards': {
-                    response(ws, channel, await getAddressRewards(data.address, data.epoch, data.cb_super));
+                    response(ws, channel, await getAddressRewards(data.address, undefined, data.cb_super));
                     break;
                 }
                 case 'address_balance_per_epoch': {

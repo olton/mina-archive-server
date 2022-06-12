@@ -820,11 +820,13 @@ export const getAddressRewards = async (address, epoch, cb_super = 1440000000000
             ), 0)  as super_rewards
         from v_blocks b
         where
-            b.epoch = 28
+            b.epoch = $2
         and b.chain_status = 'canonical'
         and b.creator_key = $1
         limit 1
     `
+
+    console.log(epoch)
 
     return (await query(sql, [address, epoch, cb_super])).rows
 }

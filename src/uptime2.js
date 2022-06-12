@@ -5,7 +5,6 @@ import path from "path";
 import {fileURLToPath} from "url";
 import {datetime} from "@olton/datetime";
 import {parseTime} from "./helpers/parsers.js";
-import {query} from "./modules/postgres.js";
 import {uptime, UPTIME_SIDECAR, UPTIME_SNARKWORK} from "./modules/uptime-api.js";
 
 const {Pool} = pg
