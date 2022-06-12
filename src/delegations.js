@@ -3,7 +3,6 @@ import {log} from "./helpers/logging.js"
 import fs from "fs";
 import path from "path";
 import {fileURLToPath} from "url";
-import fetch from "node-fetch";
 import {getArguments} from "./helpers/arguments.js";
 import {isset} from "./helpers/isset.js";
 
