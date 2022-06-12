@@ -36,9 +36,8 @@ const wsMessageController = (ws, response) => {
 
     const requestLastActivity = () => {
         if (!isOpen(ws)) return
-
-        ws.send(JSON.stringify({channel: 'epoch'}))
-        ws.send(JSON.stringify({channel: 'stat'}))
+        request('epoch')
+        request('stat')
     }
 
     switch(channel) {
@@ -47,7 +46,8 @@ const wsMessageController = (ws, response) => {
 
             $("#producers-table").addClass("disabled")
             $("#load-data-activity").show()
-            ws.send(JSON.stringify({channel: 'block_producers'}))
+
+            request('block_producers')
 
             break
         }
@@ -74,7 +74,8 @@ function reloadProducersTable(){
     if (globalThis.webSocket) {
         $("#producers-table").addClass("disabled")
         $("#load-data-activity").show()
-        globalThis.webSocket.send(JSON.stringify({channel: 'block_producers'}))
+
+        request('block_producers')
     }
 }
 

@@ -325,8 +325,8 @@ const wsMessageController = (ws, response) => {
 
     const requestStat = () => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'trans_stat'}))
-            ws.send(JSON.stringify({channel: 'trans_fees_line'}))
+            request('trans_stat')
+            request('trans_fees_line')
             refreshTransTable()
         }
 

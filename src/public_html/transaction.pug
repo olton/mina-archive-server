@@ -16,13 +16,12 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                 include components/live
 
                 div.hero.hero-padding-secondary
+                    div.row.mt-11-minus.mb-2
+                        div.w-100(style='margin-right: 100px;')
+                            include components/search-form
+
                     div.row
                         div.cell-lg-6
-                            div
-                                div.h1.mb-0.page-title Transaction Overview
-
-                            hr.thin
-
                             div.h3.mt-2.mb-2
                                 span#trans-hash #{hashShort}
                                 span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(data-value=hash title="Click to copy hash to clipboard")
@@ -37,17 +36,8 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                 div#trans-date DD, MMM YYYY HH:mm
 
                         div.cell-lg-6
-                            div.mb-4
-                                form(action="javascript:" onsubmit="searchInBlockchain(this.elements[0].value.trim())")
-                                    input.input-large(
-                                        data-role="input"
-                                        placeholder="Search for block, address, transaction, ..."
-                                        data-search-button="true"
-                                        name="search_value"
-                                    )
-
                             div#trans-block-info(style="display: none")
-                                div.text-small.text-bold.mt-8.text-muted.text-upper BLOCK HASH
+                                div.text-small.text-bold.mt-2.text-muted.text-upper BLOCK HASH
                                 div.text-leader.row.mt-1.mb-1.pl-1
                                     a#block-hash.link
                                     span.copy-data-to-clipboard.mif-copy.ml-4.c-pointer.text-muted(title="Click to copy hash to clipboard")

@@ -11,27 +11,20 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                 include components/live
 
                 div.hero.hero-padding-secondary
+                    div.row.mt-11-minus.mb-2
+                        div.w-100(style='margin-right: 100px;')
+                            include components/search-form
+
                     div.row
                         div.cell-lg-6
-                            div
-                                div.h1.mb-0.page-title Addresses
-                                div.text-leader2.
-                                    Discover addresses in Mina blockchain
-
-                            hr.thin
-
                             div.h3.mt-2.mb-2
                                 span
-
-                        div.cell-lg-6
-                            div.mb-4
-                                include components/search-form
 
 
         section.container-fluid
             div.container
                 ul(data-role="tabs" data-expand="true")
-                    li
+                    li.ml-2
                         a(href="#address-list") Addresses
                     li
                         a(href="#stake-leaders") Top 20 by Stake

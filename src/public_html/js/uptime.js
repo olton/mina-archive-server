@@ -76,20 +76,20 @@ const wsMessageController = (ws, response) => {
 
     const requestLeaderboard = () => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'uptime'}))
-            ws.send(JSON.stringify({channel: 'uptime_next'}))
+            request('uptime')
+            request('uptime_next')
         }
         setTimeout(requestLeaderboard, 300000)
     }
 
     switch(channel) {
         case 'welcome': {
-            ws.send(JSON.stringify({channel: 'epoch'}));
+            request('epoch')
             requestLeaderboard()
             break;
         }
         case 'new_block': {
-            ws.send(JSON.stringify({channel: 'epoch'}));
+            request('epoch')
             break;
         }
         case 'update_next': {

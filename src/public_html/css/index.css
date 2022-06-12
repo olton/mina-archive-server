@@ -270,7 +270,8 @@ footer a:hover {
 #block-time,
 #snarks-fee,
 #trans-fee,
-#start_block {
+#start_block,
+#current-rewards {
   position: absolute;
   top: 5px;
   right: 10px;
@@ -278,7 +279,8 @@ footer a:hover {
   color: var(--color-alert);
   z-index: 1;
 }
-#blocks-cpy {
+#blocks-cpy,
+#current-rewards {
   color: var(--color-info);
 }
 #start_block {
@@ -406,8 +408,6 @@ tr.no-hover:hover {
   line-height: 1;
   white-space: nowrap;
   width: 14px;
-}
-#uptime-graph-dates div:nth-child(odd) {
   display: none;
 }
 #graph-balance-per-epoch,
@@ -516,6 +516,11 @@ tr.no-hover:hover {
   }
   100% {
     animation-timing-function: ease-out;
+  }
+}
+@media (min-width: 520px) {
+  #uptime-graph-dates div:nth-child(even) {
+    display: block;
   }
 }
 @media (min-width: 992px) and (max-width: 1451px) {

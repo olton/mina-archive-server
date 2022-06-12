@@ -102,8 +102,10 @@ const wsMessageController = (ws, response) => {
     const requestLastActivity = () => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'epoch'}))
-        ws.send(JSON.stringify({channel: 'blocks_timelapse', data: {len: 100}}))
+        request('epoch')
+        request('blocks_timelapse', {len: 100})
+        // ws.send(JSON.stringify({channel: 'epoch'}))
+        // ws.send(JSON.stringify({channel: 'blocks_timelapse', data: {len: 100}}))
 
         refreshBlocksTable()
         refreshZeroTable()
@@ -144,7 +146,7 @@ function blocksApplyRowsCount(selected){
 
 function refreshBlocksTable(){
     if (globalThis.webSocket) {
-        globalThis.webSocket.send(JSON.stringify({channel: 'blocks', data: getBlocksRequest()}))
+        request('blocks', getBlocksRequest())
     }
 }
 

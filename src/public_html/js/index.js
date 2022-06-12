@@ -149,10 +149,10 @@ const wsMessageController = (ws, response) => {
 
     const requestPeriodically = () => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'trans_pool_count'}))
-            ws.send(JSON.stringify({channel: 'price'}))
-            ws.send(JSON.stringify({channel: 'stat'}))
-            ws.send(JSON.stringify({channel: 'last_block_time'}))
+            request('trans_pool_count')
+            request('price')
+            request('stat')
+            request('last_block_time')
 
             requestChain()
         }
@@ -162,12 +162,12 @@ const wsMessageController = (ws, response) => {
     const requestChain = () => {
         if (!isOpen(ws)) return
 
-        ws.send(JSON.stringify({channel: 'epoch'}))
+        request('epoch')
 
         if (chainRequestMarker === 2) {
             chainRequestMarker = 0
-            ws.send(JSON.stringify({channel: 'dispute'}))
-            ws.send(JSON.stringify({channel: 'lastChain'}))
+            request('dispute')
+            request('lastChain')
         }
     }
 

@@ -7,3 +7,7 @@ export const log = (msg, marker = 'info', ...data) => {
 export const debug = (msg, data) => {
     log(msg, 'debug', data)
 }
+
+export const logObject = (obj, ...rest) => {
+    console.log.apply(null, [JSON.stringify(obj, null, 2), ...rest])
+}

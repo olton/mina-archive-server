@@ -261,7 +261,7 @@ footer a:hover {
     font-family: monospace;
 }
 
-#blocks-cpy, #trans-fail, #block-time, #snarks-fee, #trans-fee, #start_block {
+#blocks-cpy, #trans-fail, #block-time, #snarks-fee, #trans-fee, #start_block, #current-rewards {
     position: absolute;
     top: 5px;
     right: 10px;
@@ -270,7 +270,7 @@ footer a:hover {
     z-index: 1;
 }
 
-#blocks-cpy {
+#blocks-cpy, #current-rewards {
     color: var(--color-info)
 }
 
@@ -426,10 +426,7 @@ tr.no-hover {
         line-height: 1;
         white-space: nowrap;
         width: 14px;
-
-        &:nth-child(odd) {
-            display: none;
-        }
+        display: none;
     }
 }
 
@@ -440,12 +437,10 @@ tr.no-hover {
 
 @import "eye";
 
-@media (min-width: 768px) {
+@media (min-width: 520px) {
     #uptime-graph-dates {
-        div {
-            &:nth-child(odd) {
-                //display: block;
-            }
+        div:nth-child(even) {
+            display: block;
         }
     }
 }
