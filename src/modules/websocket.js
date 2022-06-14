@@ -30,7 +30,8 @@ import {
     getAddressStakes,
     getAddressRewards,
     getAddressUptimePosition,
-    getAddressUptimePositionAvg, getAddressUptimePositionLine, getAddressBlocksInEpoch
+    getAddressUptimePositionLine,
+    getAddressBlocksInEpoch
 } from "./queries.js";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance} from "./graphql.js";
@@ -255,24 +256,30 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'address_uptime_full': {
-                    const uptime = await getAddressUptime(data)
-                    const line = await getAddressUptimeLine(data)
-                    response(ws, channel, {uptime, line});
+                    const {address, limit, trunc} = data
+                    const uptime = await getAddressUptime(address)
+                    const avg = await getAddressUptimeLine(address, limit, trunc, 'avg')
+                    const min = await getAddressUptimeLine(address, limit, trunc, 'min')
+                    const max = await getAddressUptimeLine(address, limit, trunc, 'max')
+                    response(ws, channel, {address, uptime, lines : {avg, min, max}});
                     break;
                 }
                 case 'address_uptime_new': {
-                    const uptime_snark = await getAddressUptimePosition(data, UPTIME_SNARKWORK)
-                    const uptime_sidecar = await getAddressUptimePosition(data, UPTIME_SIDECAR)
-                    const uptime_avg = await getAddressUptimePositionAvg(data)
-                    const uptime_line_sidecar = await getAddressUptimePositionLine(data, UPTIME_SIDECAR)
-                    const uptime_line_snark = await getAddressUptimePositionLine(data, UPTIME_SNARKWORK)
+                    const {address} = data
+                    const uptime_snark = await getAddressUptimePosition(address, UPTIME_SNARKWORK)
+                    const uptime_sidecar = await getAddressUptimePosition(address, UPTIME_SIDECAR)
+                    const uptime_line_sidecar_avg = await getAddressUptimePositionLine(address, UPTIME_SIDECAR, 'day', 'avg', 60)
+                    const uptime_line_snark_avg = await getAddressUptimePositionLine(address, UPTIME_SNARKWORK, 'day', 'avg', 60)
+                    const uptime_line_sidecar_avg_48 = await getAddressUptimePositionLine(address, UPTIME_SIDECAR, 'hour', 'avg', 48)
+                    const uptime_line_snark_avg_48 = await getAddressUptimePositionLine(address, UPTIME_SNARKWORK, 'hour', 'avg', 48)
 
                     response(ws, channel, {
                         uptime_sidecar,
                         uptime_snark,
-                        uptime_avg,
-                        uptime_line_sidecar,
-                        uptime_line_snark
+                        uptime_line_sidecar_avg,
+                        uptime_line_snark_avg,
+                        uptime_line_sidecar_avg_48,
+                        uptime_line_snark_avg_48,
                     });
                     break;
                 }

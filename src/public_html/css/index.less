@@ -388,7 +388,7 @@ tr.no-hover {
     right: 10px;
 }
 
-#uptime-graph {
+#uptime-graph, #uptime-graph-snark, #uptime-graph-short, #uptime-graph-snark-short {
     position: relative;
     overflow: visible!important;
 
@@ -408,7 +408,8 @@ tr.no-hover {
         top: -4px;
     }
 }
-#uptime-graph-dates {
+
+#uptime-graph-dates, #uptime-graph-dates-snark, #uptime-graph-dates-short, #uptime-graph-dates-snark-short {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -435,10 +436,17 @@ tr.no-hover {
     z-index: 2;
 }
 
+.small-box {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    font-size: 10px;
+}
+
 @import "eye";
 
 @media (min-width: 520px) {
-    #uptime-graph-dates {
+    #uptime-graph-dates, #uptime-graph-dates-snark {
         div:nth-child(even) {
             display: block;
         }

@@ -53,7 +53,7 @@ export const getBlocksTimelapse = async limit => {
     return (await query(sql, [limit])).rows
 }
 
-export const getAddressUptimeLine = async (address, limit = 60, trunc = 'day') => {
+export const getAddressUptimeLine = async (address, limit = 60, trunc = 'day', func = 'avg') => {
     const sql = `
         with address_uptime as (
             select pk.value,
@@ -65,12 +65,12 @@ export const getAddressUptimeLine = async (address, limit = 60, trunc = 'day') =
             where pk.value = $1
             order by timestamp desc
         )
-        select time, round(avg(position)) as position
+        select time, round(%FUNC%(position)) as position
         from address_uptime
         group by time
         order by time desc
         limit $2
-    `
+    `.replace('%FUNC%', func)
 
     return (await query(sql, [address, limit, trunc])).rows
 }

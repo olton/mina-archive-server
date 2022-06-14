@@ -826,8 +826,6 @@ export const getAddressRewards = async (address, epoch, cb_super = 1440000000000
         limit 1
     `
 
-    console.log(epoch)
-
     return (await query(sql, [address, epoch, cb_super])).rows
 }
 
@@ -875,38 +873,18 @@ export const getAddressUptimePosition = async (address, type = UPTIME_SNARKWORK)
     return result.rows.length ? result.rows[0] : null
 }
 
-export const getAddressUptimePositionLine = async (address, type = UPTIME_SNARKWORK, interval = 'day', limit = 60) => {
+export const getAddressUptimePositionLine = async (address, type = UPTIME_SNARKWORK, interval = 'hour', func = 'avg', limit = 48) => {
     const sql = `
         select
-            round(avg(u.position)) as position,
+            round(${func}(u.position)) as position,
             date_trunc('${interval}', u.timestamp) as timestamp
         from ${type === UPTIME_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'} u
         where public_key = $1
-        group by date_trunc('day', u.timestamp)
-        order by date_trunc('day', u.timestamp) desc
+        group by date_trunc('${interval}', u.timestamp)
+        order by date_trunc('${interval}', u.timestamp) desc
         limit $2
     `
 
     const result = await query(sql, [address, limit])
     return result.rows.length ? result.rows : null
-}
-
-export const getAddressUptimePositionAvg = async (address, type = UPTIME_SNARKWORK, interval = 60) => {
-    const sql = `
-        select public_key, 
-               avg(position) as avg_position,
-               min(position) as min_position,
-               max(position) as max_position,
-               avg(score)    as avg_score,
-               min(score)    as min_score,
-               max(score)    as max_score
-        from ${type === UPTIME_SNARKWORK ? 'uptime_snark' : 'uptime_sidecar'}
-        where public_key = $1
-          and timestamp > (now() - $2::interval)
-        order by timestamp desc 
-        limit 1
-    `
-
-    const result = await query(sql, [address, `${interval} day`])
-    return result.rows.length ? result.rows[0] : null
 }

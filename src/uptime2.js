@@ -30,6 +30,8 @@ const sidecar_update_interval = parseTime("10m")
 const snark_update_interval = parseTime("20m")
 
 const processUpdateSidecarUptime = async () => {
+    log(`Start uptime snapshot by Sidecar...\n`)
+
     const client = await pool.connect()
     const timestamp = datetime()
 
@@ -43,6 +45,8 @@ const processUpdateSidecarUptime = async () => {
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
             }
             client.query("COMMIT")
+        } else {
+            log(`Empty result for Sidecar`)
         }
         log(`Uptime snapshot by sidecar complete. ${result.length} addresses stored to DB.`)
     } catch (e) {
@@ -54,6 +58,8 @@ const processUpdateSidecarUptime = async () => {
 }
 
 const processUpdateSnarkUptime = async () => {
+    log(`Start uptime snapshot by Snark..\n`)
+
     const client = await pool.connect()
     const timestamp = datetime()
 
@@ -67,6 +73,8 @@ const processUpdateSnarkUptime = async () => {
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
             }
             client.query("COMMIT")
+        } else {
+            log(`Empty result for Snark`)
         }
         log(`Uptime snapshot by snark complete. ${result.length} addresses stored to DB.`)
     } catch (e) {

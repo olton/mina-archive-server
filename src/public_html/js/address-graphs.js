@@ -150,61 +150,22 @@ const graphBlocksPerEpoch = data => {
 
 }
 
-const graphAddressUptime = data => {
-    if (!data || !data.length) {
-        $("#graph-blocks-per-epoch").parent().hide()
-        return
-    }
-
-    const points = []
-    const _data = data.reverse()
-    let borderTop = 1, borderBottom = 240
-
-    for(let r of _data) {
-        if (+r.position > +borderBottom) borderBottom = +r.position + 20
-    }
-
-    for(let r of _data) {
-        let x = datetime(r.time).time()
-        let y = borderBottom - r.position
-
-        points.push([x, y])
-    }
-
-    const target = $("#uptime-graph-dates").clear()
-
-    for(let r of _data) {
-        target.append(
-            $("<div>").html(datetime(r.time).format("DD MMM"))
-        )
-    }
-
-    const areas = [
-        {
-            name: "Uptime Line",
-            dots: {
-                size: 2,
-                type: 'circle'
-            },
-            size: 2
-        }
-    ]
-
-    chart.lineChart("#uptime-graph", [points], {
+const drawUptimeChart = (chartContainer, lines, data, color, maxY) => {
+    return chart.lineChart(chartContainer, [data], {
         ...areaDefaultOptions,
         height: 100,
         padding: {
-            top: 0,
+            top: 10,
             left: 25,
-            right: 5,
+            right: 25,
             bottom: 20
         },
-        lines: areas,
+        lines,
         legend: false,
-        colors: [Metro.colors.toRGBA('#7528d2', 1)],
+        colors: [color],
         boundaries: {
             minY: 0,
-            maxY: borderBottom
+            maxY
         },
         axis: {
             y: {
@@ -216,6 +177,9 @@ const graphAddressUptime = data => {
                 }
             },
             x: {
+                line: {
+                    color: "#dadada"
+                },
                 label: {
                     showLabel: false,
                     skip: 0,
@@ -232,14 +196,62 @@ const graphAddressUptime = data => {
         onTooltipShow: (d) => {
             return `
                 <span>Pos:</span>
-                <span class="text-bold">${borderBottom - d[1]}</span>
+                <span class="text-bold">${maxY - d[1]}</span>
                 <span>at</span>
-                <span class="text-bold">${datetime(d[0]).format(config.format.date)}</span>
+                <span class="text-bold">${datetime(d[0]).format(config.format.datetime)}</span>
             `
         }
     })
+}
 
-    const graph = $("#uptime-graph")
+const updateAddressUptimeLine = (data, type = 'sidecar', subtype = '') => {
+    if (!data.length) {
+        return
+    }
+
+    const suffix = type === 'sidecar' ? '' : '-snark'
+    const pointsAvg = []
+    const _dataAvg = data.reverse()
+
+    subtype = subtype === 'short' ? '-short' : ''
+
+    let borderTop = 1, borderBottom = 240
+
+    for(let r of _dataAvg) {
+        if (+r.position > +borderBottom) borderBottom = +r.position + 20
+    }
+
+    for(let r of _dataAvg) {
+        let x = datetime(r.timestamp).time()
+        let y = borderBottom - r.position
+
+        pointsAvg.push([x, y])
+    }
+
+    const target = $("#uptime-graph-dates"+suffix+subtype).clear()
+
+    for(let r of _dataAvg) {
+        target.append(
+            $("<div>").html(datetime(r.timestamp).format("DD MMM"))
+        )
+    }
+
+    const lines = [
+        {
+            name: "Uptime Avg",
+            dots: {
+                size: 2,
+                type: 'circle'
+            },
+            size: 2
+        }
+    ]
+
+    const color = type === 'sidecar' ? Metro.colors.toRGBA('#7528d2', 1) : Metro.colors.toRGBA('#ff8829', 1)
+
+    drawUptimeChart("#uptime-graph" + suffix + subtype, lines, pointsAvg, color, borderBottom)
+
+    const graph = $("#uptime-graph"+suffix + subtype)
     graph.append(
         $("<div>").addClass("max-graph-value").html(`${borderTop}`)
     )

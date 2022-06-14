@@ -370,12 +370,21 @@ tr.no-hover:hover {
   top: 10px;
   right: 10px;
 }
-#uptime-graph {
+#uptime-graph,
+#uptime-graph-snark,
+#uptime-graph-short,
+#uptime-graph-snark-short {
   position: relative;
   overflow: visible!important;
 }
 #uptime-graph .min-graph-value,
-#uptime-graph .max-graph-value {
+#uptime-graph-snark .min-graph-value,
+#uptime-graph-short .min-graph-value,
+#uptime-graph-snark-short .min-graph-value,
+#uptime-graph .max-graph-value,
+#uptime-graph-snark .max-graph-value,
+#uptime-graph-short .max-graph-value,
+#uptime-graph-snark-short .max-graph-value {
   position: absolute;
   z-index: 2;
   left: -5px;
@@ -384,13 +393,22 @@ tr.no-hover:hover {
   width: 20px;
   font-weight: 500;
 }
-#uptime-graph .min-graph-value {
+#uptime-graph .min-graph-value,
+#uptime-graph-snark .min-graph-value,
+#uptime-graph-short .min-graph-value,
+#uptime-graph-snark-short .min-graph-value {
   bottom: 22px;
 }
-#uptime-graph .max-graph-value {
+#uptime-graph .max-graph-value,
+#uptime-graph-snark .max-graph-value,
+#uptime-graph-short .max-graph-value,
+#uptime-graph-snark-short .max-graph-value {
   top: -4px;
 }
-#uptime-graph-dates {
+#uptime-graph-dates,
+#uptime-graph-dates-snark,
+#uptime-graph-dates-short,
+#uptime-graph-dates-snark-short {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -400,7 +418,10 @@ tr.no-hover:hover {
   flex-wrap: nowrap;
   background: #fff;
 }
-#uptime-graph-dates div {
+#uptime-graph-dates div,
+#uptime-graph-dates-snark div,
+#uptime-graph-dates-short div,
+#uptime-graph-dates-snark-short div {
   text-align: center;
   font-size: 9px;
   transform: rotate(-90deg);
@@ -415,6 +436,12 @@ tr.no-hover:hover {
 #graph-blocks-per-epoch {
   height: 206px;
   z-index: 2;
+}
+.small-box {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  font-size: 10px;
 }
 :root {
   --iris-color-dark: #7700b3;
@@ -519,7 +546,8 @@ tr.no-hover:hover {
   }
 }
 @media (min-width: 520px) {
-  #uptime-graph-dates div:nth-child(even) {
+  #uptime-graph-dates div:nth-child(even),
+  #uptime-graph-dates-snark div:nth-child(even) {
     display: block;
   }
 }

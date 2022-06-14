@@ -23,7 +23,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             include components/search-form
 
                     div.row
-                        div.cell-lg-6
+                        div.cell-12
                             div.row
                                 div.cell-12
                                     div.bg-lightSystem(style="width: 40px; height: 40px; position: absolute; top: 10px; left: 10px;")
@@ -37,40 +37,64 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             div
                                 div#address-tags
 
-                            ul.breadcrumbs.mt-10.ml-4-minus
-                                li.page-item
-                                    a.page-link(href="/") Home
-                                li.page-item
-                                    a.page-link(href="/addresses") Addresses
-                                li.page-item
-                                    a.page-link(href="#") Info
-
-
-                        div.cell-lg-6
-                            div#uptime-tracking
-                                div.text-small.text-bold.mb-0.mt-1.text-muted.text-upper Uptime Tracking
+                    div.row
+                        div.cell-lg-6.border.bd-system
+                            div.text-bold.reduce-3.text-center.mb-2 UPTIME BY SIDECAR
+                            div.bg-light#uptime-tracking
                                 div.h5.row.text-light.mt-1-minus
-                                    div.cell-fs-6.cell-ld-3
+                                    div.cell-fs-4.cell-ld-4
                                         div.text-center
                                             span.reduce-4 Position:
                                             span.ml-1.text-normal#uptime-position ---
-                                    div.cell-fs-6.cell-ld-3
+                                    div.cell-fs-4.cell-ld-4
                                         div.text-center
                                             span.reduce-4 Rate:
                                             span.ml-1.text-normal#uptime-rate --%
-                                    div.cell-fs-6.cell-ld-3
+                                    div.cell-fs-4.cell-ld-4
                                         div.text-center
                                             span.reduce-4 Score:
                                             span.ml-1.text-normal#uptime-score ---
-                                    div.cell-fs-6.cell-ld-3
-                                        div.text-center
-                                            span.reduce-4 Range:
-                                            span.ml-1.text-normal#uptime-range x..y
+
                             div
-                                div.text-small.text-bold.text-muted.d-flex
-                                    span ADDRESS UPTIME LINE (AVG DAY VALUE)
+                                div.reduce-4.text-center.text-bold.text-muted
+                                    span LAST 48 HOURS
+                                div.mt-1#uptime-graph-short
+                                div#uptime-graph-dates-short
+
+                            div
+                                div.reduce-4.text-center.text-bold.text-muted
+                                    span LAST 60 DAYS
                                 div.mt-1#uptime-graph
                                 div#uptime-graph-dates
+
+                        div.cell-lg-6.border.bd-system
+                            div.text-bold.reduce-3.text-center.mb-2 UPTIME BY SNARK
+                            div.bg-light#uptime-tracking-snark
+                                div.h5.row.text-light.mt-1-minus
+                                    div.cell-fs-4.cell-ld-4
+                                        div.text-center
+                                            span.reduce-4 Position:
+                                            span.ml-1.text-normal#uptime-position-snark ---
+                                    div.cell-fs-4.cell-ld-4
+                                        div.text-center
+                                            span.reduce-4 Rate:
+                                            span.ml-1.text-normal#uptime-rate-snark --%
+                                    div.cell-fs-4.cell-ld-4
+                                        div.text-center
+                                            span.reduce-4 Score:
+                                            span.ml-1.text-normal#uptime-score-snark ---
+
+                            div
+                                div.reduce-4.text-center.text-bold.text-muted
+                                    span LAST 48 HOURS
+                                div.mt-1#uptime-graph-snark-short
+                                div#uptime-graph-dates-snark-short
+
+                            div
+                                div.reduce-4.text-center.text-bold.text-muted
+                                    span LAST 60 DAYS
+                                div.mt-1#uptime-graph-snark
+                                div#uptime-graph-dates-snark
 
                     div.remark.alert.d-none
                         div#scammer-reason

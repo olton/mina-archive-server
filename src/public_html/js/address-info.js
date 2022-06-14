@@ -285,13 +285,20 @@ const updateAddressTransPool = data => {
     }
 }
 
-const updateAddressUptime = (data = {}) => {
-    const {position = "---", rate = "--", score = "---", range = {min: 0, max: 0}} = data
+const updateAddressUptimeSidecar = (data = {}) => {
+    const {public_key, position = "---", score_percent = "--", score = "---"} = data
 
     $("#uptime-position").html(position)
-    $("#uptime-rate").html(`${rate}%`)
+    $("#uptime-rate").html(`${score_percent}%`)
     $("#uptime-score").html(score)
-    $("#uptime-range").html(`${range.min}..${range.max}`)
+}
+
+const updateAddressUptimeSnark = (data = {}) => {
+    const {public_key, position = "---", score_percent = "--", score = "---"} = data
+
+    $("#uptime-position-snark").html(position)
+    $("#uptime-rate-snark").html(`${score_percent}%`)
+    $("#uptime-score-snark").html(score)
 }
 
 const updateAddressBlocksTable = data => {
@@ -350,8 +357,9 @@ const wsMessageController = (ws, response) => {
 
     const requestUptime = (ws) => {
         if (isOpen(ws)) {
-            request('address_uptime', address)
-            request('address_uptime_line', {pk: address, limit: 60, trunc: 'day'})
+            // request('address_uptime', address)
+            // request('address_uptime_full', {address, limit: 60, trunc: 'day'})
+            request('address_uptime_new', {address})
         }
         setTimeout(requestUptime, 60000*10, ws)
     }
@@ -413,10 +421,6 @@ const wsMessageController = (ws, response) => {
             updateAddressTransPool(data)
             break
         }
-        case 'address_uptime': {
-            updateAddressUptime(data)
-            break
-        }
         case 'address_blocks': {
             updateAddressBlocksTable(data)
             break
@@ -445,8 +449,13 @@ const wsMessageController = (ws, response) => {
             graphBlocksPerEpoch(data)
             break
         }
-        case 'address_uptime_line': {
-            graphAddressUptime(data)
+        case 'address_uptime_new': {
+            updateAddressUptimeSidecar(data.uptime_sidecar)
+            updateAddressUptimeSnark(data.uptime_snark)
+            updateAddressUptimeLine(data.uptime_line_sidecar_avg, 'sidecar')
+            updateAddressUptimeLine(data.uptime_line_snark_avg, 'snark')
+            updateAddressUptimeLine(data.uptime_line_sidecar_avg_48, 'sidecar', 'short')
+            updateAddressUptimeLine(data.uptime_line_snark_avg_48, 'snark', 'short')
             break
         }
         case 'address_blocks_current_epoch': {
