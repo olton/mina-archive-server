@@ -151,18 +151,27 @@ const graphBlocksPerEpoch = data => {
 }
 
 const drawUptimeChart = (chartContainer, lines, data, color, maxY) => {
-    return chart.lineChart(chartContainer, [data], {
+    return chart.lineChart(chartContainer, data, {
         ...areaDefaultOptions,
-        height: 100,
+        height: 180,
         padding: {
             top: 10,
-            left: 25,
-            right: 25,
-            bottom: 20
+            left: 35,
+            right: 0,
+            bottom: 40
         },
         lines,
-        legend: false,
-        colors: [color],
+        legend: {
+            vertical: false,
+            position: "top-right",
+            margin: {
+                top: 10
+            },
+            border: {
+                color: 'transparent'
+            }
+        },
+        colors: color,
         boundaries: {
             minY: 0,
             maxY
@@ -173,7 +182,14 @@ const drawUptimeChart = (chartContainer, lines, data, color, maxY) => {
                     color: "#dadada"
                 },
                 label: {
-                    showLabel: false
+                    // showLabel: false
+                    count: 10,
+                    font: {
+                        size: 10
+                    },
+                    margin: {
+                        bottom: 4
+                    }
                 }
             },
             x: {
@@ -193,6 +209,9 @@ const drawUptimeChart = (chartContainer, lines, data, color, maxY) => {
         onDrawLabelX: (v) => {
             return datetime(+v).format("DD MMM")
         },
+        onDrawLabelY: (v) => {
+            return Math.round(maxY + 1 - v)
+        },
         onTooltipShow: (d) => {
             return `
                 <span>Pos:</span>
@@ -204,58 +223,74 @@ const drawUptimeChart = (chartContainer, lines, data, color, maxY) => {
     })
 }
 
-const updateAddressUptimeLine = (data, type = 'sidecar', subtype = '') => {
-    if (!data.length) {
+const updateAddressUptimeLine = (data, type = 'short') => {
+    if (!data[0].length && !data[0].length) {
         return
     }
 
-    const suffix = type === 'sidecar' ? '' : '-snark'
-    const pointsAvg = []
-    const _dataAvg = data.reverse()
+    const sidecarPoints = []
+    const snarkPoints = []
+    const dataSidecar = data[0].reverse()
+    const dataSnark = data[1].reverse()
 
-    subtype = subtype === 'short' ? '-short' : ''
 
-    let borderTop = 1, borderBottom = 240
+    let borderBottom = 240
 
-    for(let r of _dataAvg) {
-        if (+r.position > +borderBottom) borderBottom = +r.position + 20
-    }
+    for(let r of dataSidecar) { if (+r.position > +borderBottom) borderBottom = +r.position + 20 }
+    for(let r of dataSnark) { if (+r.position > +borderBottom) borderBottom = +r.position + 20 }
 
-    for(let r of _dataAvg) {
+    for(let r of dataSidecar) {
         let x = datetime(r.timestamp).time()
         let y = borderBottom - r.position
 
-        pointsAvg.push([x, y])
+        sidecarPoints.push([x, y])
     }
 
-    const target = $("#uptime-graph-dates"+suffix+subtype).clear()
+    for(let r of dataSnark) {
+        let x = datetime(r.timestamp).time()
+        let y = borderBottom - r.position
 
-    for(let r of _dataAvg) {
-        target.append(
-            $("<div>").html(datetime(r.timestamp).format("DD MMM"))
-        )
+        snarkPoints.push([x, y])
     }
+
+    // const target = $("#uptime-graph-dates"+suffix+subtype).clear()
+    //
+    // for(let r of _dataAvg) {
+    //     target.append(
+    //         $("<div>").html(datetime(r.timestamp).format("DD MMM"))
+    //     )
+    // }
 
     const lines = [
         {
-            name: "Uptime Avg",
+            name: "Uptime by Sidecar",
             dots: {
                 size: 2,
                 type: 'circle'
             },
             size: 2
+        },
+        {
+            name: "Uptime by Snark",
+            dots: {
+                size: 2,
+                type: 'diamond'
+            },
+            size: 2
         }
     ]
 
-    const color = type === 'sidecar' ? Metro.colors.toRGBA('#7528d2', 1) : Metro.colors.toRGBA('#ff8829', 1)
+    const color = [Metro.colors.toRGBA('#7528d2', 1), Metro.colors.toRGBA('#ff8829', 1)]
 
-    drawUptimeChart("#uptime-graph" + suffix + subtype, lines, pointsAvg, color, borderBottom)
+    const chartContainer = "#uptime-graph" + (type === 'full' ? '' : '-short')
 
-    const graph = $("#uptime-graph"+suffix + subtype)
-    graph.append(
-        $("<div>").addClass("max-graph-value").html(`${borderTop}`)
-    )
-    graph.append(
-        $("<div>").addClass("min-graph-value").html(`${borderBottom}`)
-    )
+    drawUptimeChart(chartContainer, lines, [sidecarPoints, snarkPoints], color, borderBottom)
+
+    // const graph = $(chartContainer)
+    // graph.append(
+    //     $([
+    //         $("<div>").addClass("max-graph-value").html(`${borderTop}`),
+    //         $("<div>").addClass("min-graph-value").html(`${borderBottom}`)
+    //     ])
+    // )
 }

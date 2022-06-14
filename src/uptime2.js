@@ -53,6 +53,7 @@ const processUpdateSidecarUptime = async () => {
         log(e.message, "error", e.stack)
         client.query("ROLLBACK")
     } finally {
+        await client.release()
         setTimeout(processUpdateSidecarUptime, sidecar_update_interval)
     }
 }
@@ -81,6 +82,7 @@ const processUpdateSnarkUptime = async () => {
         log(e.message, "error", e.stack)
         client.query("ROLLBACK")
     } finally {
+        await client.release()
         setTimeout(processUpdateSnarkUptime, snark_update_interval)
     }
 }

@@ -452,10 +452,8 @@ const wsMessageController = (ws, response) => {
         case 'address_uptime_new': {
             updateAddressUptimeSidecar(data.uptime_sidecar)
             updateAddressUptimeSnark(data.uptime_snark)
-            updateAddressUptimeLine(data.uptime_line_sidecar_avg, 'sidecar')
-            updateAddressUptimeLine(data.uptime_line_snark_avg, 'snark')
-            updateAddressUptimeLine(data.uptime_line_sidecar_avg_48, 'sidecar', 'short')
-            updateAddressUptimeLine(data.uptime_line_snark_avg_48, 'snark', 'short')
+            updateAddressUptimeLine([data.uptime_line_sidecar_avg, data.uptime_line_snark_avg], 'full')
+            updateAddressUptimeLine([data.uptime_line_sidecar_avg_48, data.uptime_line_snark_avg_48], 'short')
             break
         }
         case 'address_blocks_current_epoch': {

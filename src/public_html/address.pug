@@ -39,7 +39,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
                     div.row
                         div.cell-lg-6.border.bd-system
-                            div.text-bold.reduce-3.text-center.mb-2 UPTIME BY SIDECAR
+                            div.text-bold.reduce-3.text-center.mb-2 CURRENT UPTIME BY SIDECAR
                             div.bg-light#uptime-tracking
                                 div.h5.row.text-light.mt-1-minus
                                     div.cell-fs-4.cell-ld-4
@@ -55,20 +55,8 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                             span.reduce-4 Score:
                                             span.ml-1.text-normal#uptime-score ---
 
-                            div
-                                div.reduce-4.text-center.text-bold.text-muted
-                                    span LAST 48 HOURS
-                                div.mt-1#uptime-graph-short
-                                div#uptime-graph-dates-short
-
-                            div
-                                div.reduce-4.text-center.text-bold.text-muted
-                                    span LAST 60 DAYS
-                                div.mt-1#uptime-graph
-                                div#uptime-graph-dates
-
                         div.cell-lg-6.border.bd-system
-                            div.text-bold.reduce-3.text-center.mb-2 UPTIME BY SNARK
+                            div.text-bold.reduce-3.text-center.mb-2 CURRENT UPTIME BY SNARK
                             div.bg-light#uptime-tracking-snark
                                 div.h5.row.text-light.mt-1-minus
                                     div.cell-fs-4.cell-ld-4
@@ -84,17 +72,20 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                             span.reduce-4 Score:
                                             span.ml-1.text-normal#uptime-score-snark ---
 
+                    div.row
+                        div.cell-12div.cell-lg-6.border.bd-system
                             div
-                                div.reduce-4.text-center.text-bold.text-muted
+                                div.reduce-3.text-center.text-bold
                                     span LAST 48 HOURS
-                                div.mt-1#uptime-graph-snark-short
-                                div#uptime-graph-dates-snark-short
-
+                                div.mt-1#uptime-graph-short
+                                div#uptime-graph-dates-short
+                        div.cell-lg-6.border.bd-system
                             div
-                                div.reduce-4.text-center.text-bold.text-muted
+                                div.reduce-3.text-center.text-bold
                                     span LAST 60 DAYS
-                                div.mt-1#uptime-graph-snark
-                                div#uptime-graph-dates-snark
+                                div.mt-1#uptime-graph
+                                div#uptime-graph-dates
+
 
                     div.remark.alert.d-none
                         div#scammer-reason
