@@ -30,7 +30,7 @@ const sidecar_update_interval = parseTime("10m")
 const snark_update_interval = parseTime("20m")
 
 const processUpdateSidecarUptime = async () => {
-    log(`Start uptime snapshot by Sidecar...\n`)
+    log(`Start uptime snapshot by Sidecar...`)
 
     const client = await pool.connect()
     const timestamp = datetime()
@@ -58,7 +58,7 @@ const processUpdateSidecarUptime = async () => {
 }
 
 const processUpdateSnarkUptime = async () => {
-    log(`Start uptime snapshot by Snark..\n`)
+    log(`Start uptime snapshot by Snark..`)
 
     const client = await pool.connect()
     const timestamp = datetime()
