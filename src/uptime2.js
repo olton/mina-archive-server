@@ -33,14 +33,14 @@ const processUpdateSidecarUptime = async () => {
     log(`Start uptime snapshot by Sidecar...`)
 
     const client = await pool.connect()
-    const timestamp = datetime()
+    const timestamp = datetime().format("MM/DD/YYYY HH:mm")
 
     try {
         const result = await uptime(UPTIME_SIDECAR)
 
         if (result.length) {
             client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
-            const sql = `insert into uptime_sidecar(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
+            const sql = `insert into uptime_sidecar(public_key, timestamp, position, score, score_percent) values ($1, to_timestamp($2, 'MM/DD/YYYY HH24:MI'), $3, $4, $5)`
             for(let r of result) {
                 // await client.query(`insert into address_uptime(public_key, uptime_by_sidecar) values($1, $2) on conflict (public_key) do update set uptime_by_sidecar = $2`, [r.block_producer_key, r.position])
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
@@ -63,14 +63,14 @@ const processUpdateSnarkUptime = async () => {
     log(`Start uptime snapshot by Snark..`)
 
     const client = await pool.connect()
-    const timestamp = datetime()
+    const timestamp = datetime().format("MM/DD/YYYY HH:mm")
 
     try {
         const result = await uptime(UPTIME_SNARKWORK)
 
         if (result.length) {
             client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
-            const sql = `insert into uptime_snark(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
+            const sql = `insert into uptime_snark(public_key, timestamp, position, score, score_percent) values ($1, to_timestamp($2, 'MM/DD/YYYY HH24:MI'), $3, $4, $5)`
             for(let r of result) {
                 await client.query(`insert into address_uptime(public_key, uptime_by_snark) values($1, $2) on conflict (public_key) do update set uptime_by_snark = $2`, [r.block_producer_key, r.position])
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
