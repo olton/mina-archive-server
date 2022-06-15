@@ -3,12 +3,12 @@ import fs from "fs";
 import path from "path";
 import http from "http";
 import express from "express";
-import { getUptimeNext} from "./queries.js";
 import {shorten} from "../helpers/short-address.js";
 import {log} from "../helpers/logging.js";
 import {websocket} from "./websocket.js"
 import {datetime, Datetime} from "@olton/datetime"
 import favicon from "serve-favicon"
+import {getUptimeNext} from "./queries.js";
 
 const app = express()
 

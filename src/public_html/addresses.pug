@@ -45,7 +45,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                 input(name="address-sort" type="radio" checked data-role="radio" data-caption="<span>Stake</span>" onchange="applySort('stake')")
                                 input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Balance</span>" onchange="applySort('balance')")
                                 //input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Blocks</span>" onchange="applySort('blocks_canonical')")
-                                //input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('position')")
+                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('uptime_position')")
 
                         div.cell-md-4.text-center
                             span.ml-1.text-muted.reduce-4.text-bold ADDRESSES FOUND
@@ -84,10 +84,18 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                     th(data-name="address")
                                         span Address
                                         div.text-small Name
-                                    th.text-right(data-name="balance")
-                                        span Ledger Balance
+
                                     th.text-right.sortable-column.sort-desc(data-name="stake")
-                                        span Stake Hold
+                                        span Stake
+                                        div.text-small Hold
+
+                                    th.text-right(data-name="balance")
+                                        span Ledger
+                                        div.text-small Balance
+
+                                    th.text-right(data-name="uptime")
+                                        span Uptime
+                                        div.text-small Position
 
                             tbody
 

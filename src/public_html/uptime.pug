@@ -17,7 +17,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             div.text-leader2.
                                 To get Mina Foundation delegation you must stay in TOP120 by uptime.
 
-                        div.cell-lg-6
+                        div.cell-lg-6.d-none
                             div.mt-2
                                 include components/search-form
 
@@ -54,18 +54,18 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             tr
                                 th(style="width: 30px;")
                                     span Position
+
                                 th
                                     span Address
-                                th.text-right
-                                    span Current Stake
-                                    div.text-small For Next Epoch
-                                th.text-center(data-size="30")
-                                    span Deleg
-                                    div.text-small Next Epoch
-                                th.text-center(data-size="100")
-                                    span Score
-                                th.text-center
-                                    span Rate
+
+                                th(style="width: 200px;")
+                                    span Score by Snark
+                                    div.text-small by Sidecar
+
+                                th(style="width: 200px;")
+                                    span Rate By Snark
+                                    div.text-small by Sidecar
+
                                 th(style="width: 30px;" title="Block Producer")
                                     span BP
                         tbody

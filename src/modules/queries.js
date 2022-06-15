@@ -191,21 +191,9 @@ export const getLeaderboard = async ({
     limit = 240,
     offset = 0,
 } = {}) => {
-    let res, segmentId, segmentTimestamp
+    const sql = `select * from v_uptime_v3`
 
-    res = await query(`select timestamp
-                           from uptime_segments
-                           where timestamp = (select max(timestamp) from uptime_segments)`)
-
-    segmentTimestamp = res.rows[0].timestamp
-
-    res = await query(`
-        select * 
-        from v_uptime
-        limit $1 offset $2
-    `, [limit, offset])
-
-    return {segment: segmentTimestamp, rows: res.rows, next: await getUptimeNext()}
+    return (await query(sql)).rows
 }
 
 export const getUptimeNext = async () => {
@@ -510,7 +498,7 @@ export const getProducers = async () => {
     const sql = `
         select *
         from v_block_producers
-        where delegators > 0 and cast (stake / 10^9 as int) > 66000
+        where delegators > 0 and cast (stake / 10^9 as int) > 0
         order by random()
     `
     const rows = (await query(sql)).rows
@@ -521,16 +509,15 @@ export const getProducers = async () => {
             r.id,
             r.public_key,
             r.name,
-            r.blocks_total,
-            r.blocks_canonical,
-            r.cop,
             r.stake,
             r.stake_next,
             r.delegators,
             r.delegators_next,
-            r.pos,
-            r.pos_next,
-            r.scammer
+            r.blocks_total,
+            r.blocks_canonical,
+            r.cop,
+            r.scammer,
+            r.uptime
         ])
     }
 

@@ -31,7 +31,7 @@ import {
     getAddressRewards,
     getAddressUptimePosition,
     getAddressUptimePositionLine,
-    getAddressBlocksInEpoch
+    getAddressBlocksInEpoch, getUptimeNext
 } from "./queries.js";
 import {log} from "../helpers/logging.js";
 import {getAddressBalance} from "./graphql.js";
@@ -109,7 +109,9 @@ export const websocket = (server) => {
                     break;
                 }
                 case 'uptime': {
-                    response(ws, channel, await getLeaderboard());
+                    const leaderboard = await getLeaderboard()
+                    const nextSnapshot = await getUptimeNext()
+                    response(ws, channel, {leaderboard, nextSnapshot});
                     break;
                 }
                 case 'scammer_list': {

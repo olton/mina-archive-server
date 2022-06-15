@@ -91,12 +91,7 @@ function applySort(field){
             sortBy = `${field} desc`
             break
         }
-        case 'blocks_canonical': {
-            $("#addresses-table th[data-name=blocks]").addClass("sortable-column sort-desc")
-            sortBy = `${field} desc`
-            break
-        }
-        case 'position': {
+        case 'uptime_position': {
             $("#addresses-table th[data-name=uptime]").addClass("sortable-column sort-asc")
             sortBy = `${field} asc`
             break
@@ -137,8 +132,6 @@ const flushSearchInterval = () => {
 $("#address-search").on(Metro.events.inputchange, function(){
     searchString = clearText(this.value.trim())
 
-    console.log(searchString)
-
     flushSearchInterval()
 
     if (!search_input_interval) search_input_interval = setTimeout(function(){
@@ -162,7 +155,7 @@ const updateAddressesTable = (data) => {
 
     for(let row of data.addresses) {
         let tr = $("<tr>").appendTo(target)
-        const top240 = Metro.utils.between(row.position, 1, 240, true)
+        const top240 = Metro.utils.between(row.uptime_position, 1, 240, true)
         const inBlackList = !!+row.in_black_list
         const isDelegationProgramParticipant = !!+row.is_delegation_program_participant
         const balance = (normMina(row.balance).toString()).split(".")
@@ -172,21 +165,29 @@ const updateAddressesTable = (data) => {
             <td>
                 <div class="d-flex flex-row flex-align-center">
                     <a class="link mr-2" href="/address/${row.public_key}">${shorten(row.public_key, 12)}</a>
-                    ${inBlackList ? "<span class='radius reduce-4 badge inline bg-darkRed fg-white text-upper' title='Listed in Blacklist'>BL</span>" : ""}            
-                    ${top240 ? "<span class='radius reduce-4 badge inline bg-violet fg-white text-upper' title='Top240 by Uptime'>240</span>" : ""}            
-                    ${row.is_producer ? "<span class='radius reduce-4 badge inline bg-green fg-white text-upper' title='Block Producer'>BP</span>" : ""}            
-                    ${isDelegationProgramParticipant ? "<span class='radius reduce-4 badge inline bg-teal fg-white text-upper' title='Delegation Program Participant'>DP</span>" : ""}
+                    <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy address to clipboard" data-value="${row.public_key}"></span>
+                    <div class="d-flex flex-row flex-align-center mt-1 ml-2">
+                        ${inBlackList ? "<span class='radius reduce-4 badge inline bg-darkRed fg-white text-upper' title='Listed in Blacklist'>BL</span>" : ""}            
+                        ${top240 ? "<span class='radius reduce-4 badge inline bg-violet fg-white text-upper' title='Top240 by Uptime'>240</span>" : ""}            
+                        ${row.is_producer ? "<span class='radius reduce-4 badge inline bg-green fg-white text-upper' title='Block Producer'>BP</span>" : ""}            
+                        ${isDelegationProgramParticipant ? "<span class='radius reduce-4 badge inline bg-teal fg-white text-upper' title='Delegation Program Participant'>DP</span>" : ""}
+                    </div>
                 </div>            
-                <div class="text-small fg-violet">${row.name || ''}</div>
+                <div class="d-flex flex-row flex-align-center mt-1">
+                    <span class="text-small fg-violet mr-2">${row.name || 'Unknown'}</span>
+                </div>
                 ${inBlackList ? "<div class='text-small fg-red p-1' title=''>Warning! This address listed in Blacklist</div>" : ""}
+            </td>
+            <td class="text-right">
+                <span>${num2fmt(stake[0])}</span>   
+                <div class="text-small text-muted">${stake[1] ? stake[1] : 0 }</div>         
             </td>
             <td class="text-right">
                 <span>${num2fmt(balance[0])}</span>
                 <div class="text-small text-muted">${balance[1] ? balance[1] : 0}</div>
             </td>
             <td class="text-right">
-                <span>${num2fmt(stake[0])}</span>   
-                <div class="text-small text-muted">${stake[1] ? stake[1] : 0 }</div>         
+                <span>${row.uptime_position >= 1000000 ? '<small class="text-muted">not rated</small>' : row.uptime_position}</span>   
             </td>
         `)
     }

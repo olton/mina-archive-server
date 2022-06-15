@@ -42,6 +42,7 @@ const processUpdateSidecarUptime = async () => {
             client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
             const sql = `insert into uptime_sidecar(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
             for(let r of result) {
+                // await client.query(`insert into address_uptime(public_key, uptime_by_sidecar) values($1, $2) on conflict (public_key) do update set uptime_by_sidecar = $2`, [r.block_producer_key, r.position])
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
             }
             client.query("COMMIT")
@@ -71,6 +72,7 @@ const processUpdateSnarkUptime = async () => {
             client.query("BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED")
             const sql = `insert into uptime_snark(public_key, timestamp, position, score, score_percent) values ($1, $2, $3, $4, $5)`
             for(let r of result) {
+                await client.query(`insert into address_uptime(public_key, uptime_by_snark) values($1, $2) on conflict (public_key) do update set uptime_by_snark = $2`, [r.block_producer_key, r.position])
                 await client.query(sql, [r.block_producer_key, timestamp, r.position, r.score, r.score_percent])
             }
             client.query("COMMIT")

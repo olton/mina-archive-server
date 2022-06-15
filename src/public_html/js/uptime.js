@@ -1,7 +1,9 @@
 
 const updateUptimeTable = data => {
-    let {segment, rows, next} = data
-    let timestamp = datetime(segment)
+    console.log(data)
+
+    let {leaderboard, nextSnapshot} = data
+    let timestamp = datetime(leaderboard[0].timestamp)
 
     let [segmentDate, segmentTime] = [datetime(timestamp).format(config.format.date), datetime(timestamp).format(config.format.time)]
 
@@ -10,7 +12,7 @@ const updateUptimeTable = data => {
         <span class="reduce-4">${segmentTime}</span>
     `)
 
-    let [nextDate, nextTime] = [datetime(next).format(config.format.date), datetime(next).format(config.format.time)]
+    let [nextDate, nextTime] = [datetime(nextSnapshot).format(config.format.date), datetime(nextSnapshot).format(config.format.time)]
 
     $("#next-round").html(`
         <span>${nextDate}</span>
@@ -19,9 +21,9 @@ const updateUptimeTable = data => {
 
     const nextRoundTimer = $("#next-round-timer")
 
-    if (nextRoundTimer.attr("data-date") !== next) {
+    if (nextRoundTimer.attr("data-date") !== nextSnapshot) {
         const cd = Metro.getPlugin("#next-round-timer", "countdown")
-        cd.resetWith(next)
+        cd.resetWith(nextSnapshot)
     }
 
     const target = $("#leaderboard tbody").clear()
@@ -31,18 +33,18 @@ const updateUptimeTable = data => {
     let prevScore = 0
     let group = 1
 
-    for(let r of rows) {
+    for(let r of leaderboard) {
         if (r.score !== prevScore) {
             prevScore = r.score
             tr = $("<tr>").addClass("no-hover bg-white").append(
-                $("<td>").attr("colspan", 6).html(`<div class="pl-6 pt-1 pb-1 enlarge-2 text-muted text-left">Group ${group}</div>`)
+                $("<td>").attr("colspan", 5).html(`<div class="pl-6 pt-1 pb-1 enlarge-2 text-muted text-left">Group ${group}</div>`)
             ).appendTo(target)
             group++
         }
 
         tr = $("<tr>").appendTo(target)
 
-        let prodLabel = !r.is_producer ? "" : "<span class='text-small radius success p-1'>BP</span>"
+        let prodLabel = !r.is_block_producer ? "" : "<span class='text-small radius success p-1'>BP</span>"
 
         tr.append( $("<td>").addClass("text-center").html(`${r.position}`) )
         tr.append( $("<td>").html(`
@@ -50,20 +52,22 @@ const updateUptimeTable = data => {
             <span class="ml-1 mif-copy copy-data-to-clipboard c-pointer" title="Copy hash to clipboard" data-value="${r.public_key}"></span>
             <div>${r.name ? "<span class='text-small fg-darkViolet'>"+r.name+"</span>" : ""}</div>
         `) )
-        tr.append( $("<td>").addClass("text-right").html(`
-            <div class="no-wrap">${normMina(r.stake, 'number').format(0, null, " ", ".")}</div>
-            <div class="text-muted text-small no-wrap">${normMina(r.stake_next, 'number').format(0, null, " ", ".")}</div>
+        tr.append( $("<td>").html(`
+            <span>${r.score}</span>
+            <div class="text-small text-muted">${r.sc_score}</div>
         `) )
-        tr.append( $("<td>").addClass("text-center").html(`
-            <div>${r.delegators}</div>
-            <div class="text-muted text-small">${r.delegators_next}</div>
+        tr.append( $("<td>").html(`
+            <span>${r.score_percent}%</span>
+            <div class="text-small text-muted">${r.sc_score_percent}%</div>
         `) )
-        tr.append( $("<td>").addClass("text-center").html(`${r.score}`) )
-        tr.append( $("<td>").addClass("text-center").html(`${r.rate}%`) )
         tr.append( $("<td>").addClass("text-center").html(`${prodLabel}`) )
 
         counter++
-        if (counter > 240) break;
+        if (counter === 241) {
+            tr = $("<tr>").addClass("no-hover bg-white").append(
+                $("<td>").attr("colspan", 5).html(`<div class="pl-6 pt-1 pb-1 enlarge-2 text-muted text-left">Outsiders from TOP240</div>`)
+            ).appendTo(target)
+        }
     }
 }
 
@@ -77,7 +81,6 @@ const wsMessageController = (ws, response) => {
     const requestLeaderboard = () => {
         if (isOpen(ws)) {
             request('uptime')
-            request('uptime_next')
         }
         setTimeout(requestLeaderboard, 300000)
     }
@@ -90,9 +93,6 @@ const wsMessageController = (ws, response) => {
         }
         case 'new_block': {
             request('epoch')
-            break;
-        }
-        case 'update_next': {
             break;
         }
         case 'uptime': {

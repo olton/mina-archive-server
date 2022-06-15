@@ -87,18 +87,19 @@ function producersTableDrawCell(td, val, idx, head, row, table){
         _name,
         _blocks_total,
         _blocks_canonical,
-        _cop,
         _stake,
         _stake_next,
         _delegators,
         _delegators_next,
-        _pos,
-        _pos_next,
-        _scammer
+        _scammer,
+        _uptime,
+        _cop
     ] = row
-    if (['id', 'name', 'delegators_next', 'pos', 'pos_next', 'scammer'].includes(head.name)) {
+
+    if (['id', 'name', 'scammer'].includes(head.name)) {
         td.addClass("d-none")
     }
+
     if (head.name === 'public_key') {
         td.html(`
             <a class="link" href="/address/${val}">${shorten(val, 12)}</a>
@@ -109,28 +110,37 @@ function producersTableDrawCell(td, val, idx, head, row, table){
             </div>
         `)
     }
+
+    if (head.name === 'stake' || head.name === 'stake_next') {
+        td.addClass("text-right").html(`
+            <span>${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}</span>
+        `)
+    }
+
+    if (head.name === 'delegators' || head.name === 'delegators_next') {
+        td.addClass("text-center").html(`
+            <span>${val}</span>
+        `)
+    }
+
     if (head.name === 'blocks') {
         td.addClass("text-center").html(`
             <span>${val}</span>
         `)
     }
+
     if (head.name === 'blocks_canonical') {
         td.addClass("text-center").html(`
             <span class="">${val}</span>
         `)
     }
+
     if (head.name === 'cop') {
         td.addClass("text-center").html(`${val}<span class="ml-1 reduce-3">%</span>`)
     }
-    if (head.name === 'stake' || head.name === 'stake_next') {
-        td.addClass("text-right").html(`
-            <span>${Number(normMina(val).toFixed(0)).format(0, null, " ", ".")}</span>
-            <div class="text-small text-muted">${((head.name === 'stake' ? _pos : _pos_next) * 1 ).toFixed(4)}<span class="ml-1 reduce-3">%</span></div>
-        `)
+
+    if (head.name === 'uptime') {
+        td.addClass("text-center").html(`${val >= 1000000 ? "<span class='text-muted text-small'>not rated</span>" : val}`)
     }
-    if (head.name === 'delegators') {
-        td.addClass("text-center").html(`
-            <span>${val}</span>
-        `)
-    }
+
 }

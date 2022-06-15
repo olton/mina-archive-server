@@ -9,7 +9,11 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
         div.container-fluid
             div.container
 
-                div.hero.hero-padding-secondary.pt-5.pb-0
+                div.hero.hero-padding-secondary
+                    div.row.mb-2
+                        div
+                            h1 Block Producers
+
                     div.row.mt-2-minus.mb-2
                         div.w-100
                             include components/search-form
@@ -17,7 +21,7 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                     div.row
                         div.text-leader.mt-2.mb-2
                             div.
-                                In the table below you can see active producers, who have non-zero delegations and minimal stake with 66K mina.
+                                In the table below you can see active producers, who have delegations and non-zero stake.
 
         div.container-fluid
             div.container
@@ -88,32 +92,47 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             thead
                                 tr
                                     th(data-name="id" data-show="false") ID
+
                                     th(data-name="public_key")
                                         span Address
                                         div.text-small Name
+
                                     th(data-name="name" data-show="false") Name
+
+                                    th(data-name="stake" data-size="100" data-sortable="true" data-format="number")
+                                        span Stake
+                                        div.text-small Current
+
+                                    th(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
+                                        span Stake
+                                        div.text-small Next
+
+                                    th(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
+                                        span Stakers
+                                        div.text-small Current
+
+                                    th(data-name="delegators_next" data-show="true" data-size="30" data-sortable="true" data-format="int")
+                                        span Stakers
+                                        div.text-small Next
+
                                     th(data-name="blocks" data-sortable="true" data-format="int" data-size="30")
                                         span Blocks
                                         div.text-small Total
+
                                     th(data-name="blocks_canonical" data-sortable="true" data-format="int" data-size="30")
                                         span Blocks
                                         div.text-small Canonical
-                                    th.text-center(data-name="cop" data-sortable="true" data-format="int" data-size="50")
+
+                                    th(data-name="cop" data-sortable="true" data-format="int" data-size="50")
                                         span(title="Coefficient of Performance") COP
                                         div.text-small %
-                                    th.text-right(data-name="stake" data-size="100" data-sortable="true" data-format="number")
-                                        span Stake
-                                        div.text-small Current
-                                    th.text-right(data-name="stake_next" data-size="100" data-sortable="true" data-format="number")
-                                        span Stake
-                                        div.text-small Next
-                                    th.text-center(data-name="delegators" data-size="30" data-sortable="true" data-format="int")
-                                        span Stakes
-                                        div.text-small Count
-                                    th(data-name="delegators_next" data-show="false") Delegators Next
-                                    th(data-name="pos" data-show="false") Part of Stake
-                                    th(data-name="pos_next" data-show="false") Part of Stake Next
+
                                     th(data-name="scammer" data-show="false") Scammer
+
+                                    th(data-name="uptime" data-sortable="true" data-format="int" data-size="50")
+                                        span Uptime
+                                        div.text-small Position
+
 
 
             div.mb-10 &nbsp;
