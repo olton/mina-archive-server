@@ -11,8 +11,11 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                 include components/live
 
                 div.hero.hero-padding-secondary
-                    div.row.mt-11-minus.mb-2
-                        div.w-100(style='margin-right: 100px;')
+                    div.row.mb-2
+                        div
+                            h1 Addresses
+                    div.row.mt-2.mb-2
+                        div.w-100
                             include components/search-form
 
                     div.row
@@ -41,8 +44,8 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                             div.mt-2-minus
                                 input(name="address-sort" type="radio" checked data-role="radio" data-caption="<span>Stake</span>" onchange="applySort('stake')")
                                 input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Balance</span>" onchange="applySort('balance')")
-                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Blocks</span>" onchange="applySort('blocks_canonical')")
-                                input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('position')")
+                                //input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Blocks</span>" onchange="applySort('blocks_canonical')")
+                                //input(name="address-sort" type="radio" data-role="radio" data-caption="<span>Uptime</span>" onchange="applySort('position')")
 
                         div.cell-md-4.text-center
                             span.ml-1.text-muted.reduce-4.text-bold ADDRESSES FOUND
@@ -83,16 +86,8 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
                                         div.text-small Name
                                     th.text-right(data-name="balance")
                                         span Ledger Balance
-                                        div.text-small Next
                                     th.text-right.sortable-column.sort-desc(data-name="stake")
                                         span Stake Hold
-                                        div.text-small Next
-                                    th.text-center(data-name="blocks")
-                                        span Blocks
-                                        div.text-small Produced
-                                    th.text-center(data-name="uptime")
-                                        span Uptime
-                                        div.text-small Score
 
                             tbody
 

@@ -162,15 +162,18 @@ const updateAddressesTable = (data) => {
 
     for(let row of data.addresses) {
         let tr = $("<tr>").appendTo(target)
-        const top120 = Metro.utils.between(row.position, 1, 120, true)
+        const top240 = Metro.utils.between(row.position, 1, 240, true)
         const inBlackList = !!+row.in_black_list
         const isDelegationProgramParticipant = !!+row.is_delegation_program_participant
+        const balance = (normMina(row.balance).toString()).split(".")
+        const stake = (normMina(row.stake).toString()).split(".")
+
         tr.html(`
             <td>
                 <div class="d-flex flex-row flex-align-center">
                     <a class="link mr-2" href="/address/${row.public_key}">${shorten(row.public_key, 12)}</a>
                     ${inBlackList ? "<span class='radius reduce-4 badge inline bg-darkRed fg-white text-upper' title='Listed in Blacklist'>BL</span>" : ""}            
-                    ${top120 ? "<span class='radius reduce-4 badge inline bg-violet fg-white text-upper' title='Top120 by Uptime'>120</span>" : ""}            
+                    ${top240 ? "<span class='radius reduce-4 badge inline bg-violet fg-white text-upper' title='Top240 by Uptime'>240</span>" : ""}            
                     ${row.is_producer ? "<span class='radius reduce-4 badge inline bg-green fg-white text-upper' title='Block Producer'>BP</span>" : ""}            
                     ${isDelegationProgramParticipant ? "<span class='radius reduce-4 badge inline bg-teal fg-white text-upper' title='Delegation Program Participant'>DP</span>" : ""}
                 </div>            
@@ -178,20 +181,12 @@ const updateAddressesTable = (data) => {
                 ${inBlackList ? "<div class='text-small fg-red p-1' title=''>Warning! This address listed in Blacklist</div>" : ""}
             </td>
             <td class="text-right">
-                <span>${normMina(row.balance)}</span>
-                <div class="text-small">${normMina(row.balance_next)}</div>            
+                <span>${num2fmt(balance[0])}</span>
+                <div class="text-small text-muted">${balance[1] ? balance[1] : 0}</div>
             </td>
             <td class="text-right">
-                <span>${normMina(row.stake)}</span>            
-                <div class="text-small">${normMina(row.stake_next)}</div>
-            </td>
-            <td class="text-center">
-                <span>${row.blocks_canonical}</span>
-                <div class="text-small text-muted">${row.blocks_total}</div>            
-            </td>
-            <td class="text-center">
-                <span>${row.position === 1000000 ? 0 : row.position}</span>
-                <div class="text-small">${row.score}, ${row.rate}%</div>
+                <span>${num2fmt(stake[0])}</span>   
+                <div class="text-small text-muted">${stake[1] ? stake[1] : 0 }</div>         
             </td>
         `)
     }

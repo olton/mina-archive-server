@@ -12,15 +12,13 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
         div.container-fluid
             div.container
-                include components/live
 
                 div.scam.bg-red.fg-white.ani-flash
                     span SCAMMER!
 
                 div.hero.hero-padding-secondary.pb-0
-                    div.row.mt-11-minus.mb-2
-                        div.w-100(style='margin-right: 100px;')
-                            include components/search-form
+                    include components/live
+
 
                     div.row
                         div.cell-12
@@ -36,6 +34,11 @@ html.light-theme.scrollbar-type-1.sb-darkViolet
 
                             div
                                 div#address-tags
+
+                    div.row.mt-4.mb-4
+                        div.w-100
+                            include components/search-form
+
 
                     div.row
                         div.cell-lg-6.border.bd-system

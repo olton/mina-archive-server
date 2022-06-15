@@ -691,7 +691,7 @@ export const getAddresses = async ({
 } = {}) => {
     let sql = `
         select a.*
-        from v_address_list a 
+        from v_address_list_short a 
         where 1=1
         %ADDRESS_KEY_NAME%
         order by %SORT%
