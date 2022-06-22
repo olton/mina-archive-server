@@ -137,6 +137,48 @@ const graphBlocksPerEpoch = data => {
 
     chart.areaChart("#graph-blocks-per-epoch", [points], {
         ...areaDefaultOptions,
+        axis: {
+            x: {
+                line: {
+                    color: "#fafbfc",
+                    shortLineSize: 0
+                },
+                label: {
+                    count: 10,
+                    fixed: 0,
+                    color: "#24292e",
+                    font: {
+                        size: 10
+                    }
+                },
+                skip: 2,
+            },
+            y: {
+                line: {
+                    color: "#fafbfc"
+                },
+                label: {
+                    count: 10,
+                    fixed: 0,
+                    color: "#24292e",
+                    font: {
+                        size: 10
+                    },
+                    skip: 2,
+                    align: "right",
+                    shift: {
+                        x: 0
+                    },
+                    showMin: true,
+                    showLabel: true,
+                }
+            }
+        },
+        padding: {
+            left: 35,
+            top: 10,
+            right: 0
+        },
         areas,
         colors: [Metro.colors.toRGBA('#ec7618', .5)],
         boundaries: {

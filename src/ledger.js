@@ -2,8 +2,8 @@ import pg from 'pg'
 import fs from 'fs'
 import path from "path"
 import {log} from "./helpers/logging.js"
-import {isset} from "./helpers/isset"
-import {getArguments} from "./helpers/arguments"
+import {isset} from "./helpers/isset.js"
+import {getArguments} from "./helpers/arguments.js"
 import {fileURLToPath} from "url";
 
 const {Pool} = pg
