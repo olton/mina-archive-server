@@ -122,18 +122,19 @@ export const getTransactionInPool = async (address) => {
     let sql = address ? qTransactionInPoolForAddress : qTransactionInPool
     let result = await fetchGraphQL(sql, {publicKey: address})
 
-    if (!isset(result.data.pooledUserCommands, false)) {
+    try {
+
+        result = result.data.pooledUserCommands
+
+        result.map((r) => {
+            r.memo = decodeMemo(r.memo)
+            r.scam = checkMemoForScam(r.memo)
+        })
+
+        return result
+    } catch (e) {
         return []
     }
-
-    result = result.data.pooledUserCommands
-
-    result.map((r) => {
-        r.memo = decodeMemo(r.memo)
-        r.scam = checkMemoForScam(r.memo)
-    })
-
-    return result
 }
 
 export const processTransactionPool = async () => {

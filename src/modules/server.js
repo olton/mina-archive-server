@@ -5,7 +5,7 @@ import fs from "fs"
 import {setValue} from "../helpers/set-value.js"
 import {hostname} from "os"
 import {processPriceInfo} from "./price.js"
-import {runWebServer, runWebServerDev} from "./webserver.js"
+import {runWebServer} from "./webserver.js"
 import {sendBroadcast} from "./websocket.js";
 import {processTransactionPool} from "./graphql.js";
 import path from "path";
@@ -79,7 +79,8 @@ export const run = () => {
     saveEpoch()
     saveStat()
     listenNotifies()
-    config.mode === 'dev' ? runWebServerDev() : runWebServer()
+    runWebServer()
+    // config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()
     processTransactionPool()
 }

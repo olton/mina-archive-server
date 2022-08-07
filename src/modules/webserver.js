@@ -1,5 +1,3 @@
-import https from "https";
-import fs from "fs";
 import path from "path";
 import http from "http";
 import express from "express";
@@ -146,64 +144,22 @@ const route = () => {
     })
 }
 
-const runWebServerDev = () => {
-    const [server_host, server_port] = config.server.host.split(":")
-    let webserver
-
-    if (ssl) {
-        const {cert, key} = config.server.ssl
-        webserver = https.createServer({
-            key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
-            cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
-        }, app)
-    } else {
-        webserver = http.createServer({}, app)
-    }
-
-    route()
-
-    webserver.listen(+server_port, server_host, () => {
-        log(`Minataur running on port ${server_port} in ${ssl ? 'secure' : 'non-secure'} mode`)
-    })
-
-    websocket(webserver)
-}
-
 const runWebServer = () => {
-    let httpWebserver, httpsWebserver
+    let httpWebserver
+    const {host, port} = config.server
 
-
-    if (ssl) {
-        const {cert, key} = config.server.ssl
-        httpWebserver = http.createServer((req, res)=>{
-            res.writeHead(301,{Location: `https://${req.headers.host}${req.url}`});
-            res.end();
-        })
-
-        httpsWebserver = https.createServer({
-            key: fs.readFileSync(key[0] === "." ? path.resolve(rootPath, key) : key),
-            cert: fs.readFileSync(cert[0] === "." ? path.resolve(rootPath, cert) : cert)
-        }, app)
-    } else {
-        httpWebserver = http.createServer({}, app)
-    }
+    httpWebserver = http.createServer({}, app)
 
     route()
 
-    httpWebserver.listen(80, () => {
-        log(`Minataur running on http`)
+    httpWebserver.listen(port, host, () => {
+        log(`Minataur running on http://${host}:${port}`)
     })
 
-    if (ssl) {
-        httpsWebserver.listen(443, () => {
-            log(`Minataur running on https`)
-        })
-    }
-
-    websocket(ssl ? httpsWebserver : httpWebserver)
+    websocket(httpWebserver)
 }
 
 export {
-    runWebServerDev,
+    // runWebServerDev,
     runWebServer
 }
