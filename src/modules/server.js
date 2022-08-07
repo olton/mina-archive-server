@@ -80,7 +80,6 @@ export const run = () => {
     saveStat()
     listenNotifies()
     runWebServer()
-    // config.mode === 'dev' ? runWebServerDev() : runWebServer()
     processPriceInfo()
     processTransactionPool()
 }

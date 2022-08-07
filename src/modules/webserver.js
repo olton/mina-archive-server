@@ -4,7 +4,7 @@ import express from "express";
 import {shorten} from "../helpers/short-address.js";
 import {log} from "../helpers/logging.js";
 import {websocket} from "./websocket.js"
-import {datetime, Datetime} from "@olton/datetime"
+import {datetime} from "@olton/datetime"
 import favicon from "serve-favicon"
 import {getUptimeNext} from "./queries.js";
 
@@ -160,6 +160,5 @@ const runWebServer = () => {
 }
 
 export {
-    // runWebServerDev,
     runWebServer
 }
