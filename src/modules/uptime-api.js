@@ -2,7 +2,7 @@ import fetch from "node-fetch"
 import {log} from "../helpers/logging.js"
 import {datetime} from "@olton/datetime"
 
-export const UPTIME_ENDPOINT = `http://3.237.77.215:5001/uptimescore/`
+export const UPTIME_ENDPOINT = `http://uptime.minaprotocol.com/uptimescore/`
 export const UPTIME_SNARKWORK = `snarkwork`
 export const UPTIME_SIDECAR = `sidecar`
 export const UPTIME_DEFAULT = undefined
