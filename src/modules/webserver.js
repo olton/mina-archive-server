@@ -142,6 +142,10 @@ const route = () => {
             query: queryString.join(", ")
         })
     })
+
+    app.get("*", (req, res) => {
+        res.redirect("/")
+    })
 }
 
 const runWebServer = () => {
