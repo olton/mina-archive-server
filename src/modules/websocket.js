@@ -186,75 +186,154 @@ export const websocket = (server) => {
 
                 /* =========================== Address Data ================================== */
                 case 'address': {
-                    response(ws, channel, await getAddressInfo(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressInfo(data));
+                    }
                     break;
                 }
                 case 'address_balance': {
-                    let balance = await getAddressBalance(data)
-                    if (balance.error) {
-                        balance = await getAddressBalanceExp(data)
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null)
+                    } else {
+                        let balance = await getAddressBalance(data)
+                        if (balance.error) {
+                            balance = await getAddressBalanceExp(data)
+                        }
+                        response(ws, channel, balance)
                     }
-                    response(ws, channel, balance)
                     break
                 }
                 case 'address_trans_pool': {
-                    response(ws, channel, await getAddressTransactionsFromPool(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressTransactionsFromPool(data));
+                    }
                     break;
                 }
                 case 'address_last_blocks': {
-                    response(ws, channel, await getAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressBlocks(data.pk, {
+                            type: data.type,
+                            limit: data.count,
+                            offset: data.offset
+                        }));
+                    }
                     break;
                 }
                 case 'address_last_trans': {
-                    response(ws, channel, await getAddressTransactions(data.pk, {limit: data.count, offset: data.offset}));
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressTransactions(data.pk, {
+                            limit: data.count,
+                            offset: data.offset
+                        }));
+                    }
                     break;
                 }
                 case 'address_blocks': {
-                    response(ws, channel, await getAddressBlocks(data.pk, {type: data.type, limit: data.count, offset: data.offset}));
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressBlocks(data.pk, {
+                            type: data.type,
+                            limit: data.count,
+                            offset: data.offset
+                        }));
+                    }
                     break;
                 }
                 case 'address_blocks_current_epoch': {
-                    response(ws, channel, await getAddressBlocksInEpoch(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressBlocksInEpoch(data));
+                    }
                     break;
                 }
                 case 'address_trans': {
-                    response(ws, channel, await getAddressTrans(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressTrans(data));
+                    }
                     break;
                 }
                 case 'address_delegations': {
-                    response(ws, channel, await getAddressDelegations(data, false));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressDelegations(data, false));
+                    }
                     break;
                 }
                 case 'address_delegations_next': {
-                    response(ws, channel, await getAddressDelegations(data, true));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressDelegations(data, true));
+                    }
                     break;
                 }
                 case 'address_stakes': {
-                    response(ws, channel, await getAddressStakes(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressStakes(data));
+                    }
                     break;
                 }
                 case 'address_rewards': {
-                    response(ws, channel, await getAddressRewards(data.address, undefined, data.cb_super));
+                    if (!data.address || !data.address.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressRewards(data.address, undefined, data.cb_super));
+                    }
                     break;
                 }
                 case 'address_balance_per_epoch': {
-                    response(ws, channel, await getBalancePerEpoch(data.pk, data.len))
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getBalancePerEpoch(data.pk, data.len))
+                    }
                     break
                 }
                 case 'address_stake_per_epoch': {
-                    response(ws, channel, await getStakePerEpoch(data.pk, data.len))
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getStakePerEpoch(data.pk, data.len))
+                    }
                     break
                 }
                 case 'address_blocks_per_epoch': {
-                    response(ws, channel, await getBlocksPerEpoch(data.pk, data.len))
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getBlocksPerEpoch(data.pk, data.len))
+                    }
                     break
                 }
                 case 'address_uptime_line': {
-                    response(ws, channel, await getAddressUptimeLine(data.pk, data.limit, data.trunc))
+                    if (!data.pk || !data.pk.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressUptimeLine(data.pk, data.limit, data.trunc))
+                    }
                     break
                 }
                 case 'address_uptime': {
-                    response(ws, channel, await getAddressUptime(data));
+                    if (!data.startsWith('B62q')) {
+                        response(ws, channel, null);
+                    } else {
+                        response(ws, channel, await getAddressUptime(data));
+                    }
                     break;
                 }
                 case 'address_uptime_full': {
